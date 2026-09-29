@@ -1077,7 +1077,12 @@ img {
 
 @media (max-width: 680px) {
   .hero-floating-badge {
-    display: none;
+    position: static;
+    margin-top: 18px;
+    display: flex;
+    width: 100%;
+    max-width: 320px;
+    animation: none;
   }
 }
 
@@ -3361,5 +3366,401 @@ img {
   .reveal-on-scroll {
     opacity: 1 !important;
     transform: none !important;
+  }
+}
+
+
+/* ==========================================================================
+   UNIFIED COMPREHENSIVE MOBILE RESPONSIVENESS SUITE (TABLETS & MOBILE)
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Global Container Padding */
+  .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* 1. Header & Navigation */
+  .site-header {
+    height: 64px !important;
+  }
+  .header-inner {
+    height: 64px !important;
+    padding: 0 !important;
+  }
+  .brand-sub {
+    display: none !important;
+  }
+  .main-nav {
+    display: none !important;
+  }
+  .header-actions .btn-ghost,
+  .header-actions .btn-primary,
+  .header-actions .btn-outline {
+    display: none !important;
+  }
+  .mobile-menu-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 10px !important;
+    background: var(--cn-blue-50) !important;
+    color: var(--cn-blue-700) !important;
+    border: 1px solid var(--cn-blue-100) !important;
+  }
+
+  /* Mobile Drawer Polish */
+  .mobile-drawer {
+    width: min(320px, 86vw) !important;
+  }
+  .drawer-header {
+    padding: 16px 20px !important;
+  }
+  .drawer-body {
+    padding: 20px !important;
+  }
+  .drawer-links a {
+    padding: 12px 14px !important;
+    font-size: 15px !important;
+  }
+  .drawer-actions {
+    gap: 12px !important;
+    margin-top: 24px !important;
+  }
+  .drawer-actions .btn {
+    height: 48px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  /* 2. Hero Section Mobile Optimization */
+  .hero-section {
+    min-height: auto !important;
+    padding: 48px 0 40px !important;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.96) 0%,
+      rgba(255, 255, 255, 0.90) 38%,
+      rgba(255, 255, 255, 0.72) 75%,
+      rgba(255, 255, 255, 0.95) 100%
+    ), url('assets/hero-bg.png') !important;
+    background-position: 72% center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+  }
+  .hero-container {
+    padding: 0 16px !important;
+  }
+  .hero-content {
+    max-width: 100% !important;
+    padding: 0 !important;
+    text-align: left !important;
+    align-items: flex-start !important;
+  }
+  .hero-title {
+    font-size: clamp(28px, 7.5vw, 36px) !important;
+    line-height: 1.18 !important;
+    letter-spacing: -0.5px !important;
+    margin-bottom: 12px !important;
+  }
+  .hero-desc {
+    font-size: 15px !important;
+    line-height: 1.55 !important;
+    color: var(--cn-blue-600) !important;
+    margin-bottom: 22px !important;
+    max-width: 100% !important;
+  }
+  .hero-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+  .btn-hero-primary,
+  .btn-hero-secondary {
+    width: 100% !important;
+    height: 50px !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    justify-content: center !important;
+  }
+
+  /* Figma Task Done Floating Badge on Mobile */
+  .hero-floating-badge {
+    position: static !important;
+    margin-top: 18px !important;
+    display: flex !important;
+    width: 100% !important;
+    max-width: 320px !important;
+    padding: 12px 16px !important;
+    border-radius: 14px !important;
+    box-shadow: 0 8px 20px -4px rgba(16, 21, 31, 0.08) !important;
+    animation: none !important;
+  }
+  .hero-floating-badge .badge-icon-circle {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  .hero-floating-badge .badge-title {
+    font-size: 14px !important;
+  }
+  .hero-floating-badge .badge-subtitle {
+    font-size: 11.5px !important;
+  }
+
+  /* 3. Section Headers */
+  .section-header {
+    margin-bottom: var(--space-xl) !important;
+  }
+  .section-tag {
+    font-size: 11px !important;
+    padding: 4px 10px !important;
+  }
+  .section-title {
+    font-size: clamp(24px, 6vw, 30px) !important;
+    line-height: 1.25 !important;
+  }
+  .section-subtitle {
+    font-size: 14px !important;
+    line-height: 1.55 !important;
+  }
+
+  /* 4. Instant Errand Request Section */
+  .instant-request-section {
+    padding: 40px 0 !important;
+  }
+  .instant-request-card {
+    padding: 20px 16px !important;
+    border-radius: 18px !important;
+  }
+  .instant-grid-2,
+  .instant-grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+  .instant-budget-row {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 16px !important;
+  }
+  .budget-selection-col {
+    min-width: 0 !important;
+    width: 100% !important;
+  }
+  .budget-presets-pills {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 6px !important;
+    width: 100% !important;
+  }
+  .budget-pill {
+    padding: 10px 4px !important;
+    font-size: 12px !important;
+    text-align: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+  }
+  .budget-custom-wrap {
+    grid-column: span 4 !important;
+    width: 100% !important;
+    margin-top: 4px !important;
+  }
+  .budget-custom-input {
+    width: 100% !important;
+    height: 44px !important;
+  }
+  .instant-submit-col {
+    width: 100% !important;
+  }
+  .btn-instant-submit {
+    width: 100% !important;
+    height: 50px !important;
+    justify-content: center !important;
+  }
+  .instant-card-trust-footer {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .trust-point {
+    font-size: 12.5px !important;
+  }
+
+  /* 5. How It Works Section */
+  .how-it-works-section {
+    padding: 44px 0 !important;
+  }
+  .tab-pill-box {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    padding: 4px !important;
+    border-radius: 12px !important;
+  }
+  .tab-pill-btn {
+    padding: 10px 8px !important;
+    font-size: 12.5px !important;
+    text-align: center !important;
+    border-radius: 10px !important;
+  }
+  .steps-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .step-card {
+    padding: 20px 18px !important;
+    border-radius: 16px !important;
+  }
+
+  /* 6. Marketplace Board Section */
+  .errands-board-section {
+    padding: 44px 0 !important;
+  }
+  .category-filters-row {
+    display: flex !important;
+    justify-content: flex-start !important;
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
+    padding: 4px 16px 14px !important;
+    margin: 0 -16px var(--space-xl) !important;
+    -webkit-overflow-scrolling: touch !important;
+    scrollbar-width: none !important;
+  }
+  .category-filters-row::-webkit-scrollbar {
+    display: none !important;
+  }
+  .filter-chip {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+  .errands-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .errand-listing-card {
+    border-radius: 16px !important;
+  }
+  .errand-card-footer {
+    flex-direction: row !important;
+    justify-content: space-between !important;
+  }
+
+  /* 7. Earnings Calculator Section */
+  .earnings-section {
+    padding: 44px 0 !important;
+  }
+  .calculator-card {
+    grid-template-columns: 1fr !important;
+    padding: 24px 18px !important;
+    border-radius: 18px !important;
+    gap: 24px !important;
+  }
+  .calc-results-box {
+    padding: 20px !important;
+    border-radius: 16px !important;
+  }
+  .total-earning-amount {
+    font-size: clamp(32px, 8vw, 42px) !important;
+  }
+
+  /* 8. Trust & Security */
+  .trust-security-section {
+    padding: 44px 0 !important;
+  }
+  .security-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .security-card {
+    padding: 22px 18px !important;
+    border-radius: 16px !important;
+  }
+
+  /* 9. Testimonials */
+  .testimonials-section {
+    padding: 44px 0 !important;
+  }
+  .testimonials-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .testimonial-card {
+    padding: 20px 18px !important;
+    border-radius: 16px !important;
+  }
+
+  /* 10. FAQ Section */
+  .faq-section {
+    padding: 44px 0 !important;
+  }
+  .faq-question {
+    padding: 16px !important;
+    font-size: 15px !important;
+  }
+  .faq-item.open .faq-answer {
+    padding: 0 16px 16px 16px !important;
+    font-size: 13.5px !important;
+  }
+
+  /* 11. CTA Banner */
+  .cta-banner-section {
+    padding: 44px 0 !important;
+  }
+  .cta-banner-card {
+    padding: 36px 20px !important;
+    border-radius: 20px !important;
+    text-align: center !important;
+  }
+  .cta-title {
+    font-size: clamp(24px, 6vw, 32px) !important;
+  }
+  .cta-btns-row {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+  }
+  .cta-btns-row .btn {
+    width: 100% !important;
+    height: 50px !important;
+    justify-content: center !important;
+  }
+
+  /* 12. Footer */
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+  .footer-bottom {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 14px !important;
+  }
+
+  /* 13. Floating Action Chat FAB */
+  .chat-fab-widget {
+    bottom: 18px !important;
+    right: 16px !important;
+  }
+  .fab-trigger-btn {
+    width: 50px !important;
+    height: 50px !important;
+  }
+  .chat-box-popup {
+    width: calc(100vw - 32px) !important;
+    max-width: 350px !important;
+    bottom: 60px !important;
+    right: 0 !important;
+  }
+
+  /* 14. Modals */
+  .modal-dialog {
+    width: calc(100% - 24px) !important;
+    margin: 12px auto !important;
+    padding: 20px 16px !important;
+    border-radius: 18px !important;
+    max-height: 92vh !important;
   }
 }
