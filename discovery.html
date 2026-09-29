@@ -1,0 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discovery Feed — Urgent.ng | Live Neighborhood Errands & Requests</title>
+  <meta name="description" content="Browse live errands in Lagos and across Nigeria. Find nearby tasks to run, submit price bids, or track your posted errands in real-time.">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Scoped Discovery Page Styling matching user's exact specification */
+    .discovery-page-wrapper {
+      background-color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: var(--font-family);
+    }
+
+    .discovery-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .discovery-nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+      gap: 16px;
+    }
+
+    .user-profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 5px 12px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+    }
+
+    .user-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #93c700;
+      color: #ffffff;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+
+    .user-role-pill {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 6px;
+      border-radius: var(--radius-full);
+      background: #ecfdf5;
+      color: #065f46;
+      letter-spacing: 0.5px;
+    }
+
+    /* Sub-header Banner */
+    .discovery-hero-bar {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 24px 0 20px;
+    }
+
+    .hero-stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      color: #334155;
+      font-weight: 600;
+    }
+
+    /* Filters Bar */
+    .discovery-controls-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin: 24px 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .search-input-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .search-input-box svg {
+      position: absolute;
+      left: 14px;
+      color: #94a3b8;
+      pointer-events: none;
+    }
+
+    .search-field {
+      width: 100%;
+      height: 44px;
+      padding: 0 14px 0 42px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #1e293b;
+      transition: all var(--transition-fast);
+    }
+
+    .search-field:focus {
+      outline: none;
+      border-color: #93c700;
+      box-shadow: 0 0 0 3px rgba(132, 204, 22, 0.2);
+    }
+
+    .filter-pills-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .filter-chip {
+      padding: 6px 14px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all var(--transition-fast);
+    }
+
+    .filter-chip:hover {
+      background: #f8fafc;
+      color: #0f172a;
+      border-color: #cbd5e1;
+    }
+
+    .filter-chip.active {
+      background-color: #93c700;
+      color: #10151f;
+      border-color: #93c700;
+      box-shadow: none;
+      font-weight: 700;
+    }
+
+    .filter-dropdowns-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid #f1f5f9;
+    }
+
+    .dropdown-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-select {
+      height: 36px;
+      padding: 0 10px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* ============================================================
+       3-COLUMN ERRAND CARDS GRID (EXACT FIDELITY TO SCREENSHOT)
+       ============================================================ */
+    .errand-feed-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 60px;
+    }
+
+    @media (max-width: 1120px) {
+      .errand-feed-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .errand-feed-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .errand-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .errand-card:hover .card-arrow-icon {
+      color: #93c700;
+      transform: translateX(4px);
+    }
+
+    .card-arrow-icon {
+      transition: all 0.2s ease;
+      color: #94a3b8;
+    }
+
+    .errand-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.07);
+      transform: translateY(-2px);
+    }
+
+    .errand-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .category-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+    }
+
+    .badge-delivery {
+      background: #eff6ff;
+      color: #2563eb;
+      border: 1px solid #dbeafe;
+    }
+
+    .badge-shopping {
+      background: #ecfdf5;
+      color: #059669;
+      border: 1px solid #d1fae5;
+    }
+
+    .badge-document {
+      background: #fffbeb;
+      color: #d97706;
+      border: 1px solid #fef3c7;
+    }
+
+    .badge-food {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+    }
+
+    .badge-physical {
+      background: #f8fafc;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+    }
+
+    .offers-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      color: #b45309;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .errand-card-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.35;
+      margin: 0 0 16px 0;
+      min-height: 46px;
+    }
+
+    .route-info-box {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+      border: 1px solid #f1f5f9;
+    }
+
+    .route-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      line-height: 1.4;
+    }
+
+    .dot-indicator {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      transform: translateY(-1px);
+    }
+
+    .dot-green {
+      background-color: #22c55e;
+    }
+
+    .dot-red {
+      background-color: #ef4444;
+    }
+
+    .route-label {
+      font-weight: 700;
+      color: #1e293b;
+      flex-shrink: 0;
+    }
+
+    .route-value {
+      color: #475569;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .errand-description {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #4b5563;
+      margin-bottom: 14px;
+      min-height: 40px;
+    }
+
+    .errand-meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 16px;
+    }
+
+    .meta-time-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .errand-card-bottom {
+      border-top: 1px solid #f1f5f9;
+      padding-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .budget-subtext {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #94a3b8;
+      letter-spacing: 0.6px;
+      margin-bottom: 2px;
+    }
+
+    .budget-price {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .btn-make-offer {
+      background-color: #93c700;
+      color: #10151f;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 9px 18px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: none;
+    }
+
+    .btn-make-offer:hover {
+      background-color: #80ad00;
+      transform: translateY(-1px);
+    }
+
+    .btn-make-offer:active {
+      transform: translateY(0);
+    }
+
+    /* Modal for Bidding */
+    .discovery-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .discovery-modal-backdrop.active {
+      display: flex;
+    }
+
+    .discovery-modal-dialog {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 520px;
+      padding: 28px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      animation: modalFadeIn 0.2s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Bid Status Banners & Filter Chips */
+    .bid-status-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 12px;
+      border-radius: 9px;
+      margin-bottom: 12px;
+      font-size: 11.5px;
+      font-weight: 700;
+      transition: all 0.2s ease;
+    }
+
+    .bid-status-banner.status-accepted {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+    }
+
+    .bid-status-banner.status-pending {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      color: #92400e;
+    }
+
+    .bid-status-banner.status-completed {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e40af;
+    }
+
+    .bid-status-banner.status-declined {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      color: #64748b;
+    }
+
+    .bid-status-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .bid-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .dot-pulse-green {
+      background: #10b981;
+      box-shadow: 0 0 0 2.5px rgba(16, 185, 129, 0.25);
+    }
+
+    .dot-pulse-amber {
+      background: #f59e0b;
+      box-shadow: 0 0 0 2.5px rgba(245, 158, 11, 0.25);
+    }
+
+    .dot-pulse-blue {
+      background: #3b82f6;
+      box-shadow: 0 0 0 2.5px rgba(59, 130, 246, 0.25);
+    }
+
+    .dot-gray {
+      background: #94a3b8;
+    }
+
+    .bid-status-chip {
+      padding: 7px 14px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      color: #475569;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      user-select: none;
+    }
+
+    .bid-status-chip:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+      color: #0f172a;
+    }
+
+    .bid-status-chip.active {
+      background-color: #93c700;
+      color: #10151f;
+      border-color: #93c700;
+      box-shadow: none;
+      font-weight: 700;
+    }
+
+    .bid-status-chip.active .bid-status-dot {
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
+    }
+  </style>
+</head>
+<body class="discovery-page-wrapper">
+
+  <!-- ================= TOP DISCOVERY NAVBAR ================= -->
+  <header class="discovery-header">
+    <div class="container">
+      <div class="detail-nav-row" style="display:flex; align-items:center; justify-content:space-between; height:70px;">
+        <!-- Logo (No DISCOVERY FEED badge) -->
+        <a href="index.html" class="logo" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
+          <div class="logo-icon" style="background:#93c700; color:#ffffff; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+          <span class="logo-text" style="font-size:20px; font-weight:800; color:#0f172a;">urgent<span class="logo-dot" style="color:#93c700;">.ng</span></span>
+        </a>
+
+        <!-- Middle Nav Links: Live Errands, My Offers, My Tasks -->
+        <div style="display:flex; align-items:center; gap:28px;" class="hide-mobile">
+          <a href="discovery.html" id="navLiveErrands" onclick="showLiveErrands(event)" class="nav-tab-link active" style="font-size:14px; font-weight:700; color:#93c700; text-decoration:none; cursor:pointer; padding:6px 0; border-bottom:2px solid #93c700;">Live Errands</a>
+          <a href="#my-bids" id="navMyBids" onclick="showMyBids(event)" class="nav-tab-link" style="font-size:14px; font-weight:600; color:#64748b; text-decoration:none; cursor:pointer; padding:6px 0; border-bottom:2px solid transparent;">My Bids</a>
+          <a href="#posted-errands" id="navPostedErrands" onclick="showPostedErrands(event)" class="nav-tab-link" style="font-size:14px; font-weight:600; color:#64748b; text-decoration:none; cursor:pointer; padding:6px 0; border-bottom:2px solid transparent;">Posted Errands</a>
+        </div>
+
+        <!-- Right User Actions (Profile Icon only, Post Errand, No Logout) -->
+        <div style="display:flex; align-items:center; gap:14px;">
+          <!-- Profile Avatar Icon (No name, no role badge) -->
+          <div class="user-avatar" id="navUserAvatar" title="Your Profile" style="width:38px; height:38px; border-radius:50%; background:#93c700; color:#ffffff; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.08); border:2px solid #ffffff;">
+            EA
+          </div>
+
+          <!-- Post Errand Button -->
+          <button class="btn btn-primary btn-sm" onclick="openPostModal()" style="display:inline-flex; align-items:center; gap:6px; background:#93c700; color:#10151f; border:none; padding:8px 16px; border-radius:8px; font-weight:800; font-size:13px; cursor:pointer; box-shadow:none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span>Post Errand</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= DISCOVERY HERO HEADER ================= -->
+  <section class="discovery-hero-bar">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <span class="hero-stat-pill">
+              <span style="width:8px; height:8px; background:#22c55e; border-radius:50%; display:inline-block;"></span>
+              <strong id="activeCountDisplay">42</strong> Active Errands in Lagos
+            </span>
+            <span class="hero-stat-pill hide-mobile">
+              ⚡ Avg Runner Response: 6 mins
+            </span>
+            <span class="hero-stat-pill hide-mobile">
+              🛡️ Pay On Delivery Protected
+            </span>
+          </div>
+          <h1 style="font-size:24px; font-weight:800; letter-spacing:-0.5px; margin:0; color:#0f172a;" id="feedHeroHeadline">
+            Live Neighborhood Errand Feed
+          </h1>
+          <p style="font-size:13px; color:#64748b; margin:4px 0 0;">
+            Browse urgent requests waiting for pickup across Island & Mainland. Submit your price bid directly.
+          </p>
+        </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DISCOVERY CONTROLS & CARDS ================= -->
+  <main style="flex:1;">
+    <div class="container">
+      
+      <!-- Filter & Search Controls -->
+      <div class="discovery-controls-card">
+        <div class="search-input-box">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="feedSearchInput" class="search-field" placeholder="Search errands by keyword, pickup street, destination, or items (e.g. Charger, Tejuosho, Court, Cake, Mechanic)..." oninput="applyFilters()">
+        </div>
+
+        <!-- Bid Status Filter (Quick Filter in My Bids) -->
+        <div class="filter-pills-row" id="bidStatusChipsContainer" style="display:none; margin-bottom:14px;">
+          <button class="bid-status-chip active" data-status="all" onclick="selectBidStatusFilter('all', this)">
+            All Statuses (<span id="statusCountAll">0</span>)
+          </button>
+          <button class="bid-status-chip" data-status="accepted" onclick="selectBidStatusFilter('accepted', this)">
+            <span class="bid-status-dot dot-pulse-green"></span> Accepted / Active (<span id="statusCountAccepted">0</span>)
+          </button>
+          <button class="bid-status-chip" data-status="pending" onclick="selectBidStatusFilter('pending', this)">
+            <span class="bid-status-dot dot-pulse-amber"></span> Pending Review (<span id="statusCountPending">0</span>)
+          </button>
+          <button class="bid-status-chip" data-status="completed" onclick="selectBidStatusFilter('completed', this)">
+            <span class="bid-status-dot dot-pulse-blue"></span> Completed (<span id="statusCountCompleted">0</span>)
+          </button>
+          <button class="bid-status-chip" data-status="declined" onclick="selectBidStatusFilter('declined', this)">
+            <span class="bid-status-dot dot-gray"></span> Declined / Outbid (<span id="statusCountDeclined">0</span>)
+          </button>
+        </div>
+
+        <!-- Category Pills Filter -->
+        <div class="filter-pills-row" id="categoryChipsContainer">
+          <button class="filter-chip active" data-cat="all" onclick="selectFilterCategory('all', this)">
+            All Errands (<span id="catCountAll">6</span>)
+          </button>
+          <button class="filter-chip" data-cat="DELIVERY" onclick="selectFilterCategory('DELIVERY', this)">
+            DELIVERY (<span id="catCountDelivery">2</span>)
+          </button>
+          <button class="filter-chip" data-cat="SHOPPING" onclick="selectFilterCategory('SHOPPING', this)">
+            SHOPPING (<span id="catCountShopping">1</span>)
+          </button>
+          <button class="filter-chip" data-cat="DOCUMENT" onclick="selectFilterCategory('DOCUMENT', this)">
+            DOCUMENT (<span id="catCountDocument">1</span>)
+          </button>
+          <button class="filter-chip" data-cat="FOOD" onclick="selectFilterCategory('FOOD', this)">
+            FOOD (<span id="catCountFood">1</span>)
+          </button>
+          <button class="filter-chip" data-cat="PHYSICAL" onclick="selectFilterCategory('PHYSICAL', this)">
+            PHYSICAL (<span id="catCountPhysical">1</span>)
+          </button>
+        </div>
+
+        <!-- Secondary Filters -->
+        <div class="filter-dropdowns-row" id="secondaryFiltersRow">
+          <div class="dropdown-group">
+            <label style="font-size:12px; font-weight:700; color:#475569;">Area:</label>
+            <select id="areaFilterSelect" class="filter-select" onchange="applyFilters()">
+              <option value="all">📍 All Lagos Neighborhoods</option>
+              <option value="Victoria Island">Victoria Island / Lekki</option>
+              <option value="Yaba">Yaba / Surulere</option>
+              <option value="Marina">Marina / Lagos Island</option>
+              <option value="Ikeja">Ikeja / Magodo</option>
+              <option value="Ojodu">Ojodu / Berger</option>
+            </select>
+          </div>
+
+          <div class="dropdown-group">
+            <label style="font-size:12px; font-weight:700; color:#475569;">Urgency:</label>
+            <select id="urgencyFilterSelect" class="filter-select" onchange="applyFilters()">
+              <option value="all">⚡ All Urgencies</option>
+              <option value="1hr">Needed within 1 hr / Immediate</option>
+              <option value="today">Today / Afternoon</option>
+            </select>
+          </div>
+
+          <div class="dropdown-group">
+            <label style="font-size:12px; font-weight:700; color:#475569;">Sort by:</label>
+            <select id="sortFilterSelect" class="filter-select" onchange="applyFilters()">
+              <option value="newest">Newest First</option>
+              <option value="budget-high">Highest Budget</option>
+              <option value="budget-low">Lowest Budget</option>
+              <option value="offers">Most Offers</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 3-COLUMN ERRAND CARDS GRID ================= -->
+      <div class="errand-feed-grid" id="errandFeedGrid">
+        <!-- Dynamically rendered via JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div id="feedEmptyState" style="display:none; text-align:center; padding:54px 24px; background:#fff; border-radius:16px; border:1px dashed #cbd5e1; margin-bottom:60px;">
+        <div style="font-size:42px; margin-bottom:12px;">🔍</div>
+        <h3 style="font-size:18px; font-weight:700; color:#1e293b; margin-bottom:6px;">No matching errands found</h3>
+        <p style="font-size:13px; color:#64748b; max-width:380px; margin:0 auto 16px;">
+          Try adjusting your search query, selecting another category, or resetting filters.
+        </p>
+        <button class="btn btn-secondary btn-sm" onclick="resetAllFilters()">Reset All Filters</button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ================= SUBMIT BID MODAL (MAKE AN OFFER) ================= -->
+  <div class="discovery-modal-backdrop" id="bidModalBackdrop" onclick="closeBidModal(event)">
+    <div class="discovery-modal-dialog" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-size:18px; font-weight:800; color:#0f172a; margin:0;">Make an Offer</h3>
+        <button type="button" onclick="closeBidModal()" style="font-size:22px; color:#94a3b8; line-height:1; background:none; border:none; cursor:pointer;">&times;</button>
+      </div>
+
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:12px 14px; border-radius:10px; margin-bottom:16px;">
+        <div style="font-size:10px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.5px;">Errand Task</div>
+        <div style="font-weight:800; font-size:14px; color:#0f172a; margin-top:2px;" id="modalBidTaskTitle">Task Title Here</div>
+        <div style="font-size:12px; color:#475569; margin-top:4px;" id="modalBidTaskRoute">Route info</div>
+      </div>
+
+      <form id="runnerBidForm" onsubmit="handleRunnerBidSubmit(event)">
+        <input type="hidden" id="modalBidErrandId">
+
+        <div style="margin-bottom:14px;">
+          <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">
+            Your Offer Amount (₦) *
+          </label>
+          <input type="number" id="modalBidAmount" class="search-field" style="padding-left:14px;" required placeholder="e.g. 3500">
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+          <div>
+            <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">
+              Ready by (ETA) *
+            </label>
+            <select id="modalBidEta" class="filter-select" style="width:100%; height:44px;">
+              <option value="15-20 mins">⚡ 15 – 20 mins</option>
+              <option value="30 mins" selected>⚡ Within 30 mins</option>
+              <option value="45 mins">🕒 45 mins</option>
+              <option value="1 hour">🕒 Within 1 hour</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">
+              Transport *
+            </label>
+            <select id="modalBidTransport" class="filter-select" style="width:100%; height:44px;">
+              <option value="Motorcycle" selected>🏍️ Motorcycle</option>
+              <option value="Car">🚗 Car / Sedan</option>
+              <option value="Bicycle">🚲 Bicycle</option>
+              <option value="On Foot">🚶 Neighborhood / Foot</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-bottom:18px;">
+          <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">
+            Message to Requester (Optional)
+          </label>
+          <input type="text" id="modalBidNote" class="search-field" style="padding-left:14px;" placeholder="e.g. I am in the area right now, ready to pick up immediately.">
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <button type="button" onclick="closeBidModal()" style="flex:1; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px; font-weight:700; color:#475569; background:#fff; cursor:pointer;">Cancel</button>
+          <button type="submit" class="btn-make-offer" style="flex:2; padding:10px;">Submit Offer &rarr;</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= POST ERRAND MODAL ================= -->
+  <div class="discovery-modal-backdrop" id="postModalBackdrop" onclick="closePostModal(event)">
+    <div class="discovery-modal-dialog" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-size:18px; font-weight:800; color:#0f172a; margin:0;">Post an Errand</h3>
+        <button type="button" onclick="closePostModal()" style="font-size:22px; color:#94a3b8; line-height:1; background:none; border:none; cursor:pointer;">&times;</button>
+      </div>
+
+      <form id="discoveryPostForm" onsubmit="handleDiscoveryPostSubmit(event)">
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Task Title *</label>
+          <input type="text" id="newErrandTitle" class="search-field" style="padding-left:14px;" placeholder="e.g. Deliver Package to Victoria Island" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div>
+            <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Category *</label>
+            <select id="newErrandCategory" class="filter-select" style="width:100%; height:44px;">
+              <option value="DELIVERY">DELIVERY</option>
+              <option value="SHOPPING">SHOPPING</option>
+              <option value="DOCUMENT">DOCUMENT</option>
+              <option value="FOOD">FOOD</option>
+              <option value="PHYSICAL">PHYSICAL</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Timing *</label>
+            <select id="newErrandUrgency" class="filter-select" style="width:100%; height:44px;">
+              <option value="Needed within 1 hr">Needed within 1 hr</option>
+              <option value="Complete before 3:00 PM">Complete before 3:00 PM</option>
+              <option value="ASAP / Immediate">ASAP / Immediate</option>
+              <option value="Before 5:00 PM today">Before 5:00 PM today</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div>
+            <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Pickup Location *</label>
+            <input type="text" id="newErrandPickup" class="search-field" style="padding-left:14px;" placeholder="e.g. Lekki Phase 1" required>
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Drop-off Location *</label>
+            <input type="text" id="newErrandDest" class="search-field" style="padding-left:14px;" placeholder="e.g. Victoria Island" required>
+          </div>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Description</label>
+          <textarea id="newErrandDesc" class="search-field" style="height:65px; padding:10px 14px; resize:none;" placeholder="Special instructions, gate codes, contact person..."></textarea>
+        </div>
+
+        <div style="margin-bottom:18px;">
+          <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Budget Amount (₦) *</label>
+          <input type="number" id="newErrandBudget" class="search-field" style="padding-left:14px;" value="3500" required>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <button type="button" onclick="closePostModal()" style="flex:1; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px; font-weight:700; color:#475569; background:#fff; cursor:pointer;">Cancel</button>
+          <button type="submit" class="btn-make-offer" style="flex:2; padding:10px;">Broadcast Errand &rarr;</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" style="position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:8px;"></div>
+
+  <!-- ================= SCRIPT LOGIC ================= -->
+  <script>
+    // EXPANDED DATASET WITH 11 REALISTIC ERRANDS
+    let errands = [
+      {
+        id: 'ER-01',
+        category: 'DELIVERY',
+        badgeClass: 'badge-delivery',
+        offersCount: 3,
+        title: 'Collect Laptop Charger left at Coworking Space',
+        pickupLabel: 'Pickup:',
+        pickupVal: 'Workstation, Victoria Island',
+        dropLabel: 'Drop-off:',
+        dropVal: 'Admiralty Way, Lekki 1',
+        desc: 'HP USB-C 65W charger with cable in an envelope at front desk.',
+        metaTime: 'Needed within 1 hr',
+        postedAgo: 'Posted 12m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 2500,
+        area: 'Victoria Island'
+      },
+      {
+        id: 'ER-02',
+        category: 'SHOPPING',
+        badgeClass: 'badge-shopping',
+        offersCount: 5,
+        title: 'Buy Fresh Seafood & Catfish from Tejuosho',
+        pickupLabel: 'Pickup:',
+        pickupVal: 'Tejuosho Ultra-Modern Market, Yaba',
+        dropLabel: 'Drop-off:',
+        dropVal: 'Surulere, Bode Thomas',
+        desc: 'I will transfer grocery money upfront once runner is at the market stand.',
+        metaTime: 'Complete before 3:00 PM',
+        postedAgo: 'Posted 25m ago',
+        priceType: 'RUNNER FEE',
+        price: 4000,
+        area: 'Yaba'
+      },
+      {
+        id: 'ER-03',
+        category: 'DOCUMENT',
+        badgeClass: 'badge-document',
+        offersCount: 2,
+        title: 'Urgent High Court Certified True Copy (CTC)',
+        pickupLabel: 'Pickup:',
+        pickupVal: 'Lagos High Court, Igbosere',
+        dropLabel: 'Drop-off:',
+        dropVal: 'Law Chambers, Marina',
+        desc: 'Document is already stamped and ready with Registrar Room 12.',
+        metaTime: 'ASAP / Immediate',
+        postedAgo: 'Posted 6m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 3500,
+        area: 'Marina'
+      },
+      {
+        id: 'ER-04',
+        category: 'FOOD',
+        badgeClass: 'badge-food',
+        offersCount: 4,
+        title: 'Pick up 2-Tier Birthday Cake in Temperature Box',
+        pickupLabel: 'Pickup:',
+        pickupVal: 'Cakes by Tola, Ikeja',
+        dropLabel: 'Drop-off:',
+        dropVal: 'Magodo Phase 2',
+        desc: 'Fragile! Requires car runner or careful dispatch bag.',
+        metaTime: 'Before 5:00 PM today',
+        postedAgo: 'Posted 40m ago',
+        priceType: 'RUNNER FEE',
+        price: 5000,
+        area: 'Ikeja'
+      },
+      {
+        id: 'ER-05',
+        category: 'PHYSICAL',
+        badgeClass: 'badge-physical',
+        offersCount: 1,
+        title: 'Inspect Used Car Engine at Mechanic Workshop',
+        pickupLabel: 'Location:',
+        pickupVal: 'Berger Auto Yard, Ojodu',
+        dropLabel: 'Task:',
+        dropVal: 'Send 4K video walkaround & engine sound',
+        desc: 'I am in Abuja buying from a Lagos seller. Need honest eye-witness confirmation.',
+        metaTime: 'Within 3 hours',
+        postedAgo: 'Posted 18m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 7500,
+        area: 'Ojodu'
+      },
+      {
+        id: 'ER-06',
+        category: 'DELIVERY',
+        badgeClass: 'badge-delivery',
+        offersCount: 6,
+        title: 'Collect Fabric Samples from Balogun Market',
+        pickupLabel: 'Pickup:',
+        pickupVal: 'Balogun Island, Lagos Island',
+        dropLabel: 'Drop-off:',
+        dropVal: 'Fashion Studio, Lekki Phase 1',
+        desc: 'Vendor name: Iya Basira, shop B14. Small waterproof parcel.',
+        metaTime: 'Today before 2 PM',
+        postedAgo: 'Posted 10m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 3000,
+        area: 'Victoria Island'
+      },
+      {
+        id: 'ER-07',
+        category: 'DELIVERY',
+        badgeClass: 'badge-delivery',
+        offersCount: 4,
+        title: 'Dispatch Medical Lab Samples in Cooler Box',
+        pickupLabel: 'Pickup:',
+        pickupVal: 'St. Nicholas Clinic, Victoria Island',
+        dropLabel: 'Drop-off:',
+        dropVal: 'Lancet Laboratories, Ikeja GRA',
+        desc: 'Sealed biological test specimens in insulated thermal ice bag. Must not be placed in direct sunlight.',
+        metaTime: 'Complete before 4:00 PM',
+        postedAgo: 'Posted 1h ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 5500,
+        area: 'Victoria Island'
+      },
+      {
+        id: 'ER-08',
+        category: 'SHOPPING',
+        badgeClass: 'badge-shopping',
+        offersCount: 6,
+        title: 'Purchase Emergency Power Inverter Fuses',
+        pickupLabel: 'Pickup:',
+        pickupVal: 'Alaba International Market, Ojo',
+        dropLabel: 'Drop-off:',
+        dropVal: 'Admiralty Mall, Lekki Phase 1',
+        desc: 'Specific 200A semiconductor fast-blow fuses for inverter battery bank. Receipt required.',
+        metaTime: 'Completed today',
+        postedAgo: 'Posted 3h ago',
+        priceType: 'RUNNER FEE',
+        price: 8000,
+        area: 'Victoria Island'
+      },
+      {
+        id: 'ER-09',
+        category: 'DELIVERY',
+        badgeClass: 'badge-delivery',
+        offersCount: 7,
+        title: 'Pick up Custom Aso-Ebi Tailoring order for Wedding',
+        pickupLabel: 'Pickup:',
+        pickupVal: 'Adeniran Ogunsanya, Surulere',
+        dropLabel: 'Drop-off:',
+        dropVal: 'Alexander Road, Ikoyi',
+        desc: '3 sets of men Agbada and women dresses in protective garment bags on hangers.',
+        metaTime: 'Closed',
+        postedAgo: 'Posted 2h ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 3500,
+        area: 'Surulere'
+      },
+      {
+        id: 'ER-10',
+        category: 'PHYSICAL',
+        badgeClass: 'badge-physical',
+        offersCount: 3,
+        title: 'Stand in Line for Passport Collection at Immigration Office',
+        pickupLabel: 'Location:',
+        pickupVal: 'Passport Office, Alagbon, Ikoyi',
+        dropLabel: 'Task:',
+        dropVal: 'Hold number slot & alert client when counter opens',
+        desc: 'Arrive at gate before 8:00 AM, secure number queue ticket, and phone call me once token batch 40-50 is announced.',
+        metaTime: 'Tomorrow 7:30 AM',
+        postedAgo: 'Posted 45m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 7000,
+        area: 'Marina'
+      },
+      {
+        id: 'ER-11',
+        category: 'DELIVERY',
+        badgeClass: 'badge-delivery',
+        offersCount: 2,
+        title: 'Deliver Birthday Gift Hamper & Fresh Flowers',
+        pickupLabel: 'Pickup:',
+        pickupVal: 'Blossoms & Gifts, Lekki Phase 2',
+        dropLabel: 'Drop-off:',
+        dropVal: 'Banana Island, Ikoyi',
+        desc: 'Surprise package with balloon bouquet and fresh white roses. Security access code provided in chat.',
+        metaTime: 'Completed yesterday',
+        postedAgo: 'Posted yesterday',
+        priceType: 'SUGGESTED BUDGET',
+        price: 5000,
+        area: 'Victoria Island'
+      }
+    ];
+
+    // DETAILED BIDS REGISTRY WITH RICH STATUSES & METADATA
+    let myBids = {
+      'ER-01': {
+        status: 'accepted',
+        statusLabel: 'Bid Accepted / Active',
+        statusColor: '#93c700',
+        dotClass: 'dot-pulse-green',
+        amount: 2800,
+        eta: '20 mins',
+        transport: 'Motorcycle',
+        timeAgo: 'Submitted 35m ago',
+        note: 'Requester accepted your offer! In transit to Lekki Phase 1.'
+      },
+      'ER-02': {
+        status: 'pending',
+        statusLabel: 'Pending Review',
+        statusColor: '#b45309',
+        dotClass: 'dot-pulse-amber',
+        amount: 4500,
+        eta: '30 mins',
+        transport: 'Motorcycle',
+        timeAgo: 'Submitted 15m ago',
+        note: 'Requester is reviewing 5 runner offers for fresh seafood purchase.'
+      },
+      'ER-03': {
+        status: 'pending',
+        statusLabel: 'Pending Review',
+        statusColor: '#b45309',
+        dotClass: 'dot-pulse-amber',
+        amount: 3800,
+        eta: '15 mins',
+        transport: 'Motorcycle',
+        timeAgo: 'Submitted 5m ago',
+        note: 'Waiting for Counsel to confirm court collection slip clearance.'
+      },
+      'ER-07': {
+        status: 'accepted',
+        statusLabel: 'Bid Accepted / Active',
+        statusColor: '#93c700',
+        dotClass: 'dot-pulse-green',
+        amount: 6000,
+        eta: '45 mins',
+        transport: 'Car / Sedan',
+        timeAgo: 'Submitted 1h ago',
+        note: 'Specimen cooler collected from St. Nicholas. En route to Lancet.'
+      },
+      'ER-08': {
+        status: 'completed',
+        statusLabel: 'Completed & Paid',
+        statusColor: '#1e40af',
+        dotClass: 'dot-pulse-blue',
+        amount: 8500,
+        eta: 'Delivered',
+        transport: 'Car / Sedan',
+        timeAgo: 'Completed 2h ago',
+        note: 'Fuses delivered intact. Payment of ₦8,500 released to wallet.'
+      },
+      'ER-09': {
+        status: 'declined',
+        statusLabel: 'Declined / Outbid',
+        statusColor: '#64748b',
+        dotClass: 'dot-gray',
+        amount: 3500,
+        eta: '30 mins',
+        transport: 'Motorcycle',
+        timeAgo: 'Closed 1h ago',
+        note: 'Requester selected a runner located directly on Adeniran Ogunsanya.'
+      },
+      'ER-10': {
+        status: 'pending',
+        statusLabel: 'Pending Review',
+        statusColor: '#b45309',
+        dotClass: 'dot-pulse-amber',
+        amount: 7000,
+        eta: '1 hour',
+        transport: 'On Foot',
+        timeAgo: 'Submitted 20m ago',
+        note: 'Requester reviewing queue standby runners for tomorrow morning.'
+      },
+      'ER-11': {
+        status: 'completed',
+        statusLabel: 'Completed & Paid',
+        statusColor: '#1e40af',
+        dotClass: 'dot-pulse-blue',
+        amount: 5000,
+        eta: 'Delivered',
+        transport: 'Car / Sedan',
+        timeAgo: 'Completed yesterday',
+        note: 'Gift hamper delivered on time. Client left a 5-star review.'
+      }
+    };
+
+    // My bids ID list
+    let myOffersList = ['ER-01', 'ER-02', 'ER-03', 'ER-07', 'ER-08', 'ER-09', 'ER-10', 'ER-11'];
+    let myTasksList = ['ER-05'];
+
+    let currentCategory = 'all';
+    let currentBidStatusFilter = 'all';
+    let currentViewTab = 'all'; // 'all', 'offers', 'tasks'
+
+    function initUserSession() {
+      const stored = localStorage.getItem('urgent_user');
+      const navAvatar = document.getElementById('navUserAvatar');
+      if (stored) {
+        try {
+          const user = JSON.parse(stored);
+          if (user.name) {
+            const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            if (navAvatar) {
+              navAvatar.textContent = initials;
+              navAvatar.title = user.name;
+            }
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      } else {
+        if (navAvatar) {
+          navAvatar.textContent = 'EA';
+          navAvatar.title = 'Emmanuella Adeleke';
+        }
+      }
+    }
+
+    function updateNavTabStyles(activeTab) {
+      const tabLive = document.getElementById('navLiveErrands');
+      const tabBids = document.getElementById('navMyBids');
+      const tabPosted = document.getElementById('navPostedErrands');
+
+      [tabLive, tabBids, tabPosted].forEach(t => {
+        if (t) {
+          t.style.color = '#64748b';
+          t.style.fontWeight = '600';
+          t.style.borderBottomColor = 'transparent';
+        }
+      });
+
+      if (activeTab === 'live' && tabLive) {
+        tabLive.style.color = '#93c700';
+        tabLive.style.fontWeight = '700';
+        tabLive.style.borderBottomColor = '#93c700';
+      } else if (activeTab === 'bids' && tabBids) {
+        tabBids.style.color = '#93c700';
+        tabBids.style.fontWeight = '700';
+        tabBids.style.borderBottomColor = '#93c700';
+      } else if (activeTab === 'posted' && tabPosted) {
+        tabPosted.style.color = '#93c700';
+        tabPosted.style.fontWeight = '700';
+        tabPosted.style.borderBottomColor = '#93c700';
+      }
+    }
+
+    function updateBidStatusCounts() {
+      const total = myOffersList.length;
+      let pending = 0;
+      let accepted = 0;
+      let completed = 0;
+      let declined = 0;
+
+      myOffersList.forEach(id => {
+        const b = myBids[id];
+        if (b) {
+          if (b.status === 'pending') pending++;
+          else if (b.status === 'accepted') accepted++;
+          else if (b.status === 'completed') completed++;
+          else if (b.status === 'declined') declined++;
+        }
+      });
+
+      const elAll = document.getElementById('statusCountAll');
+      const elPending = document.getElementById('statusCountPending');
+      const elAccepted = document.getElementById('statusCountAccepted');
+      const elCompleted = document.getElementById('statusCountCompleted');
+      const elDeclined = document.getElementById('statusCountDeclined');
+
+      if (elAll) elAll.textContent = total;
+      if (elPending) elPending.textContent = pending;
+      if (elAccepted) elAccepted.textContent = accepted;
+      if (elCompleted) elCompleted.textContent = completed;
+      if (elDeclined) elDeclined.textContent = declined;
+    }
+
+    function selectBidStatusFilter(status, btn) {
+      document.querySelectorAll('#bidStatusChipsContainer .bid-status-chip').forEach(c => c.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      currentBidStatusFilter = status;
+      applyFilters();
+    }
+
+    function showLiveErrands(e) {
+      if (e) e.preventDefault();
+      currentViewTab = 'all';
+      updateNavTabStyles('live');
+      document.getElementById('feedHeroHeadline').textContent = 'Live Neighborhood Errand Feed';
+      
+      // Controls visibility
+      document.getElementById('bidStatusChipsContainer').style.display = 'none';
+      document.getElementById('categoryChipsContainer').style.display = 'flex';
+      const secFilters = document.getElementById('secondaryFiltersRow');
+      if (secFilters) secFilters.style.display = 'flex';
+      document.getElementById('feedSearchInput').placeholder = 'Search errands by keyword, pickup street, destination, or items (e.g. Charger, Tejuosho, Court, Cake, Mechanic)...';
+
+      applyFilters();
+    }
+
+    function showMyBids(e) {
+      if (e) e.preventDefault();
+      currentViewTab = 'offers';
+      updateNavTabStyles('bids');
+      document.getElementById('feedHeroHeadline').textContent = "My Bids (Price Offers You\'ve Submitted)";
+      
+      // Controls visibility: show status chips, hide category chips and secondary dropdown filters
+      document.getElementById('bidStatusChipsContainer').style.display = 'flex';
+      document.getElementById('categoryChipsContainer').style.display = 'none';
+      const secFilters = document.getElementById('secondaryFiltersRow');
+      if (secFilters) secFilters.style.display = 'none';
+      document.getElementById('feedSearchInput').placeholder = 'Search your bids by task, status, neighborhood, or amount...';
+
+      updateBidStatusCounts();
+      applyFilters();
+    }
+
+    function showPostedErrands(e) {
+      if (e) e.preventDefault();
+      currentViewTab = 'tasks';
+      updateNavTabStyles('posted');
+      document.getElementById('feedHeroHeadline').textContent = "Posted Errands (Tasks You\'ve Created & Received Bids)";
+      
+      // Controls visibility
+      document.getElementById('bidStatusChipsContainer').style.display = 'none';
+      document.getElementById('categoryChipsContainer').style.display = 'flex';
+      const secFilters = document.getElementById('secondaryFiltersRow');
+      if (secFilters) secFilters.style.display = 'flex';
+      document.getElementById('feedSearchInput').placeholder = 'Search your posted errands...';
+
+      applyFilters();
+    }
+
+    function renderCards(list) {
+      const grid = document.getElementById('errandFeedGrid');
+      const emptyState = document.getElementById('feedEmptyState');
+      grid.innerHTML = '';
+
+      if (list.length === 0) {
+        emptyState.style.display = 'block';
+        return;
+      }
+      emptyState.style.display = 'none';
+
+      list.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'errand-card';
+        card.id = 'card-' + item.id;
+        card.setAttribute('role', 'link');
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('title', 'Click to view full details for ' + item.title);
+        card.onclick = () => {
+          window.location.href = 'product-detail.html?id=' + encodeURIComponent(item.id);
+        };
+        card.onkeydown = (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            window.location.href = 'product-detail.html?id=' + encodeURIComponent(item.id);
+          }
+        };
+
+        const isBidsTab = (currentViewTab === 'offers');
+        const userBid = myBids[item.id];
+
+        // Format bid status banner if on My Bids or if user bid exists
+        let statusBannerHtml = '';
+        let statusNoteHtml = '';
+        if (isBidsTab && userBid) {
+          statusBannerHtml = `
+            <div class="bid-status-banner status-${userBid.status}">
+              <div class="bid-status-left">
+                <span class="bid-status-dot ${userBid.dotClass}"></span>
+                <span>${userBid.statusLabel}</span>
+              </div>
+              <div style="font-size:11px; opacity:0.85; font-weight:600;">${userBid.timeAgo}</div>
+            </div>
+          `;
+
+          statusNoteHtml = `
+            <div style="background:#f8fafc; border-left:3px solid ${userBid.statusColor}; padding:6px 10px; border-radius:4px; font-size:11.5px; color:#475569; margin-bottom:12px;">
+              💡 ${userBid.note}
+            </div>
+          `;
+        }
+
+        const offersText = item.offersCount === 1 ? '1 OFFER' : item.offersCount + ' OFFERS';
+
+        // Bottom row representation
+        let bottomRowHtml = '';
+        if (isBidsTab && userBid) {
+          let actionLabel = 'View Errand →';
+          if (userBid.status === 'accepted') actionLabel = 'Active Task →';
+          else if (userBid.status === 'pending') actionLabel = 'Review Offer →';
+          else if (userBid.status === 'completed') actionLabel = 'Receipt →';
+          else if (userBid.status === 'declined') actionLabel = 'Closed →';
+
+          bottomRowHtml = `
+            <div class="errand-card-bottom">
+              <div>
+                <div style="display:flex; align-items:baseline; gap:12px;">
+                  <div>
+                    <div class="budget-subtext">YOUR BID</div>
+                    <div class="budget-price" style="color:#93c700;">₦${userBid.amount.toLocaleString()}</div>
+                  </div>
+                  <div style="border-left:1px solid #e2e8f0; padding-left:10px;">
+                    <div class="budget-subtext">CLIENT BUDGET</div>
+                    <div style="font-size:14px; font-weight:700; color:#64748b;">₦${item.price.toLocaleString()}</div>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:11.5px; font-weight:700; color:${userBid.statusColor};">${actionLabel}</span>
+                <div class="card-arrow-icon" style="display:flex; align-items:center;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          bottomRowHtml = `
+            <div class="errand-card-bottom">
+              <div>
+                <div class="budget-subtext">${item.priceType}</div>
+                <div class="budget-price">₦${item.price.toLocaleString()}</div>
+              </div>
+              <div class="card-arrow-icon" style="display:flex; align-items:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </div>
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div>
+            <!-- Top Row: Category Badge & Offers Count -->
+            <div class="errand-card-top">
+              <span class="category-badge ${item.badgeClass}">${item.category}</span>
+              <span class="offers-badge" id="offers-count-${item.id}">${offersText}</span>
+            </div>
+
+            ${statusBannerHtml}
+
+            <!-- Title -->
+            <h3 class="errand-card-title">${item.title}</h3>
+
+            <!-- Route Box with Green & Red Dot Indicators -->
+            <div class="route-info-box">
+              <div class="route-row">
+                <span class="dot-indicator dot-green"></span>
+                <span class="route-label">${item.pickupLabel}</span>
+                <span class="route-value">${item.pickupVal}</span>
+              </div>
+              <div class="route-row">
+                <span class="dot-indicator dot-red"></span>
+                <span class="route-label">${item.dropLabel}</span>
+                <span class="route-value">${item.dropVal}</span>
+              </div>
+            </div>
+
+            <!-- Description -->
+            <p class="errand-description">${item.desc}</p>
+
+            ${statusNoteHtml}
+
+            <!-- Meta Row: Stopwatch Time & Time Ago -->
+            <div class="errand-meta-row">
+              <span class="meta-time-left">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                ${item.metaTime}
+              </span>
+              <span>${item.postedAgo}</span>
+            </div>
+          </div>
+
+          ${bottomRowHtml}
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function selectFilterCategory(cat, btn) {
+      document.querySelectorAll('#categoryChipsContainer .filter-chip').forEach(c => c.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      currentCategory = cat;
+      applyFilters();
+    }
+
+    function applyFilters() {
+      const search = document.getElementById('feedSearchInput').value.trim().toLowerCase();
+      const area = document.getElementById('areaFilterSelect').value;
+      const urgency = document.getElementById('urgencyFilterSelect').value;
+      const sort = document.getElementById('sortFilterSelect').value;
+
+      let filtered = errands.filter(item => {
+        // Tab View filtering
+        if (currentViewTab === 'offers') {
+          if (!myOffersList.includes(item.id)) return false;
+          // Status filter in My Bids
+          if (currentBidStatusFilter !== 'all') {
+            const b = myBids[item.id];
+            if (!b || b.status !== currentBidStatusFilter) return false;
+          }
+        }
+        if (currentViewTab === 'tasks' && !myTasksList.includes(item.id)) {
+          return false;
+        }
+
+        // Search
+        if (search) {
+          const matchTitle = item.title.toLowerCase().includes(search);
+          const matchDesc = item.desc.toLowerCase().includes(search);
+          const matchPickup = item.pickupVal.toLowerCase().includes(search);
+          const matchDrop = item.dropVal.toLowerCase().includes(search);
+          const bidInfo = myBids[item.id];
+          const matchStatus = bidInfo ? (bidInfo.status.toLowerCase().includes(search) || bidInfo.statusLabel.toLowerCase().includes(search) || bidInfo.note.toLowerCase().includes(search)) : false;
+          if (!matchTitle && !matchDesc && !matchPickup && !matchDrop && !matchStatus) return false;
+        }
+
+        // Category filter (only in Live Errands or All view)
+        if (currentViewTab !== 'offers' && currentCategory !== 'all' && item.category !== currentCategory) {
+          return false;
+        }
+
+        // Area filter
+        if (area !== 'all' && !item.area.toLowerCase().includes(area.toLowerCase()) && !item.pickupVal.toLowerCase().includes(area.toLowerCase()) && !item.dropVal.toLowerCase().includes(area.toLowerCase())) {
+          return false;
+        }
+
+        // Urgency filter
+        if (urgency === '1hr' && !item.metaTime.toLowerCase().includes('1 hr') && !item.metaTime.toLowerCase().includes('immediate') && !item.metaTime.toLowerCase().includes('asap')) {
+          return false;
+        }
+        if (urgency === 'today' && !item.metaTime.toLowerCase().includes('today') && !item.metaTime.toLowerCase().includes('pm')) {
+          return false;
+        }
+
+        return true;
+      });
+
+      // Sorting
+      if (sort === 'budget-high') {
+        filtered.sort((a, b) => b.price - a.price);
+      } else if (sort === 'budget-low') {
+        filtered.sort((a, b) => a.price - b.price);
+      } else if (sort === 'offers') {
+        filtered.sort((a, b) => b.offersCount - a.offersCount);
+      }
+
+      renderCards(filtered);
+    }
+
+    function resetAllFilters() {
+      document.getElementById('feedSearchInput').value = '';
+      document.getElementById('areaFilterSelect').value = 'all';
+      document.getElementById('urgencyFilterSelect').value = 'all';
+      document.getElementById('sortFilterSelect').value = 'newest';
+      selectFilterCategory('all', document.querySelector('[data-cat="all"]'));
+      selectBidStatusFilter('all', document.querySelector('[data-status="all"]'));
+    }
+
+    // Modal Bidding
+    function openBidModal(errandId) {
+      const item = errands.find(e => e.id === errandId);
+      if (!item) return;
+
+      document.getElementById('modalBidErrandId').value = item.id;
+      document.getElementById('modalBidTaskTitle').textContent = item.title;
+      document.getElementById('modalBidTaskRoute').textContent = '📍 ' + item.pickupVal + ' ➔ 🏁 ' + item.dropVal;
+      document.getElementById('modalBidAmount').value = item.price;
+      document.getElementById('bidModalBackdrop').classList.add('active');
+    }
+
+    function closeBidModal(e) {
+      if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+      document.getElementById('bidModalBackdrop').classList.remove('active');
+    }
+
+    function handleRunnerBidSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('modalBidErrandId').value;
+      const amount = document.getElementById('modalBidAmount').value;
+      const eta = document.getElementById('modalBidEta').value;
+      const transport = document.getElementById('modalBidTransport').value;
+      const note = document.getElementById('modalBidNote').value || 'Ready to pick up and deliver immediately.';
+
+      const item = errands.find(err => err.id === id);
+      if (item) {
+        item.offersCount += 1;
+        myBids[id] = {
+          status: 'pending',
+          statusLabel: 'Pending Review',
+          statusColor: '#b45309',
+          dotClass: 'dot-pulse-amber',
+          amount: Number(amount),
+          eta: eta,
+          transport: transport,
+          timeAgo: 'Just now',
+          note: note
+        };
+        if (!myOffersList.includes(id)) myOffersList.unshift(id);
+        updateBidStatusCounts();
+        applyFilters();
+      }
+
+      closeBidModal();
+      showToast('🚀 Price offer of ₦' + Number(amount).toLocaleString() + ' (' + eta + ') sent to requester!');
+    }
+
+    // Modal Post
+    function openPostModal() {
+      document.getElementById('postModalBackdrop').classList.add('active');
+    }
+
+    function closePostModal(e) {
+      if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+      document.getElementById('postModalBackdrop').classList.remove('active');
+    }
+
+    function handleDiscoveryPostSubmit(e) {
+      e.preventDefault();
+      const title = document.getElementById('newErrandTitle').value.trim();
+      const category = document.getElementById('newErrandCategory').value;
+      const urgency = document.getElementById('newErrandUrgency').value;
+      const pickup = document.getElementById('newErrandPickup').value.trim();
+      const dest = document.getElementById('newErrandDest').value.trim();
+      const desc = document.getElementById('newErrandDesc').value.trim() || 'No additional instructions provided.';
+      const budget = Number(document.getElementById('newErrandBudget').value) || 3500;
+
+      const badgeClasses = {
+        'DELIVERY': 'badge-delivery',
+        'SHOPPING': 'badge-shopping',
+        'DOCUMENT': 'badge-document',
+        'FOOD': 'badge-food',
+        'PHYSICAL': 'badge-physical'
+      };
+
+      const newId = 'ER-' + (errands.length + 10);
+      const newErrand = {
+        id: newId,
+        category: category,
+        badgeClass: badgeClasses[category] || 'badge-delivery',
+        offersCount: 0,
+        title: title,
+        pickupLabel: 'Pickup:',
+        pickupVal: pickup,
+        dropLabel: 'Drop-off:',
+        dropVal: dest,
+        desc: desc,
+        metaTime: urgency,
+        postedAgo: 'Just now',
+        priceType: 'SUGGESTED BUDGET',
+        price: budget,
+        area: pickup
+      };
+
+      errands.unshift(newErrand);
+      myTasksList.unshift(newId);
+      document.getElementById('activeCountDisplay').textContent = errands.length;
+      document.getElementById('catCountAll').textContent = errands.length;
+
+      closePostModal();
+      document.getElementById('discoveryPostForm').reset();
+      applyFilters();
+
+      showToast('🎉 Errand published! Broadcasted to nearby runners in ' + pickup);
+    }
+
+    function showToast(msg) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.style.cssText = 'background:#0f172a; color:#fff; padding:12px 18px; border-radius:8px; font-size:13px; font-weight:600; box-shadow:0 4px 14px rgba(0,0,0,0.25); display:flex; align-items:center; gap:8px; animation:modalFadeIn 0.2s ease; border-left:4px solid #93c700;';
+      toast.textContent = msg;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Startup
+    window.addEventListener('DOMContentLoaded', () => {
+      initUserSession();
+      updateBidStatusCounts();
+      if (window.location.hash === '#my-bids') {
+        showMyBids();
+      } else if (window.location.hash === '#posted-errands') {
+        showPostedErrands();
+      } else {
+        renderCards(errands);
+      }
+    });
+  </script>
+</body>
+</html>

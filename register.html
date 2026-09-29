@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — Urgent.ng | On-Demand Errand Marketplace</title>
+  <meta name="description" content="Sign up for an Urgent.ng account as a Service Provider or Errand Runner.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f4fbe6 0%, #eff1f4 50%, #ffffff 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .auth-header {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--cn-blue-100);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(10px);
+    }
+    .auth-header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .auth-main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 680px;
+      background: #ffffff;
+      border: 1.5px solid var(--cn-green-200);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 20px 48px -10px rgba(27, 35, 48, 0.1), 0 4px 16px -2px rgba(147, 199, 0, 0.12);
+      padding: 40px;
+      position: relative;
+    }
+    .auth-title-row {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .auth-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--cn-blue-700);
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+    .auth-sub {
+      font-size: 14px;
+      color: var(--cn-blue-500);
+    }
+    .role-choice-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--cn-blue-500);
+      margin-bottom: 10px;
+      display: block;
+      text-align: center;
+    }
+    .role-selector-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .role-card-btn {
+      padding: 16px 14px;
+      background: var(--cn-blue-50);
+      border: 2px solid var(--cn-blue-100);
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      text-align: left;
+      transition: all var(--transition-fast);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-family: inherit;
+    }
+    .role-card-btn:hover {
+      border-color: var(--cn-green-300);
+      background: var(--cn-green-50);
+    }
+    .role-card-btn.active {
+      background: #ffffff;
+      border-color: var(--cn-green-500);
+      box-shadow: 0 0 0 3px rgba(147, 199, 0, 0.2);
+    }
+    .role-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .role-icon { font-size: 22px; }
+    .role-radio-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid var(--cn-blue-200);
+      background: #ffffff;
+    }
+    .role-card-btn.active .role-radio-dot {
+      border-color: var(--cn-green-500);
+      background: var(--cn-green-500);
+    }
+    .role-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--cn-blue-700);
+    }
+    .role-card-btn.active .role-name { color: var(--cn-green-900); }
+    .role-desc {
+      font-size: 12px;
+      color: var(--cn-blue-400);
+      line-height: 1.35;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 600px) {
+      .form-grid-2 { grid-template-columns: 1fr; gap: 0; }
+    }
+    .auth-form-group {
+      margin-bottom: 18px;
+    }
+    .auth-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--cn-blue-700);
+      margin-bottom: 6px;
+    }
+    .auth-label .req { color: var(--feedback-error); }
+    .auth-input, .auth-select {
+      width: 100%;
+      height: 48px;
+      padding: 0 14px;
+      background: var(--cn-white);
+      border: 1.5px solid var(--cn-blue-100);
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--cn-blue-700);
+      transition: all var(--transition-fast);
+    }
+    .auth-input:focus, .auth-select:focus {
+      outline: none;
+      border-color: var(--cn-green-500);
+      box-shadow: 0 0 0 3px rgba(147, 199, 0, 0.2);
+    }
+    .auth-card-footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--cn-blue-500);
+    }
+    .auth-card-footer a {
+      color: var(--cn-green-700);
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .auth-card-footer a:hover { text-decoration: underline; }
+
+    /* Success overlay */
+    .auth-success-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: var(--radius-xl);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 36px;
+      text-align: center;
+      animation: fadeIn 200ms ease;
+    }
+    .auth-success-overlay.active { display: flex; }
+    .success-icon-box {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: var(--cn-green-100);
+      color: var(--cn-green-700);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <header class="auth-header">
+    <div class="container auth-header-inner">
+      <a href="index.html" class="brand-logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="8" fill="#93c700"/>
+          <path d="M14 6L6 14L14 22L22 14L14 6Z" fill="#1b2330"/>
+          <circle cx="14" cy="14" r="3" fill="#ffffff"/>
+        </svg>
+        <span>urgent<span class="logo-badge">.ng</span></span>
+      </a>
+      <div>
+        <a href="index.html" class="btn btn-outline btn-sm">&larr; Back to Home</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-main">
+    <div class="auth-card">
+      <div class="auth-title-row">
+        <h1 class="auth-title">Create Your Account</h1>
+        <p class="auth-sub">Join thousands of verified requesters and runners across Nigeria</p>
+      </div>
+
+      <!-- Step 1: Role Selection -->
+      <label class="role-choice-label">Step 1: Choose Your Account Type</label>
+      <div class="role-selector-grid">
+        <button type="button" class="role-card-btn active" id="btnSignupProvider" onclick="setSignupRole('provider')">
+          <div class="role-card-top">
+            <span class="role-icon">💼</span>
+            <div class="role-radio-dot"></div>
+          </div>
+          <div class="role-name">Service Provider</div>
+          <div class="role-desc">Post errands & dispatch tasks</div>
+        </button>
+
+        <button type="button" class="role-card-btn" id="btnSignupRunner" onclick="setSignupRole('runner')">
+          <div class="role-card-top">
+            <span class="role-icon">🏃</span>
+            <div class="role-radio-dot"></div>
+          </div>
+          <div class="role-name">Errand Runner</div>
+          <div class="role-desc">Deliver & earn daily payouts</div>
+        </button>
+      </div>
+
+      <!-- Google Sign Up CTA -->
+      <button type="button" class="btn-google-auth" onclick="startSignupGoogle()">
+        <svg class="google-icon" width="20" height="20" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+        <span id="googleSignupText">Sign Up with Google as Service Provider</span>
+      </button>
+
+      <div class="auth-divider">
+        <span>or register with email & phone</span>
+      </div>
+
+      <!-- Registration Form -->
+      <form id="signupForm" onsubmit="handleSignupSubmit(event)">
+        <div class="form-grid-2">
+          <div class="auth-form-group">
+            <label class="auth-label" for="signupFullName">Full Legal Name <span class="req">*</span></label>
+            <input type="text" id="signupFullName" class="auth-input" placeholder="e.g. Babatunde Adeleke" required>
+          </div>
+          <div class="auth-form-group">
+            <label class="auth-label" for="signupPhone">Phone Number (WhatsApp) <span class="req">*</span></label>
+            <div class="phone-prefix-input-wrap">
+              <div class="country-flag-badge">
+                <span>🇳🇬</span>
+                <span>+234</span>
+              </div>
+              <input type="tel" id="signupPhone" placeholder="803 123 4567" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="auth-form-group">
+            <label class="auth-label" for="signupEmail">Email Address <span class="req">*</span></label>
+            <input type="email" id="signupEmail" class="auth-input" placeholder="name@business.ng" required>
+          </div>
+          <div class="auth-form-group">
+            <label class="auth-label" for="signupCity">Primary City / Hub <span class="req">*</span></label>
+            <select id="signupCity" class="auth-select">
+              <option value="Lagos - Island">Lagos (Island - Lekki / VI / Ikoyi)</option>
+              <option value="Lagos - Mainland" selected>Lagos (Mainland - Ikeja / Yaba)</option>
+              <option value="Abuja">Abuja (Central / Wuse / Maitama)</option>
+              <option value="Port Harcourt">Port Harcourt</option>
+              <option value="Ibadan">Ibadan</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Conditional Field: Transportation Mode for Runners -->
+        <div class="auth-form-group" id="runnerTransportGroup" style="display:none;">
+          <label class="auth-label" for="signupTransport">Primary Mode of Transportation <span class="req">*</span></label>
+          <select id="signupTransport" class="auth-select">
+            <option value="Motorcycle (Okada / Dispatch Bike)">Motorcycle (Dispatch Bike - Fastest)</option>
+            <option value="Public Transit (Bus / Danfo / Keke)">Public Transit (BRT / Danfo / Keke)</option>
+            <option value="Bicycle">Bicycle / Electric Scooter</option>
+            <option value="Car / Minivan">Private Car / Minivan</option>
+            <option value="Walking / On Foot">Walking (Neighborhood Errand Runner)</option>
+          </select>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="auth-form-group">
+            <label class="auth-label" for="signupPassword">Password <span class="req">*</span></label>
+            <input type="password" id="signupPassword" class="auth-input" placeholder="At least 6 characters" minlength="6" required>
+          </div>
+          <div class="auth-form-group">
+            <label class="auth-label" for="signupConfirmPassword">Confirm Password <span class="req">*</span></label>
+            <input type="password" id="signupConfirmPassword" class="auth-input" placeholder="Re-enter password" required>
+          </div>
+        </div>
+
+        <div class="auth-form-group">
+          <label class="remember-label" style="font-size:12px; align-items:flex-start;">
+            <input type="checkbox" id="termsCheck" required style="margin-top:3px;">
+            <span>I agree to the <a href="#" style="color:var(--cn-green-700); font-weight:600;">Terms of Service</a> and the <a href="#" style="color:var(--cn-green-700); font-weight:600;">Community Marketplace Guidelines</a> (pay-on-delivery inspection).</span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-auth-submit" id="signupSubmitBtn">
+          Create Service Provider Account &rarr;
+        </button>
+
+        <div class="auth-card-footer">
+          Already have an account? <a href="login.html">Sign In Here</a>
+        </div>
+      </form>
+
+      <!-- Successful Registration Overlay -->
+      <div class="auth-success-overlay" id="signupSuccessOverlay">
+        <div class="success-icon-box">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h3 style="font-size:22px; font-weight:800; color:var(--cn-blue-700); margin-bottom:8px;" id="successTitle">Account Created Successfully!</h3>
+        <p style="font-size:14px; color:var(--cn-blue-500); max-width:400px; margin-bottom:24px;" id="successDesc">
+          Welcome to Urgent.ng. Your account has been activated.
+        </p>
+        <div style="display:flex; gap:12px; width:100%; max-width:380px;">
+          <a href="discovery.html" class="btn btn-primary btn-lg" style="flex:1; justify-content:center;">
+            Go to Discovery Feed &rarr;
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    let activeSignupRole = 'provider';
+
+    function setSignupRole(role) {
+      activeSignupRole = role;
+      const btnP = document.getElementById('btnSignupProvider');
+      const btnR = document.getElementById('btnSignupRunner');
+      const transportGroup = document.getElementById('runnerTransportGroup');
+      const submitBtn = document.getElementById('signupSubmitBtn');
+      const googleText = document.getElementById('googleSignupText');
+
+      if (role === 'provider') {
+        btnP.classList.add('active');
+        btnR.classList.remove('active');
+        transportGroup.style.display = 'none';
+        submitBtn.textContent = 'Create Service Provider Account →';
+        googleText.textContent = 'Sign Up with Google as Service Provider';
+      } else {
+        btnR.classList.add('active');
+        btnP.classList.remove('active');
+        transportGroup.style.display = 'block';
+        submitBtn.textContent = 'Create Errand Runner Account →';
+        googleText.textContent = 'Sign Up with Google as Errand Runner';
+      }
+    }
+
+    function startSignupGoogle() {
+      // Directs to Google auth on login page which collects the phone number
+      window.location.href = 'login.html';
+    }
+
+    function handleSignupSubmit(e) {
+      e.preventDefault();
+      const pwd = document.getElementById('signupPassword').value;
+      const confirmPwd = document.getElementById('signupConfirmPassword').value;
+      const name = document.getElementById('signupFullName').value;
+
+      if (pwd !== confirmPwd) {
+        alert('Passwords do not match. Please re-enter.');
+        return;
+      }
+
+      const overlay = document.getElementById('signupSuccessOverlay');
+      const title = document.getElementById('successTitle');
+      const desc = document.getElementById('successDesc');
+
+      title.textContent = 'Welcome, ' + name + '!';
+      desc.textContent = activeSignupRole === 'provider'
+        ? 'Your Service Provider account is now active. You can immediately post errands and dispatch tasks.'
+        : 'Your Errand Runner account is ready! You can now browse live tasks in your neighborhood and start earning.';
+
+      overlay.classList.add('active');
+      localStorage.setItem('urgent_user', JSON.stringify({ role: activeSignupRole, name: name, phone: document.getElementById('signupPhone').value.trim() }));
+      setTimeout(() => { window.location.href = 'discovery.html'; }, 1200);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Errand Details — Urgent.ng | On-Demand Errand Marketplace</title>
+  <meta name="description" content="Review full errand specifications, route map, client notes, and submit competitive bids on Urgent.ng.">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Scoped Styles for Errand / Product Detail Page */
+    .detail-page-body {
+      background-color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: var(--font-family);
+      color: #0f172a;
+    }
+
+    .detail-nav-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .detail-nav-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    /* Breadcrumbs Bar */
+    .detail-breadcrumb-bar {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 14px 0;
+    }
+
+    .breadcrumb-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .breadcrumb-links a {
+      color: #2563eb;
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .breadcrumb-links a:hover {
+      text-decoration: underline;
+    }
+
+    .breadcrumb-divider {
+      color: #cbd5e1;
+    }
+
+    /* Main Grid Layout (2-columns) */
+    .detail-main-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 32px;
+      padding: 32px 0 64px;
+      align-items: start;
+    }
+
+    @media (max-width: 991px) {
+      .detail-main-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Content Panel */
+    .detail-card-panel {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+      margin-bottom: 24px;
+    }
+
+    .detail-top-tags {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag-category-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      background: #eff6ff;
+      color: #2563eb;
+      border: 1px solid #dbeafe;
+    }
+
+    .tag-offers-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      background: #fffbeb;
+      border: 1px solid #fef3c7;
+      color: #b45309;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .detail-title {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.3;
+      margin: 0 0 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .detail-meta-strip {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 13px;
+      color: #64748b;
+      flex-wrap: wrap;
+    }
+
+    .detail-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Route & Navigation Card */
+    .route-visual-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+
+    .route-points-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+    }
+
+    .route-connecting-line {
+      position: absolute;
+      left: 11px;
+      top: 24px;
+      bottom: 24px;
+      width: 2px;
+      background: repeating-linear-gradient(to bottom, #94a3b8 0, #94a3b8 4px, transparent 4px, transparent 8px);
+    }
+
+    .route-point-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .point-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: #ffffff;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    }
+
+    .dot-pickup { background-color: #22c55e; }
+    .dot-dest { background-color: #ef4444; }
+
+    .point-content {
+      flex: 1;
+    }
+
+    .point-type {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #64748b;
+      margin-bottom: 2px;
+    }
+
+    .point-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .point-note {
+      font-size: 13px;
+      color: #475569;
+      line-height: 1.4;
+    }
+
+    /* Mockup Map Box */
+    .mock-map-box {
+      background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+      border-radius: 10px;
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+      margin-top: 18px;
+      border: 1px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .map-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.15;
+      background-image: radial-gradient(#1e293b 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+
+    .map-route-track {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 8px 16px;
+      border-radius: 9999px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Specifications Checklist */
+    .specs-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 600px) {
+      .specs-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .spec-item-box {
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 10px;
+      padding: 14px 16px;
+    }
+
+    .spec-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94a3b8;
+      margin-bottom: 4px;
+    }
+
+    .spec-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    /* Instructions & Notes */
+    .section-subhead {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 12px;
+    }
+
+    .instruction-paragraph {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #334155;
+      margin-bottom: 24px;
+    }
+
+    /* Requester Card */
+    .requester-profile-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .requester-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .requester-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 16px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Live Offers Stream on Detail Page */
+    .offers-stream-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .offer-stream-row {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .offer-stream-row:hover {
+      border-color: #93c700;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Right Sticky Action Sidebar */
+    .detail-action-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 26px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 94px;
+    }
+
+    .action-price-box {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 22px;
+      border: 1px solid #f1f5f9;
+    }
+
+    .action-price-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #94a3b8;
+      letter-spacing: 0.6px;
+      margin-bottom: 4px;
+    }
+
+    .action-price-val {
+      font-size: 32px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.1;
+    }
+
+    .action-price-pod {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #15803d;
+    }
+
+    .btn-submit-offer-lg {
+      width: 100%;
+      height: 52px;
+      background: #93c700;
+      color: #ffffff;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(132, 204, 22, 0.3);
+      transition: all 0.15s ease;
+    }
+
+    .btn-submit-offer-lg:hover {
+      background: #80ad00;
+      transform: translateY(-1px);
+    }
+
+    .btn-submit-offer-lg:active {
+      transform: translateY(0);
+    }
+
+    .safety-guarantee-box {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid #f1f5f9;
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body class="detail-page-body">
+
+  <!-- ================= TOP HEADER ================= -->
+  <header class="detail-nav-header">
+    <div class="container">
+      <div class="detail-nav-row" style="display:flex; align-items:center; justify-content:space-between; height:70px;">
+        <!-- Logo -->
+        <a href="index.html" class="logo" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
+          <div class="logo-icon" style="background:#93c700; color:#ffffff; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+          <span class="logo-text" style="font-size:20px; font-weight:800; color:#0f172a;">urgent<span class="logo-dot" style="color:#93c700;">.ng</span></span>
+        </a>
+
+        <!-- Middle Nav Links -->
+        <div style="display:flex; align-items:center; gap:28px;" class="hide-mobile">
+          <a href="discovery.html" style="font-size:14px; font-weight:700; color:#16a34a; text-decoration:none;">Live Errands</a>
+          <a href="discovery.html#my-bids" style="font-size:14px; font-weight:600; color:#64748b; text-decoration:none;">My Bids</a>
+          <a href="discovery.html#posted-errands" style="font-size:14px; font-weight:600; color:#64748b; text-decoration:none;">Posted Errands</a>
+        </div>
+
+        <!-- Right User Actions -->
+        <div style="display:flex; align-items:center; gap:14px;">
+          <div class="user-avatar" title="Your Profile" style="width:38px; height:38px; border-radius:50%; background:#93c700; color:#ffffff; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.08); border:2px solid #ffffff;">
+            EA
+          </div>
+          <a href="discovery.html" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:6px; background:#93c700; color: #10151f; border:none; padding:8px 16px; border-radius:8px; font-weight:800; font-size:13px; text-decoration:none; box-shadow: none;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            <span>Post Errand</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= BREADCRUMBS ================= -->
+  <div class="detail-breadcrumb-bar">
+    <div class="container">
+      <div class="breadcrumb-links">
+        <a href="index.html">Home</a>
+        <span class="breadcrumb-divider">/</span>
+        <a href="discovery.html">Discovery Feed</a>
+        <span class="breadcrumb-divider">/</span>
+        <span id="breadcrumbCategory">Package Delivery</span>
+        <span class="breadcrumb-divider">/</span>
+        <span id="breadcrumbId" style="color:#0f172a; font-weight:600;">Errand #ER-01</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="container">
+    <div class="detail-main-grid">
+      
+      <!-- LEFT COLUMN: ERRAND SPECS & ROUTE -->
+      <section>
+        
+        <!-- Header & Main Info Panel -->
+        <div class="detail-card-panel">
+          <div class="detail-top-tags">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span class="tag-category-pill" id="detailCatPill">📦 DELIVERY</span>
+              <span class="tag-offers-pill" id="detailOffersPill">3 OFFERS RECEIVED</span>
+            </div>
+            <span style="font-size:12px; color:#64748b; font-weight:600;" id="detailPostedAgo">Posted 12m ago</span>
+          </div>
+
+          <h1 class="detail-title" id="detailTitle">Collect Laptop Charger left at Coworking Space</h1>
+
+          <div class="detail-meta-strip">
+            <div class="detail-meta-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span id="detailTiming">Needed within 1 hr</span>
+            </div>
+            <div class="detail-meta-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span id="detailDistance">Distance: 7.4 km</span>
+            </div>
+            <div class="detail-meta-item" style="color:#16a34a; font-weight:700;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span>Pay on Delivery Verified</span>
+            </div>
+          </div>
+
+          <!-- Route Visualizer Box -->
+          <div class="route-visual-card">
+            <div class="route-points-wrap">
+              <div class="route-connecting-line"></div>
+
+              <!-- Pickup Point -->
+              <div class="route-point-row">
+                <div class="point-dot dot-pickup">A</div>
+                <div class="point-content">
+                  <div class="point-type">Pickup Location</div>
+                  <div class="point-title" id="detailPickupTitle">Workstation Coworking, Victoria Island</div>
+                  <div class="point-note" id="detailPickupNote">
+                    7 Ibiyinka Olorunbe, Victoria Island, Lagos. Ask at the ground floor front reception.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Drop-off Point -->
+              <div class="route-point-row">
+                <div class="point-dot dot-dest">B</div>
+                <div class="point-content">
+                  <div class="point-type">Delivery Destination</div>
+                  <div class="point-title" id="detailDropTitle">Admiralty Way, Lekki Phase 1</div>
+                  <div class="point-note" id="detailDropNote">
+                    Opposite The Palms Mall, Gate 4. Recipient phone number provided once offer is accepted.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Simulated Map Visual -->
+            <div class="mock-map-box">
+              <div class="map-pattern"></div>
+              <div class="map-route-track">
+                <span>📍 Workstation (VI)</span>
+                <span style="color:#93c700;">&bull;&bull;&bull; 7.4 km &bull;&bull;&bull;</span>
+                <span>🏁 Admiralty Way (Lekki)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Specifications Checklist -->
+          <h2 class="section-subhead">Errand Specifications</h2>
+          <div class="specs-grid">
+            <div class="spec-item-box">
+              <div class="spec-label">Item Classification</div>
+              <div class="spec-value" id="specItemType">Electronics & Cables</div>
+            </div>
+            <div class="spec-item-box">
+              <div class="spec-label">Fragility Level</div>
+              <div class="spec-value" id="specFragility">Fragile — Handle Carefully</div>
+            </div>
+            <div class="spec-item-box">
+              <div class="spec-label">Approximate Weight</div>
+              <div class="spec-value" id="specWeight">Light Parcel (&lt; 1.5 kg)</div>
+            </div>
+            <div class="spec-item-box">
+              <div class="spec-label">Cash Required Upfront</div>
+              <div class="spec-value" style="color:#16a34a;">₦0 (Pre-paid / Pickup Only)</div>
+            </div>
+          </div>
+
+          <!-- Instructions & Notes -->
+          <h2 class="section-subhead">Detailed Instructions</h2>
+          <p class="instruction-paragraph" id="detailDesc">
+            HP USB-C 65W charger with braided black cable enclosed inside a sealed brown envelope at the reception desk. Please verify the name 'Adeleke' on the envelope before departure and message on pickup.
+          </p>
+
+          <!-- Requester Profile -->
+          <h2 class="section-subhead">Posted by Client</h2>
+          <div class="requester-profile-card">
+            <div class="requester-left">
+              <div class="requester-avatar" id="detailClientInitials">AC</div>
+              <div>
+                <div style="font-weight:800; font-size:15px; color:#0f172a;" id="detailClientName">Adeleke Creative Studio</div>
+                <div style="font-size:12px; color:#64748b; margin-top:2px;">
+                  <span style="color:#e28a2a; font-weight:700;">★ 4.9</span> &bull; 34 completed errands &bull; Verified Client
+                </div>
+              </div>
+            </div>
+            <div style="font-size:12px; font-weight:700; color:#15803d; background:#f0fdf4; padding:4px 10px; border-radius:6px;">
+              ✓ 100% Payment Rate
+            </div>
+          </div>
+
+          <!-- Current Offers Placed -->
+          <h2 class="section-subhead" style="margin-top:36px;">Live Runner Offers (<span id="detailOffersCount">3</span>)</h2>
+          <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
+            Other errand runners in this neighborhood who have submitted bids for this task:
+          </p>
+
+          <div class="offers-stream-list" id="offersStreamContainer">
+            <div class="offer-stream-row">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:38px; height:38px; border-radius:50%; background:#e8f7cb; color:#3b5000; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center;">TO</div>
+                <div>
+                  <div style="font-weight:800; font-size:14px; color:#0f172a;">Tunde Okon <span style="color:#e28a2a; font-size:12px;">★ 4.9</span></div>
+                  <div style="font-size:11px; color:#64748b;">Motorcycle &bull; Ready in 20 mins &bull; 142 completed</div>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-weight:800; font-size:18px; color:#16a34a;">₦2,500</div>
+                <span style="font-size:11px; color:#64748b;">Matching Budget</span>
+              </div>
+            </div>
+
+            <div class="offer-stream-row">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:38px; height:38px; border-radius:50%; background:#eff6ff; color:#1e40af; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center;">CE</div>
+                <div>
+                  <div style="font-weight:800; font-size:14px; color:#0f172a;">Chukwudi Eze <span style="color:#e28a2a; font-size:12px;">★ 4.8</span></div>
+                  <div style="font-size:11px; color:#64748b;">Motorcycle &bull; Ready in 35 mins &bull; 210 completed</div>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-weight:800; font-size:18px; color:#0f172a;">₦2,700</div>
+                <span style="font-size:11px; color:#64748b;">Offer</span>
+              </div>
+            </div>
+
+            <div class="offer-stream-row">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:38px; height:38px; border-radius:50%; background:#fee2e2; color:#991b1b; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center;">BA</div>
+                <div>
+                  <div style="font-weight:800; font-size:14px; color:#0f172a;">Blessing Adeleke <span style="color:#e28a2a; font-size:12px;">★ 5.0</span></div>
+                  <div style="font-size:11px; color:#64748b;">Car / Sedan &bull; Ready in 45 mins &bull; 89 completed</div>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-weight:800; font-size:18px; color:#0f172a;">₦3,000</div>
+                <span style="font-size:11px; color:#64748b;">Offer</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- RIGHT COLUMN: ACTION SIDEBAR (MAKE AN OFFER) -->
+      <aside>
+        <div class="detail-action-card">
+          <div class="action-price-box">
+            <div class="action-price-label" id="actionPriceType">SUGGESTED BUDGET</div>
+            <div class="action-price-val" id="actionPriceVal">₦2,500</div>
+            <div class="action-price-pod">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Pay on Delivery Guaranteed</span>
+            </div>
+          </div>
+
+                    <!-- OWNER ERRAND MANAGEMENT CARD (Shown when viewing your posted errand) -->
+          <div id="ownerManageCard" style="display:none;">
+            <div style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; border-radius:10px; padding:10px 14px; font-size:12.5px; font-weight:800; display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+              <span style="width:8px; height:8px; border-radius:50%; background:#10b981; display:inline-block; box-shadow:0 0 0 2.5px rgba(16,185,129,0.3);"></span>
+              <span id="ownerErrandStatusText">3 Runner Offers Received — Open for Selection</span>
+            </div>
+
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:16px;">
+              <div style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">YOUR BUDGET</div>
+              <div style="font-size:28px; font-weight:800; color:#0f172a; line-height:1.2;" id="ownerErrandBudget">₦7,500</div>
+              <div style="font-size:12px; color:#16a34a; font-weight:700; margin-top:4px;" id="ownerLowestOfferText">Lowest Runner Bid: ₦6,500</div>
+            </div>
+
+            <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:18px;">
+              <button type="button" onclick="showToast('📢 Re-broadcasted errand to 18 runners nearby in Ojodu & Ikeja!')" style="width:100%; height:44px; background:#93c700; color:#ffffff; font-weight:800; font-size:13.5px; border-radius:8px; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+                📢 Boost Broadcast to Nearby Runners
+              </button>
+              <button type="button" onclick="showToast('✏️ Edit Errand Modal opened.')" style="width:100%; height:40px; background:#f8fafc; color:#1e293b; font-weight:700; font-size:13px; border-radius:8px; border:1px solid #cbd5e1; cursor:pointer;">
+                ✏️ Edit Errand Specifications
+              </button>
+              <button type="button" onclick="showToast('Errand cancelled.')" style="width:100%; height:32px; background:none; color:#ef4444; font-weight:700; font-size:12px; border:none; cursor:pointer;">
+                Cancel Errand
+              </button>
+            </div>
+          </div>
+
+<!-- USER SUBMITTED BID MANAGEMENT CARD (Shown when user has placed a bid) -->
+          <div id="userBidManageCard" style="display:none;">
+            <div id="sidebarBidStatusBanner" style="padding:10px 14px; border-radius:10px; margin-bottom:18px; font-size:12.5px; font-weight:800; display:flex; align-items:center; gap:8px;"></div>
+
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:16px;">
+              <div style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">YOUR SUBMITTED OFFER</div>
+              <div style="font-size:28px; font-weight:800; color:#16a34a; line-height:1.2;" id="sidebarUserBidAmount">₦0</div>
+              <div style="font-size:12px; color:#64748b; margin-top:4px;" id="sidebarClientBudgetCompare">Client Budget: ₦0</div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+              <div style="background:#f8fafc; border:1px solid #f1f5f9; padding:10px 12px; border-radius:8px;">
+                <div style="font-size:10px; font-weight:700; color:#94a3b8; text-transform:uppercase;">Arrival ETA</div>
+                <div style="font-weight:800; font-size:13px; color:#0f172a; margin-top:2px;" id="sidebarUserEta">⚡ Ready</div>
+              </div>
+              <div style="background:#f8fafc; border:1px solid #f1f5f9; padding:10px 12px; border-radius:8px;">
+                <div style="font-size:10px; font-weight:700; color:#94a3b8; text-transform:uppercase;">Transport</div>
+                <div style="font-weight:800; font-size:13px; color:#0f172a; margin-top:2px;" id="sidebarUserTransport">🏍️ Motorcycle</div>
+              </div>
+            </div>
+
+            <div style="background:#f8fafc; border:1px solid #f1f5f9; padding:12px; border-radius:8px; margin-bottom:18px;">
+              <div style="font-size:10px; font-weight:700; color:#94a3b8; text-transform:uppercase; margin-bottom:4px;">Your Message / Note</div>
+              <div style="font-size:12.5px; color:#334155; line-height:1.4;" id="sidebarUserNote">"Ready to pick up."</div>
+              <div style="font-size:11px; color:#94a3b8; margin-top:6px;" id="sidebarUserTime">Submitted recently</div>
+            </div>
+
+            <!-- Dynamic Action Buttons -->
+            <div id="sidebarStatusActionButtons" style="margin-bottom:18px;"></div>
+          </div>
+
+          <!-- MAKE AN OFFER FORM (Only shown if user has NOT bid yet) -->
+          <form id="detailOfferForm" onsubmit="handleDetailOfferSubmit(event)">
+            <div style="margin-bottom:14px;">
+              <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">
+                Your Offer Amount (₦) *
+              </label>
+              <input type="number" id="detailOfferAmount" class="search-field" style="width:100%; height:46px; border:1px solid #cbd5e1; border-radius:8px; padding:0 12px; font-size:15px; font-weight:700; color:#0f172a;" value="2500" required>
+            </div>
+
+            <div style="margin-bottom:14px;">
+              <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">
+                Estimated Arrival Time (ETA) *
+              </label>
+              <select id="detailOfferEta" class="filter-select" style="width:100%; height:44px; border:1px solid #cbd5e1; border-radius:8px; padding:0 10px;">
+                <option value="15-20 mins">⚡ Ready in 15 – 20 mins</option>
+                <option value="30 mins" selected>⚡ Within 30 mins</option>
+                <option value="45 mins">🕒 Within 45 mins</option>
+                <option value="1 hour">🕒 Within 1 hour</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom:14px;">
+              <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">
+                Your Transportation Type *
+              </label>
+              <select id="detailOfferTransport" class="filter-select" style="width:100%; height:44px; border:1px solid #cbd5e1; border-radius:8px; padding:0 10px;">
+                <option value="Motorcycle" selected>🏍️ Motorcycle (Express)</option>
+                <option value="Car">🚗 Car / Sedan</option>
+                <option value="Bicycle">🚲 Bicycle</option>
+                <option value="On Foot">🚶 On Foot (Neighborhood)</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom:18px;">
+              <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">
+                Note to Requester (Optional)
+              </label>
+              <textarea id="detailOfferNote" style="width:100%; height:64px; border:1px solid #cbd5e1; border-radius:8px; padding:8px 12px; font-size:13px; font-family:inherit; resize:none;" placeholder="I am at Victoria Island junction right now, can pick up immediately."></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit-offer-lg">
+              Make an Offer &rarr;
+            </button>
+          </form>
+
+          <div class="safety-guarantee-box">
+            <div style="font-weight:700; color:#1e293b; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+              <span style="color:#93c700;">🛡️</span> Errand Safety Guidelines
+            </div>
+            <div>
+              Payment is made strictly on delivery. Inspect packages and receipts upon arrival before finalizing payment.
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  
+  <!-- ================= RUNNER PROFILE MODAL ================= -->
+  <div class="discovery-modal-backdrop" id="runnerProfileModalBackdrop" onclick="closeRunnerProfileModal(event)" style="position:fixed; inset:0; background:rgba(15,23,42,0.65); backdrop-filter:blur(4px); z-index:9999; display:none; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#ffffff; border-radius:18px; width:100%; max-width:540px; padding:28px; box-shadow:0 20px 40px rgba(0,0,0,0.2); max-height:90vh; overflow-y:auto; position:relative;" onclick="event.stopPropagation()">
+      <button type="button" onclick="closeRunnerProfileModal()" style="position:absolute; top:20px; right:20px; font-size:24px; color:#94a3b8; background:none; border:none; cursor:pointer; line-height:1;">&times;</button>
+
+      <!-- Runner Header -->
+      <div style="display:flex; align-items:center; gap:16px; margin-bottom:18px; padding-bottom:18px; border-bottom:1px solid #f1f5f9;">
+        <div id="modalRunnerAvatar" style="width:58px; height:58px; border-radius:50%; background:#93c700; color:#fff; font-weight:800; font-size:20px; display:flex; align-items:center; justify-content:center; flex-shrink:0; border:2px solid #ffffff; box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+          TO
+        </div>
+        <div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <h3 id="modalRunnerName" style="font-size:18px; font-weight:800; color:#0f172a; margin:0;">Tunde Okon</h3>
+            <span style="background:#ecfdf5; color:#059669; font-size:11px; font-weight:800; padding:2px 8px; border-radius:9999px;">✓ NIN VERIFIED</span>
+          </div>
+          <div style="font-size:13px; color:#e28a2a; font-weight:700; margin-top:2px;">
+            ★ <span id="modalRunnerRating">4.9</span> <span style="color:#64748b; font-weight:500;">(<span id="modalRunnerReviews">142</span> reviews &bull; 100% Completion)</span>
+          </div>
+          <div style="font-size:12px; color:#64748b; margin-top:2px;" id="modalRunnerTransport">
+            🏍️ Express Motorcycle &bull; Mainland & Island
+          </div>
+        </div>
+      </div>
+
+      <!-- Runner Note for this Errand -->
+      <div style="background:#f4fbe6; border:1px solid #d6f0a3; border-radius:12px; padding:14px; margin-bottom:18px;">
+        <div style="font-size:11px; font-weight:800; color:#3b5000; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">
+          PROPOSAL NOTE FOR THIS ERRAND
+        </div>
+        <div id="modalRunnerNote" style="font-size:13.5px; color:#1e293b; line-height:1.5;">
+          "I am right at Ojodu Berger junction with my 200cc bike..."
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; font-size:12px; color:#475569;">
+          <span>Arrival ETA: <strong id="modalRunnerEta">⚡ 20 mins</strong></span>
+          <span>Offer Amount: <strong style="color:#16a34a; font-size:16px;" id="modalRunnerPrice">₦6,500</strong></span>
+        </div>
+      </div>
+
+      <!-- Runner Bio & Verification Badges -->
+      <div style="margin-bottom:18px;">
+        <div style="font-size:12px; font-weight:800; color:#0f172a; text-transform:uppercase; margin-bottom:6px;">About Runner</div>
+        <p id="modalRunnerBio" style="font-size:13px; color:#475569; line-height:1.6; margin:0 0 12px;">
+          Professional Mainland & Island errand specialist. 2+ years on Urgent.ng with zero damage record.
+        </p>
+
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+          <span style="font-size:11.5px; font-weight:700; color:#334155; background:#f1f5f9; padding:4px 10px; border-radius:6px;">
+            🛡️ Identity & BVN Cleared
+          </span>
+          <span style="font-size:11.5px; font-weight:700; color:#334155; background:#f1f5f9; padding:4px 10px; border-radius:6px;">
+            📱 Phone +234 803 ••• ••81
+          </span>
+          <span style="font-size:11.5px; font-weight:700; color:#334155; background:#f1f5f9; padding:4px 10px; border-radius:6px;">
+            ⚡ Avg Response: 4 mins
+          </span>
+        </div>
+      </div>
+
+      <!-- Recent Client Reviews -->
+      <div style="margin-bottom:22px;">
+        <div style="font-size:12px; font-weight:800; color:#0f172a; text-transform:uppercase; margin-bottom:8px;">Recent Verified Reviews</div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="background:#f8fafc; border:1px solid #f1f5f9; padding:10px 12px; border-radius:8px; font-size:12.5px; color:#334155;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+              <strong style="color:#0f172a;">Babatunde A. (Ikeja)</strong>
+              <span style="color:#e28a2a; font-weight:700;">★★★★★</span>
+            </div>
+            "Very fast and followed every gate instruction to the letter! Recommended."
+          </div>
+          <div style="background:#f8fafc; border:1px solid #f1f5f9; padding:10px 12px; border-radius:8px; font-size:12.5px; color:#334155;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:2px;">
+              <strong style="color:#0f172a;">Ngozi E. (Victoria Island)</strong>
+              <span style="color:#e28a2a; font-weight:700;">★★★★★</span>
+            </div>
+            "Handled delicate items safely and communicated live status updates."
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Bottom Actions -->
+      <div style="display:flex; gap:10px;" id="modalRunnerActionsBox">
+        <button type="button" onclick="closeRunnerProfileModal()" style="flex:1; height:44px; background:#f1f5f9; color:#475569; font-weight:700; font-size:13px; border-radius:8px; border:1px solid #cbd5e1; cursor:pointer;">
+          Close
+        </button>
+        <button type="button" id="modalAcceptOfferBtn" style="flex:2; height:44px; background:#93c700; color: #10151f; font-weight:800; font-size:14px; border-radius:8px; border:none; cursor:pointer; box-shadow: none;">
+          Accept Offer &rarr;
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= EDIT BID MODAL ================= -->
+  <div class="discovery-modal-backdrop" id="editBidModalBackdrop" onclick="closeEditBidModal(event)" style="position:fixed; inset:0; background:rgba(15,23,42,0.65); backdrop-filter:blur(4px); z-index:9999; display:none; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#ffffff; border-radius:18px; width:100%; max-width:500px; padding:28px; box-shadow:0 20px 40px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-size:18px; font-weight:800; color:#0f172a; margin:0;">✏️ Edit Your Offer</h3>
+        <button type="button" onclick="closeEditBidModal()" style="font-size:24px; color:#94a3b8; background:none; border:none; cursor:pointer; line-height:1;">&times;</button>
+      </div>
+
+      <form id="editBidForm" onsubmit="handleSaveEditBid(event)">
+        <div style="margin-bottom:14px;">
+          <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">
+            Updated Offer Amount (₦) *
+          </label>
+          <input type="number" id="editModalAmount" class="search-field" style="width:100%; height:46px; border:1px solid #cbd5e1; border-radius:8px; padding:0 12px; font-size:16px; font-weight:700; color:#0f172a;" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+          <div>
+            <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">
+              Estimated ETA *
+            </label>
+            <select id="editModalEta" class="filter-select" style="width:100%; height:44px; border:1px solid #cbd5e1; border-radius:8px; padding:0 10px;">
+              <option value="15-20 mins">⚡ Ready in 15 – 20 mins</option>
+              <option value="30 mins">⚡ Within 30 mins</option>
+              <option value="45 mins">🕒 Within 45 mins</option>
+              <option value="1 hour">🕒 Within 1 hour</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">
+              Transport *
+            </label>
+            <select id="editModalTransport" class="filter-select" style="width:100%; height:44px; border:1px solid #cbd5e1; border-radius:8px; padding:0 10px;">
+              <option value="Motorcycle">🏍️ Motorcycle</option>
+              <option value="Car / Sedan">🚗 Car / Sedan</option>
+              <option value="Bicycle">🚲 Bicycle</option>
+              <option value="On Foot">🚶 On Foot</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">
+            Updated Note to Requester
+          </label>
+          <textarea id="editModalNote" style="width:100%; height:68px; border:1px solid #cbd5e1; border-radius:8px; padding:8px 12px; font-size:13px; font-family:inherit; resize:none;"></textarea>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <button type="button" onclick="closeEditBidModal()" style="flex:1; height:44px; background:#f1f5f9; color:#475569; font-weight:700; font-size:13px; border-radius:8px; border:1px solid #cbd5e1; cursor:pointer;">
+            Cancel
+          </button>
+          <button type="submit" style="flex:2; height:44px; background:#93c700; color:#ffffff; font-weight:800; font-size:14px; border-radius:8px; border:none; cursor:pointer; box-shadow: none;">
+            Save Changes &rarr;
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+<!-- Toast Notification -->
+  <div id="toastContainer" style="position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:8px;"></div>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    const runnerOffersDatabase = {
+      'run-101': {
+        runnerId: 'run-101',
+        name: 'Tunde Okon',
+        initials: 'TO',
+        rating: 4.9,
+        reviewsCount: 142,
+        badgeBg: '#e8f7cb',
+        badgeColor: '#3b5000',
+        transport: 'Motorcycle (Express)',
+        eta: '20 mins',
+        price: 6500,
+        note: 'I am right at Ojodu Berger junction with my 200cc bike. Can inspect the engine, record 4K sound video, and check the VIN plate within 25 minutes.',
+        completedErrands: 142,
+        verified: true,
+        bio: 'Professional Mainland & Island errand specialist. 2+ years on Urgent.ng with 100% completion rate. Fast, polite, and communicative.',
+        phone: '+234 803 ••• ••81'
+      },
+      'run-102': {
+        runnerId: 'run-102',
+        name: 'Chukwudi Eze',
+        initials: 'CE',
+        rating: 4.8,
+        reviewsCount: 210,
+        badgeBg: '#eff6ff',
+        badgeColor: '#1e40af',
+        transport: 'Motorcycle',
+        eta: '35 mins',
+        price: 7000,
+        note: 'I have good mechanical knowledge with Toyota and Honda engines. Will check fluid leaks, exhaust smoke color, and test the AC compressor.',
+        completedErrands: 210,
+        verified: true,
+        bio: 'Experienced automotive errand runner and parts delivery scout. Known for honest inspections and thorough video walkarounds.',
+        phone: '+234 812 ••• ••45'
+      },
+      'run-103': {
+        runnerId: 'run-103',
+        name: 'Blessing Adeleke',
+        initials: 'BA',
+        rating: 5.0,
+        reviewsCount: 89,
+        badgeBg: '#fee2e2',
+        badgeColor: '#991b1b',
+        transport: 'Car / Sedan',
+        eta: '45 mins',
+        price: 7500,
+        note: 'I am in a Toyota Corolla near Berger yard. Can initiate live WhatsApp video call on arrival so you can hear the engine idle in real-time.',
+        completedErrands: 89,
+        verified: true,
+        bio: 'Careful runner with private vehicle. Best for sensitive deliveries, inspections, and luxury pickups across Lagos.',
+        phone: '+234 901 ••• ••19'
+      }
+    };
+
+    let acceptedRunnerId = null;
+    const myTasksList = ['ER-05'];
+
+    const errandDatabase = {
+      'ER-01': {
+        id: 'ER-01',
+        category: 'DELIVERY',
+        badgeClass: 'badge-delivery',
+        offersCount: 3,
+        title: 'Collect Laptop Charger left at Coworking Space',
+        pickupTitle: 'Workstation Coworking, Victoria Island',
+        pickupNote: '7 Ibiyinka Olorunbe, Victoria Island, Lagos. Ask at the ground floor front reception.',
+        dropTitle: 'Admiralty Way, Lekki Phase 1',
+        dropNote: 'Opposite The Palms Mall, Gate 4. Handover to security desk or client directly.',
+        desc: 'HP USB-C 65W charger with braided black cable enclosed inside a sealed brown envelope at the reception desk. Please verify the name Adeleke on the envelope before departure and message on pickup.',
+        metaTime: 'Needed within 1 hr',
+        postedAgo: 'Posted 12m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 2500,
+        itemType: 'Electronics & Cables',
+        fragility: 'Fragile — Handle with Care',
+        weight: 'Light Parcel (< 1.5 kg)',
+        distance: '7.4 km (approx 22m via bike)',
+        clientName: 'Adeleke Creative Studio',
+        clientInitials: 'AC'
+      },
+      'ER-02': {
+        id: 'ER-02',
+        category: 'SHOPPING',
+        badgeClass: 'badge-shopping',
+        offersCount: 5,
+        title: 'Buy Fresh Seafood & Catfish from Tejuosho',
+        pickupTitle: 'Tejuosho Ultra-Modern Market, Yaba',
+        pickupNote: 'Fish section, Shop B-44. Contact Mama Nkechi for pre-sorted fresh catfish.',
+        dropTitle: 'Surulere, Bode Thomas',
+        dropNote: 'Residential flat, 2nd floor. Call upon arrival at entrance gate.',
+        desc: 'Purchase 4kg live cleaned catfish and fresh tiger prawns. I will transfer grocery funds upfront once runner is at the market stand and sends item photo.',
+        metaTime: 'Complete before 3:00 PM',
+        postedAgo: 'Posted 25m ago',
+        priceType: 'RUNNER FEE',
+        price: 4000,
+        itemType: 'Fresh Food & Groceries',
+        fragility: 'Perishable — Requires Fast Transit',
+        weight: 'Approx 5 kg',
+        distance: '6.2 km (approx 18m via bike)',
+        clientName: 'Chef Kemi Catering',
+        clientInitials: 'CK'
+      },
+      'ER-03': {
+        id: 'ER-03',
+        category: 'DOCUMENT',
+        badgeClass: 'badge-document',
+        offersCount: 2,
+        title: 'Urgent High Court Certified True Copy (CTC)',
+        pickupTitle: 'Lagos State High Court, Igbosere',
+        pickupNote: 'Registrar Chambers, Room 12. Collection slip is already filed and stamped.',
+        dropTitle: 'Law Chambers, Marina',
+        dropNote: 'Direct handover to counsel on 4th floor.',
+        desc: 'Document is already stamped, sealed, and ready with Registrar Room 12. Must be transported in clean moisture-proof folder.',
+        metaTime: 'ASAP / Immediate',
+        postedAgo: 'Posted 6m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 3500,
+        itemType: 'Legal Court Documents',
+        fragility: 'High Confidentiality / Keep Flat',
+        weight: 'Document Envelope (< 0.5 kg)',
+        distance: '2.8 km (approx 10m via bike)',
+        clientName: 'Ajayi & Partners Legal',
+        clientInitials: 'AP'
+      },
+      'ER-04': {
+        id: 'ER-04',
+        category: 'FOOD',
+        badgeClass: 'badge-food',
+        offersCount: 4,
+        title: 'Pick up 2-Tier Birthday Cake in Temperature Box',
+        pickupTitle: 'Cakes by Tola, Ikeja',
+        pickupNote: 'Order #CK-4091. Pickup from bakery dispatch counter.',
+        dropTitle: 'Magodo Phase 2, Lagos',
+        dropNote: 'Party venue at 14 Palm Avenue. Keep cake upright on flat car seat.',
+        desc: 'Fragile! Requires car runner or careful dispatch carrier. Do not tilt or expose to hot direct sunlight.',
+        metaTime: 'Before 5:00 PM today',
+        postedAgo: 'Posted 40m ago',
+        priceType: 'RUNNER FEE',
+        price: 5000,
+        itemType: 'Bakery & Cake',
+        fragility: 'Extremely Fragile / Keep Level',
+        weight: '4.5 kg in thermal box',
+        distance: '9.3 km (approx 25m via car)',
+        clientName: 'Oluwaseun Bakare',
+        clientInitials: 'OB'
+      },
+      'ER-05': {
+        id: 'ER-05',
+        category: 'PHYSICAL',
+        badgeClass: 'badge-physical',
+        offersCount: 1,
+        title: 'Inspect Used Car Engine at Mechanic Workshop',
+        pickupTitle: 'Berger Auto Yard, Ojodu',
+        pickupNote: 'Ask for Master Kazeem at Bay 7.',
+        dropTitle: 'Digital Video Verification',
+        dropNote: 'Send 4K video walkaround & live engine sound recording.',
+        desc: 'I am in Abuja buying from a Lagos seller. Need honest eye-witness confirmation, engine rev video, VIN plate inspection, and tire condition check.',
+        metaTime: 'Within 3 hours',
+        postedAgo: 'Posted 18m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 7500,
+        itemType: 'On-Site Inspection',
+        fragility: 'Video & Visual Verification',
+        weight: 'N/A (Physical Presence)',
+        distance: 'Neighborhood Run',
+        clientName: 'Alhaji Bashir M.',
+        clientInitials: 'BM'
+      },
+      'ER-07': {
+        id: 'ER-07',
+        category: 'DELIVERY',
+        badgeClass: 'badge-delivery',
+        offersCount: 4,
+        title: 'Dispatch Medical Lab Samples in Cooler Box',
+        pickupTitle: 'St. Nicholas Hospital, Victoria Island',
+        pickupNote: 'Pathology wing, 2nd floor. Ask for Lab Tech Funke.',
+        dropTitle: 'Lancet Laboratories, Ikeja GRA',
+        dropNote: 'Direct handover to sample intake desk with temperature log.',
+        desc: 'Sealed biological test specimens in insulated thermal ice bag. Must not be placed in direct sunlight. Keep upright at all times.',
+        metaTime: 'Complete before 4:00 PM',
+        postedAgo: 'Posted 1h ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 5500,
+        itemType: 'Medical Specimens / Lab',
+        fragility: 'Temperature-Sensitive (Ice Pack)',
+        weight: 'Cooler Box (< 2 kg)',
+        distance: '14.2 km (approx 35m via car)',
+        clientName: 'Dr. Segun Williams',
+        clientInitials: 'SW'
+      },
+      'ER-08': {
+        id: 'ER-08',
+        category: 'SHOPPING',
+        badgeClass: 'badge-shopping',
+        offersCount: 6,
+        title: 'Purchase Emergency Power Inverter Fuses',
+        pickupTitle: 'Alaba International Market, Ojo',
+        pickupNote: 'Electrical Section, Line 4, Shop 28 (Emeka & Sons Electronics).',
+        dropTitle: 'Admiralty Mall, Lekki Phase 1',
+        dropNote: 'Deliver to Facility Manager at rooftop inverter room.',
+        desc: 'Specific 200A semiconductor fast-blow fuses for inverter battery bank. Receipt and item photo required before purchase.',
+        metaTime: 'Completed today',
+        postedAgo: 'Posted 3h ago',
+        priceType: 'RUNNER FEE',
+        price: 8000,
+        itemType: 'Industrial Inverter Parts',
+        fragility: 'Delicate Electrical Fuses',
+        weight: 'Box (< 1 kg)',
+        distance: '28.5 km (approx 55m via car)',
+        clientName: 'Engr. Dapo Alabi',
+        clientInitials: 'DA'
+      },
+      'ER-09': {
+        id: 'ER-09',
+        category: 'DELIVERY',
+        badgeClass: 'badge-delivery',
+        offersCount: 7,
+        title: 'Pick up Custom Aso-Ebi Tailoring order for Wedding',
+        pickupTitle: 'Adeniran Ogunsanya, Surulere',
+        pickupNote: 'House of Damola Tailors. Ready on racks with client slip #440.',
+        dropTitle: 'Alexander Road, Ikoyi',
+        dropNote: 'Security gate will buzz you in to main house.',
+        desc: '3 sets of men Agbada and women dresses in protective garment bags on hangers. Keep completely flat or hung in car.',
+        metaTime: 'Closed',
+        postedAgo: 'Posted 2h ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 3500,
+        itemType: 'Fashion & Garments',
+        fragility: 'Ironed Silk & Lace — Hang Upright',
+        weight: 'Garment Bags (< 3 kg)',
+        distance: '11.8 km (approx 26m via car)',
+        clientName: 'Mrs. Folashade Adele',
+        clientInitials: 'FA'
+      },
+      'ER-10': {
+        id: 'ER-10',
+        category: 'PHYSICAL',
+        badgeClass: 'badge-physical',
+        offersCount: 3,
+        title: 'Stand in Line for Passport Collection at Immigration Office',
+        pickupTitle: 'Passport Office, Alagbon, Ikoyi',
+        pickupNote: 'Main entrance security canopy line. Arrive by 7:30 AM.',
+        dropTitle: 'Direct Phone Alert to Client',
+        dropNote: 'Call client 20 minutes before batch 40 is called.',
+        desc: 'Arrive at gate before 8:00 AM, secure number queue ticket, and phone call me once token batch 40-50 is announced.',
+        metaTime: 'Tomorrow 7:30 AM',
+        postedAgo: 'Posted 45m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 7000,
+        itemType: 'Queue Standby / Physical Representation',
+        fragility: 'Time-critical Presence',
+        weight: 'N/A',
+        distance: 'Neighborhood Run (Ikoyi)',
+        clientName: 'Barrister Nnamdi O.',
+        clientInitials: 'NO'
+      },
+      'ER-11': {
+        id: 'ER-11',
+        category: 'DELIVERY',
+        badgeClass: 'badge-delivery',
+        offersCount: 2,
+        title: 'Deliver Birthday Gift Hamper & Fresh Flowers',
+        pickupTitle: 'Blossoms & Gifts, Lekki Phase 2',
+        pickupNote: 'Pickup order #BLM-88. Package is pre-wrapped in cellophane.',
+        dropTitle: 'Banana Island, Ikoyi',
+        dropNote: 'Deliver to Estate Security Reception for Villa 12.',
+        desc: 'Surprise package with balloon bouquet and fresh white roses. Security access code provided in chat.',
+        metaTime: 'Completed yesterday',
+        postedAgo: 'Posted yesterday',
+        priceType: 'SUGGESTED BUDGET',
+        price: 5000,
+        itemType: 'Flowers & Luxury Gift Hamper',
+        fragility: 'Fragile Glass & Floral Bouquet',
+        weight: '3.5 kg gift basket',
+        distance: '15.4 km (approx 32m via car)',
+        clientName: 'Chioma Ezenwa',
+        clientInitials: 'CE'
+      },
+      'ER-06': {
+        id: 'ER-06',
+        category: 'DELIVERY',
+        badgeClass: 'badge-delivery',
+        offersCount: 6,
+        title: 'Collect Fabric Samples from Balogun Market',
+        pickupTitle: 'Balogun Market, Lagos Island',
+        pickupNote: 'Vendor name: Iya Basira, shop B14. Small waterproof parcel.',
+        dropTitle: 'Fashion Studio, Lekki Phase 1',
+        dropNote: 'Hand over to lead cutter at Studio Reception.',
+        desc: 'Small waterproof parcel of lace swatches and silk borders. Fully packed and taped.',
+        metaTime: 'Today before 2 PM',
+        postedAgo: 'Posted 10m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 3000,
+        itemType: 'Textiles & Swatches',
+        fragility: 'Waterproof Bag Required',
+        weight: '1.2 kg parcel',
+        distance: '8.1 km (approx 24m via bike)',
+        clientName: 'Zahra Couture Studio',
+        clientInitials: 'ZC'
+      }
+    };
+
+    // My Bids Registry matching user's active proposals
+    const myBidsDatabase = {
+      'ER-01': {
+        status: 'accepted',
+        statusLabel: 'Bid Accepted / Active',
+        statusColor: '#16a34a',
+        statusBg: '#ecfdf5',
+        statusBorder: '#a7f3d0',
+        amount: 2800,
+        eta: '20 mins',
+        transport: 'Motorcycle',
+        timeAgo: 'Submitted 35m ago',
+        note: 'HP USB-C charger pickup. In transit to Lekki Phase 1.'
+      },
+      'ER-02': {
+        status: 'pending',
+        statusLabel: 'Pending Review',
+        statusColor: '#b45309',
+        statusBg: '#fffbeb',
+        statusBorder: '#fde68a',
+        amount: 4500,
+        eta: '30 mins',
+        transport: 'Motorcycle',
+        timeAgo: 'Submitted 15m ago',
+        note: 'Ready at Tejuosho market stand to select fresh catfish.'
+      },
+      'ER-03': {
+        status: 'pending',
+        statusLabel: 'Pending Review',
+        statusColor: '#b45309',
+        statusBg: '#fffbeb',
+        statusBorder: '#fde68a',
+        amount: 3800,
+        eta: '15 mins',
+        transport: 'Motorcycle',
+        timeAgo: 'Submitted 5m ago',
+        note: 'Waiting for Counsel to confirm collection clearance slip.'
+      },
+      'ER-07': {
+        status: 'accepted',
+        statusLabel: 'Bid Accepted / Active',
+        statusColor: '#16a34a',
+        statusBg: '#ecfdf5',
+        statusBorder: '#a7f3d0',
+        amount: 6000,
+        eta: '45 mins',
+        transport: 'Car / Sedan',
+        timeAgo: 'Submitted 1h ago',
+        note: 'Specimen cooler collected from St. Nicholas. En route to Lancet.'
+      },
+      'ER-08': {
+        status: 'completed',
+        statusLabel: 'Completed & Paid',
+        statusColor: '#1e40af',
+        statusBg: '#eff6ff',
+        statusBorder: '#bfdbfe',
+        amount: 8500,
+        eta: 'Delivered',
+        transport: 'Car / Sedan',
+        timeAgo: 'Completed 2h ago',
+        note: 'Fuses delivered intact. Payment of ₦8,500 released to wallet.'
+      },
+      'ER-09': {
+        status: 'declined',
+        statusLabel: 'Declined / Outbid',
+        statusColor: '#64748b',
+        statusBg: '#f8fafc',
+        statusBorder: '#e2e8f0',
+        amount: 3500,
+        eta: '30 mins',
+        transport: 'Motorcycle',
+        timeAgo: 'Closed 1h ago',
+        note: 'Requester selected a runner located directly on Adeniran Ogunsanya.'
+      },
+      'ER-10': {
+        status: 'pending',
+        statusLabel: 'Pending Review',
+        statusColor: '#b45309',
+        statusBg: '#fffbeb',
+        statusBorder: '#fde68a',
+        amount: 7000,
+        eta: '1 hour',
+        transport: 'On Foot',
+        timeAgo: 'Submitted 20m ago',
+        note: 'Arriving at Alagbon immigration gate early to secure token.'
+      },
+      'ER-11': {
+        status: 'completed',
+        statusLabel: 'Completed & Paid',
+        statusColor: '#1e40af',
+        statusBg: '#eff6ff',
+        statusBorder: '#bfdbfe',
+        amount: 5000,
+        eta: 'Delivered',
+        transport: 'Car / Sedan',
+        timeAgo: 'Completed yesterday',
+        note: 'Gift hamper delivered on time. Client left a 5-star review.'
+      }
+    };
+
+    function loadErrandDetails() {
+      const params = new URLSearchParams(window.location.search);
+      const errandId = params.get('id') || 'ER-01';
+      const item = errandDatabase[errandId] || errandDatabase['ER-01'];
+
+      document.title = item.title + ' — Urgent.ng';
+      document.getElementById('breadcrumbCategory').textContent = item.category;
+      document.getElementById('breadcrumbId').textContent = 'Errand #' + item.id;
+      document.getElementById('detailCatPill').textContent = '📦 ' + item.category;
+      document.getElementById('detailOffersPill').textContent = item.offersCount + ' OFFERS RECEIVED';
+      document.getElementById('detailPostedAgo').textContent = item.postedAgo;
+      document.getElementById('detailTitle').textContent = item.title;
+      document.getElementById('detailTiming').textContent = item.metaTime;
+      document.getElementById('detailDistance').textContent = 'Distance: ' + item.distance;
+      document.getElementById('detailPickupTitle').textContent = item.pickupTitle;
+      document.getElementById('detailPickupNote').textContent = item.pickupNote;
+      document.getElementById('detailDropTitle').textContent = item.dropTitle;
+      document.getElementById('detailDropNote').textContent = item.dropNote;
+      document.getElementById('specItemType').textContent = item.itemType;
+      document.getElementById('specFragility').textContent = item.fragility;
+      document.getElementById('specWeight').textContent = item.weight;
+      document.getElementById('detailDesc').textContent = item.desc;
+      document.getElementById('detailClientName').textContent = item.clientName;
+      document.getElementById('detailClientInitials').textContent = item.clientInitials;
+      document.getElementById('detailOffersCount').textContent = item.offersCount;
+      document.getElementById('actionPriceType').textContent = item.priceType;
+      document.getElementById('actionPriceVal').textContent = '₦' + item.price.toLocaleString();
+      document.getElementById('detailOfferAmount').value = item.price;
+
+      // DETERMINE VIEW ROLE: OWNER (POSTED ERRAND) vs BIDDER (MY BIDS) vs BROWSING
+      const isOwner = isOwnerView();
+      const userBid = myBidsDatabase[item.id];
+      const formEl = document.getElementById('detailOfferForm');
+      const manageCardEl = document.getElementById('userBidManageCard');
+      const ownerCardEl = document.getElementById('ownerManageCard');
+      const actionPriceBox = document.querySelector('.action-price-box');
+      const container = document.getElementById('offersStreamContainer');
+
+      if (isOwner) {
+        // ==========================================
+        // 1. OWNER VIEW: POSTED ERRAND (NO SIDE MODAL TO BID)
+        // ==========================================
+        if (formEl) formEl.style.display = 'none';
+        if (actionPriceBox) actionPriceBox.style.display = 'none';
+        if (manageCardEl) manageCardEl.style.display = 'none';
+        if (ownerCardEl) {
+          ownerCardEl.style.display = 'block';
+          document.getElementById('ownerErrandBudget').textContent = '₦' + item.price.toLocaleString();
+        }
+
+        // Render incoming runner offers with notes, profile click, and Accept buttons
+        renderLiveOffersStream(true);
+
+      } else if (userBid) {
+        // ==========================================
+        // 2. BIDDER VIEW: MY BIDS PAGE (NO SIDE MODAL TO BID AGAIN)
+        // ==========================================
+        if (formEl) formEl.style.display = 'none';
+        if (actionPriceBox) actionPriceBox.style.display = 'none';
+        if (ownerCardEl) ownerCardEl.style.display = 'none';
+        if (manageCardEl) manageCardEl.style.display = 'block';
+
+        // Populate Sidebar Bid Management Card
+        const banner = document.getElementById('sidebarBidStatusBanner');
+        const actionsBox = document.getElementById('sidebarStatusActionButtons');
+
+        document.getElementById('sidebarUserBidAmount').textContent = '₦' + userBid.amount.toLocaleString();
+        document.getElementById('sidebarClientBudgetCompare').textContent = 'Client Budget: ₦' + item.price.toLocaleString();
+        document.getElementById('sidebarUserEta').textContent = '⚡ ' + userBid.eta;
+        document.getElementById('sidebarUserTransport').textContent = userBid.transport;
+        document.getElementById('sidebarUserNote').textContent = '"' + userBid.note + '"';
+        document.getElementById('sidebarUserTime').textContent = userBid.timeAgo;
+
+        if (userBid.status === 'accepted') {
+          banner.style.background = '#ecfdf5';
+          banner.style.border = '1px solid #a7f3d0';
+          banner.style.color = '#065f46';
+          banner.innerHTML = '<span style="width:8px; height:8px; border-radius:50%; background:#10b981; display:inline-block; box-shadow:0 0 0 2.5px rgba(16,185,129,0.3);"></span> ✓ Bid Accepted — Task Assigned to You';
+          actionsBox.innerHTML = `
+            <button type="button" onclick="showToast('💬 Opening direct message with client...')" style="width:100%; height:46px; background:#93c700; color: #10151f; font-weight:800; font-size:14px; border-radius:8px; border:none; cursor:pointer; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:8px;">
+              💬 Chat with Client
+            </button>
+            <button type="button" onclick="openEditBidModal()" style="width:100%; height:40px; background:#f1f5f9; color: #10151f; font-weight:800; font-size:13px; border-radius:8px; border:1px solid #cbd5e1; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+              ✏️ Edit Offer
+            </button>
+          `;
+        } else if (userBid.status === 'pending') {
+          banner.style.background = '#fffbeb';
+          banner.style.border = '1px solid #fde68a';
+          banner.style.color = '#92400e';
+          banner.innerHTML = '<span style="width:8px; height:8px; border-radius:50%; background:#f59e0b; display:inline-block; box-shadow:0 0 0 2.5px rgba(245,158,11,0.3);"></span> ⏳ Offer Submitted — Under Client Review';
+          actionsBox.innerHTML = `
+            <button type="button" onclick="openEditBidModal()" style="width:100%; height:44px; background:#f8fafc; color:#1e293b; font-weight:700; font-size:13px; border-radius:8px; border:1px solid #cbd5e1; cursor:pointer; margin-bottom:8px; display:flex; align-items:center; justify-content:center; gap:6px;">
+              ✏️ Edit Offer
+            </button>
+            <button type="button" onclick="showToast('Bid withdrawal request sent.')" style="width:100%; height:32px; background:none; color:#ef4444; font-weight:700; font-size:12px; border:none; cursor:pointer;">
+              Withdraw Offer
+            </button>
+          `;
+        } else if (userBid.status === 'completed') {
+          banner.style.background = '#eff6ff';
+          banner.style.border = '1px solid #bfdbfe';
+          banner.style.color = '#1e40af';
+          banner.innerHTML = '★ Errand Completed & Payment Released';
+          actionsBox.innerHTML = `
+            <button type="button" onclick="showToast('🧾 Downloading delivery & payout receipt...')" style="width:100%; height:46px; background:#1e40af; color:#fff; font-weight:800; font-size:14px; border-radius:8px; border:none; cursor:pointer;">
+              🧾 View Payment Receipt
+            </button>
+          `;
+        } else if (userBid.status === 'declined') {
+          banner.style.background = '#f8fafc';
+          banner.style.border = '1px solid #e2e8f0';
+          banner.style.color = '#64748b';
+          banner.innerHTML = '✕ Offer Not Selected (Closed)';
+          actionsBox.innerHTML = `
+            <button type="button" onclick="window.location.href=\'discovery.html\'" style="width:100%; height:46px; background:#93c700; color:#fff; font-weight:800; font-size:14px; border-radius:8px; border:none; cursor:pointer;">
+              Browse Live Errands &rarr;
+            </button>
+          `;
+        }
+
+        // Render other offers, then PIN YOUR BID AT TOP
+        renderLiveOffersStream(false);
+
+        if (container) {
+          const pinnedRow = document.createElement('div');
+          pinnedRow.className = 'offer-stream-row pinned-bid-card';
+          pinnedRow.style.cssText = 'background:#f4fbe6; border:2px solid #93c700; border-radius:14px; padding:18px; margin-bottom:14px; box-shadow:0 4px 14px rgba(147,199,0,0.15); display:block;';
+          pinnedRow.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+              <span style="display:inline-flex; align-items:center; gap:5px; background:#93c700; color:#ffffff; font-size:11px; font-weight:800; padding:3px 10px; border-radius:9999px; text-transform:uppercase; letter-spacing:0.5px;">
+                📌 YOUR PINNED BID
+              </span>
+              <span style="font-size:11.5px; font-weight:800; color:${userBid.statusColor}; background:${userBid.statusBg}; border:1px solid ${userBid.statusBorder}; padding:3px 10px; border-radius:9999px;">
+                ${userBid.statusLabel}
+              </span>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:16px;">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:40px; height:40px; border-radius:50%; background:#93c700; color:#ffffff; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.1);">
+                  EA
+                </div>
+                <div>
+                  <div style="font-weight:800; font-size:14px; color:#0f172a; display:flex; align-items:center; gap:6px;">
+                    <span>Emmanuella Adeleke (You)</span>
+                    <span style="background:#ecfdf5; color:#059669; font-size:10px; font-weight:800; padding:1px 6px; border-radius:4px;">YOUR OFFER</span>
+                  </div>
+                  <div style="font-size:11px; color:#64748b; margin-top:2px;">
+                    ${userBid.transport} &bull; Ready in ${userBid.eta} &bull; ${userBid.timeAgo}
+                  </div>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-weight:800; font-size:20px; color:#16a34a;">₦${userBid.amount.toLocaleString()}</div>
+                <span style="font-size:11px; color:#64748b;">Your Proposal</span>
+              </div>
+            </div>
+            <div style="background:#ffffff; border:1px solid #e8f7cb; border-radius:8px; padding:10px 12px; margin-top:12px; font-size:12.5px; color:#334155;">
+              <strong>Your Message:</strong> "${userBid.note}"
+            </div>
+          `;
+          container.prepend(pinnedRow);
+        }
+
+      } else {
+        // ==========================================
+        // 3. BROWSING VISITOR VIEW: CAN MAKE AN OFFER
+        // ==========================================
+        if (formEl) formEl.style.display = 'block';
+        if (actionPriceBox) actionPriceBox.style.display = 'block';
+        if (manageCardEl) manageCardEl.style.display = 'none';
+        if (ownerCardEl) ownerCardEl.style.display = 'none';
+
+        renderLiveOffersStream(false);
+      }
+    }
+
+    function handleDetailOfferSubmit(e) {
+      e.preventDefault();
+      const amount = document.getElementById('detailOfferAmount').value;
+      const eta = document.getElementById('detailOfferEta').value;
+      const transport = document.getElementById('detailOfferTransport').value;
+
+      // Add to live offers list
+      const container = document.getElementById('offersStreamContainer');
+      const newRow = document.createElement('div');
+      newRow.className = 'offer-stream-row';
+      newRow.style.borderColor = '#93c700';
+      newRow.style.backgroundColor = '#f4fbe6';
+      newRow.innerHTML = `
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div style="width:38px; height:38px; border-radius:50%; background:#93c700; color:#ffffff; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center;">YOU</div>
+          <div>
+            <div style="font-weight:800; font-size:14px; color:#0f172a;">Your Bid (Runner) <span style="color:#16a34a; font-size:11px; font-weight:700;">JUST NOW</span></div>
+            <div style="font-size:11px; color:#64748b;">${transport} &bull; Ready in ${eta}</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-weight:800; font-size:18px; color:#16a34a;">₦${Number(amount).toLocaleString()}</div>
+          <span style="font-size:11px; color:#15803d; font-weight:700;">Submitted</span>
+        </div>
+      `;
+      container.prepend(newRow);
+
+      const countSpan = document.getElementById('detailOffersCount');
+      countSpan.textContent = Number(countSpan.textContent) + 1;
+      document.getElementById('detailOffersPill').textContent = (Number(countSpan.textContent)) + ' OFFERS RECEIVED';
+
+      showToast('🚀 Offer of ₦' + Number(amount).toLocaleString() + ' sent to requester!');
+    }
+
+    function showToast(msg) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.style.cssText = 'background:#0f172a; color:#fff; padding:12px 18px; border-radius:8px; font-size:13px; font-weight:600; box-shadow:0 4px 14px rgba(0,0,0,0.25); display:flex; align-items:center; gap:8px; border-left:4px solid #93c700;';
+      toast.textContent = msg;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    window.addEventListener('DOMContentLoaded', loadErrandDetails);
+  
+    let currentSelectedRunner = null;
+
+    function openRunnerProfile(runnerId) {
+      const runner = runnerOffersDatabase[runnerId];
+      if (!runner) return;
+      currentSelectedRunner = runner;
+
+      document.getElementById('modalRunnerAvatar').textContent = runner.initials;
+      document.getElementById('modalRunnerName').textContent = runner.name;
+      document.getElementById('modalRunnerRating').textContent = runner.rating;
+      document.getElementById('modalRunnerReviews').textContent = runner.reviewsCount;
+      document.getElementById('modalRunnerTransport').textContent = '🏍️ ' + runner.transport + ' • Mainland & Island';
+      document.getElementById('modalRunnerNote').textContent = '"' + runner.note + '"';
+      document.getElementById('modalRunnerEta').textContent = '⚡ ' + runner.eta;
+      document.getElementById('modalRunnerPrice').textContent = '₦' + runner.price.toLocaleString();
+      document.getElementById('modalRunnerBio').textContent = runner.bio;
+
+      const acceptBtn = document.getElementById('modalAcceptOfferBtn');
+      if (acceptedRunnerId === runner.runnerId) {
+        acceptBtn.textContent = '✓ Runner Assigned';
+        acceptBtn.style.background = '#16a34a';
+        acceptBtn.onclick = () => showToast('This runner has already been assigned to your errand.');
+      } else {
+        acceptBtn.textContent = 'Accept Offer (₦' + runner.price.toLocaleString() + ') →';
+        acceptBtn.style.background = '#93c700';
+        acceptBtn.onclick = () => {
+          acceptRunnerOffer(runner.runnerId);
+          closeRunnerProfileModal();
+        };
+      }
+
+      document.getElementById('runnerProfileModalBackdrop').style.display = 'flex';
+    }
+
+    function closeRunnerProfileModal(e) {
+      if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+      document.getElementById('runnerProfileModalBackdrop').style.display = 'none';
+    }
+
+    function openEditBidModal() {
+      const params = new URLSearchParams(window.location.search);
+      const errandId = params.get('id') || 'ER-01';
+      const userBid = myBidsDatabase[errandId];
+      if (!userBid) return;
+
+      document.getElementById('editModalAmount').value = userBid.amount;
+      document.getElementById('editModalEta').value = userBid.eta;
+      document.getElementById('editModalTransport').value = userBid.transport;
+      document.getElementById('editModalNote').value = userBid.note;
+
+      document.getElementById('editBidModalBackdrop').style.display = 'flex';
+    }
+
+    function closeEditBidModal(e) {
+      if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+      document.getElementById('editBidModalBackdrop').style.display = 'none';
+    }
+
+    function handleSaveEditBid(e) {
+      e.preventDefault();
+      const params = new URLSearchParams(window.location.search);
+      const errandId = params.get('id') || 'ER-01';
+      const userBid = myBidsDatabase[errandId];
+      if (!userBid) return;
+
+      const newAmount = Number(document.getElementById('editModalAmount').value) || userBid.amount;
+      const newEta = document.getElementById('editModalEta').value;
+      const newTransport = document.getElementById('editModalTransport').value;
+      const newNote = document.getElementById('editModalNote').value;
+
+      userBid.amount = newAmount;
+      userBid.eta = newEta;
+      userBid.transport = newTransport;
+      userBid.note = newNote;
+      userBid.timeAgo = 'Updated just now';
+
+      // Update Sidebar
+      document.getElementById('sidebarUserBidAmount').textContent = '₦' + newAmount.toLocaleString();
+      document.getElementById('sidebarUserEta').textContent = '⚡ ' + newEta;
+      document.getElementById('sidebarUserTransport').textContent = newTransport;
+      document.getElementById('sidebarUserNote').textContent = '"' + newNote + '"';
+      document.getElementById('sidebarUserTime').textContent = 'Updated just now';
+
+      // Update Pinned Bid in Live Offers
+      const pinnedCard = document.querySelector('.pinned-bid-card');
+      if (pinnedCard) {
+        pinnedCard.querySelector('div[style*="font-size:20px"]').textContent = '₦' + newAmount.toLocaleString();
+        pinnedCard.querySelector('div[style*="border-radius:8px; padding:10px"]').innerHTML = '<strong>Your Message:</strong> "' + newNote + '"';
+      }
+
+      closeEditBidModal();
+      showToast('✅ Your offer has been updated to ₦' + newAmount.toLocaleString() + '!');
+    }
+
+    function acceptRunnerOffer(runnerId) {
+      const runner = runnerOffersDatabase[runnerId];
+      if (!runner) return;
+      acceptedRunnerId = runnerId;
+
+      // Update Owner Sidebar if on posted errand
+      const statusText = document.getElementById('ownerErrandStatusText');
+      if (statusText) {
+        statusText.textContent = 'Runner Assigned: ' + runner.name + ' (' + runner.transport + ')';
+      }
+
+      // Re-render offers stream to reflect accepted state
+      renderLiveOffersStream(isOwnerView());
+
+      showToast('🎉 You accepted ' + runner.name + "'s offer of ₦" + runner.price.toLocaleString() + '! Safe escrow payment initialized.');
+    }
+
+    function isOwnerView() {
+      const params = new URLSearchParams(window.location.search);
+      const errandId = params.get('id') || 'ER-01';
+      return myTasksList.includes(errandId) || params.get('view') === 'owner' || params.get('view') === 'posted';
+    }
+
+    function renderLiveOffersStream(isOwner) {
+      const container = document.getElementById('offersStreamContainer');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const runnerIds = ['run-101', 'run-102', 'run-103'];
+      runnerIds.forEach(id => {
+        const r = runnerOffersDatabase[id];
+        if (!r) return;
+
+        const isAccepted = (acceptedRunnerId === r.runnerId);
+
+        const card = document.createElement('div');
+        card.className = 'offer-stream-row';
+        card.style.cssText = isAccepted 
+          ? 'background:#f0fdf4; border:2px solid #16a34a; border-radius:14px; padding:18px; margin-bottom:14px; display:block; box-shadow:0 4px 14px rgba(22,163,74,0.15);'
+          : 'background:#ffffff; border:1px solid #e2e8f0; border-radius:14px; padding:18px; margin-bottom:14px; display:block; transition:all 0.2s ease;';
+
+        const acceptButtonHtml = isOwner 
+          ? (isAccepted 
+              ? `<div style="display:flex; align-items:center; gap:8px;">
+                   <span style="background:#16a34a; color:#fff; font-size:12px; font-weight:800; padding:6px 14px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
+                     ✓ Assigned Runner
+                   </span>
+                   <button type="button" onclick="showToast('💬 Opening live chat with ' + '${r.name}' + '...')" style="background:#93c700; color:#fff; font-size:12px; font-weight:800; padding:6px 12px; border-radius:6px; border:none; cursor:pointer;">
+                     💬 Chat
+                   </button>
+                 </div>`
+              : `<button type="button" onclick="acceptRunnerOffer('${r.runnerId}')" style="background:#93c700; color: #10151f; font-size:12.5px; font-weight:800; padding:8px 16px; border-radius:8px; border:none; cursor:pointer; box-shadow: none; transition:all 0.15s ease;">
+                   Accept Offer &rarr;
+                 </button>`)
+          : '';
+
+        card.innerHTML = `
+          <!-- Top Row: Clickable Runner Avatar, Name, Rating & Price -->
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:12px;">
+            <div style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="openRunnerProfile('${r.runnerId}')" title="Click to view ${r.name}'s verified profile">
+              <div style="width:44px; height:44px; border-radius:50%; background:${r.badgeBg}; color:${r.badgeColor}; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
+                ${r.initials}
+              </div>
+              <div>
+                <div style="display:flex; align-items:center; gap:6px;">
+                  <span style="font-weight:800; font-size:15px; color:#0f172a; text-decoration:underline; text-decoration-color:transparent; transition:all 0.15s ease;" onmouseover="this.style.textDecorationColor='#0f172a'" onmouseout="this.style.textDecorationColor='transparent'">
+                    ${r.name}
+                  </span>
+                  <span style="color:#e28a2a; font-size:12px; font-weight:700;">★ ${r.rating}</span>
+                  <span style="background:#ecfdf5; color:#059669; font-size:10px; font-weight:800; padding:1px 6px; border-radius:4px;">VERIFIED</span>
+                </div>
+                <div style="font-size:11.5px; color:#64748b; margin-top:2px;">
+                  ${r.transport} &bull; Ready in ${r.eta} &bull; ${r.completedErrands} tasks completed
+                </div>
+              </div>
+            </div>
+
+            <div style="text-align:right;">
+              <div style="font-size:10px; font-weight:800; color:#94a3b8; text-transform:uppercase;">OFFER</div>
+              <div style="font-weight:800; font-size:20px; color:#16a34a;">₦${r.price.toLocaleString()}</div>
+            </div>
+          </div>
+
+          <!-- Note Block: Those who offer me (Prominently shown) -->
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:3px solid #93c700; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:13px; color:#334155; line-height:1.45;">
+            <div style="font-size:10.5px; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:3px; letter-spacing:0.5px;">Runner Note:</div>
+            "${r.note}"
+          </div>
+
+          <!-- Bottom Action Row: Click profile link & Accept button -->
+          <div style="display:flex; justify-content:space-between; align-items:center; pt-2; border-top:1px solid #f1f5f9; padding-top:10px;">
+            <button type="button" onclick="openRunnerProfile('${r.runnerId}')" style="background:none; border:none; color:#2563eb; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px; padding:0;">
+              👤 View Full Profile & Reviews &rarr;
+            </button>
+            ${acceptButtonHtml}
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+</script>
+</body>
+</html>

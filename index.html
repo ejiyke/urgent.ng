@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Urgent.ng — On-Demand Errand Marketplace in Nigeria</title>
+  <meta name="description" content="Get anything picked up, delivered, or sorted in minutes. Connect with verified runners nearby across Lagos, Abuja, and major Nigerian cities with secure escrow payments.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2393c700'/><path d='M10 16l4 4 8-8' stroke='%23ffffff' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+</head>
+<body>
+
+  <!-- ============================================================
+       HERO SECTION (Figma Design Implementation)
+       ============================================================ -->
+  <section class="hero-section">
+    <div class="container hero-container">
+      <div class="hero-grid">
+        
+        <!-- Left: Headline & Actions -->
+        <div class="hero-copy">
+          <h1 class="hero-title">
+            Need someone to run an errand?
+            <span class="highlight-done">Consider it done.</span>
+          </h1>
+
+          <p class="hero-desc">
+            Connect with verified, trusted runners around you in minutes. Set your task, receive competitive price offers, and pay safely only after it's delivered.
+          </p>
+
+          <div class="hero-actions">
+            <button class="btn btn-hero-primary" onclick="window.location.href='discovery.html'">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Post an Errand Now
+            </button>
+            <button class="btn btn-hero-secondary" onclick="openRunnerModal()">
+              Run an Errand
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: Runner Visual with Floating Badge -->
+        <div class="hero-visual-figma">
+          <div class="hero-image-wrapper">
+            <img src="assets/hero-woman.png" alt="Urgent.ng runner ready for errands" class="hero-woman-img" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       INSTANT ERRAND REQUEST SECTION (Replaces Trust Banner)
+       ============================================================ -->
+  <section class="instant-request-section" id="instant-request">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag"><span class="pulse-dot"></span> On-Demand Express Dispatch</span>
+        <h2 class="section-title">Instant Errand Request</h2>
+        <p class="section-subtitle">
+          Got a task that needs urgent attention? Submit your request in seconds, name your budget, and receive offers from verified runners nearby in under 8 minutes.
+        </p>
+      </div>
+
+      <div class="instant-request-card">
+        <form class="instant-request-form" id="instantRequestForm" onsubmit="handleInstantRequestSubmit(event)">
+          <!-- Row 1: Category & Task Title -->
+          <div class="instant-grid-2">
+            <div class="instant-form-group">
+              <label class="instant-label" for="instantCategory">Errand Category <span class="req">*</span></label>
+              <div class="instant-input-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <select id="instantCategory" class="instant-select" required onchange="handleInstantCategoryChange(this.value)">
+                  <option value="Delivery" selected>📦 Package Delivery</option>
+                  <option value="Shopping">🛒 Market Shopping</option>
+                  <option value="Document">📄 Document Pickup</option>
+                  <option value="Food">🍲 Food / Groceries</option>
+                  <option value="Queue">🏦 Queue & Pay</option>
+                  <option value="Physical">🔧 Physical / Inspection</option>
+                  <option value="Other">⚡ Other Custom Errand</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="instant-form-group">
+              <label class="instant-label" for="instantTaskTitle">What needs to be done? <span class="req">*</span></label>
+              <div class="instant-input-wrapper">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <input type="text" id="instantTaskTitle" class="instant-input" placeholder="e.g. Pick up urgent Visa document from VFS Global, deliver to Lekki Phase 1" required>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 2: Route, Hub & Urgency -->
+          <div class="instant-grid-3">
+            <div class="instant-form-group">
+              <label class="instant-label" for="instantPickup">Pickup Location <span class="req">*</span></label>
+              <div class="instant-input-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                <input type="text" id="instantPickup" class="instant-input" placeholder="Pickup street / landmark (e.g. Lekki Phase 1)" required>
+              </div>
+            </div>
+
+            <div class="instant-form-group">
+              <label class="instant-label" for="instantDest">Delivery Destination <span class="req">*</span></label>
+              <div class="instant-input-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                <input type="text" id="instantDest" class="instant-input" placeholder="Delivery street / landmark (e.g. Ikeja GRA)" required>
+              </div>
+            </div>
+
+            <div class="instant-form-group">
+              <label class="instant-label" for="instantUrgency">When do you need it?</label>
+              <div class="instant-input-wrapper">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+                <select id="instantUrgency" class="instant-select">
+                  <option value="immediate" selected>⚡ Express (ASAP — Under 60 mins)</option>
+                  <option value="within3h">🕒 Fast (Within 2 to 3 hours)</option>
+                  <option value="today">🌅 Flexible (Anytime Today)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- Row 3: Description & Additional Details -->
+          <div class="instant-form-group">
+            <div class="instant-label-row">
+              <label class="instant-label" for="instantDescription">Errand Description & Details</label>
+              <span class="instant-optional-hint">Optional</span>
+            </div>
+            <div class="instant-input-wrapper instant-textarea-wrapper">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon textarea-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+              <textarea id="instantDescription" class="instant-input instant-textarea" rows="3" placeholder="Describe the errand in detail: item specifications, sender/recipient phone numbers, gate instructions, or package fragility..."></textarea>
+            </div>
+          </div>
+
+          <!-- Row 3: Budget Presets, Escrow & Action -->
+          <div class="instant-budget-row">
+            <div class="budget-selection-col">
+              <label class="instant-label">Your Estimated Budget (₦)</label>
+              <div class="budget-presets-pills">
+                <button type="button" class="budget-pill" onclick="selectInstantBudget(2000, this)">₦2,000</button>
+                <button type="button" class="budget-pill active" onclick="selectInstantBudget(3500, this)">₦3,500</button>
+                <button type="button" class="budget-pill" onclick="selectInstantBudget(5000, this)">₦5,000</button>
+                <button type="button" class="budget-pill" onclick="selectInstantBudget(8000, this)">₦8,000</button>
+                <div class="budget-custom-input">
+                  <span>₦</span>
+                  <input type="number" id="instantBudgetInput" value="3500" min="500" step="100" placeholder="Custom" oninput="document.querySelectorAll('.budget-pill').forEach(b => b.classList.remove('active'))">
+                </div>
+              </div>
+            </div>
+
+            <div class="instant-submit-col">
+              <button type="submit" class="btn btn-primary btn-xl btn-instant-submit">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+                Broadcast Errand to Runners
+              </button>
+            </div>
+          </div>
+
+          <!-- Trust Bar Footer inside Card -->
+          <div class="instant-card-trust-footer">
+            <div class="trust-point">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span><strong>Pay on Delivery:</strong> Inspect your items and receipts before paying</span>
+            </div>
+            <div class="trust-point">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+              <span><strong>Community Ratings:</strong> Choose runners based on real peer reviews</span>
+            </div>
+            <div class="trust-point">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span><strong>&lt; 8 mins:</strong> Average time to receive competitive price bids</span>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       HOW IT WORKS (INTERACTIVE DUAL-ROLE TABS)
+       ============================================================ -->
+  <section class="how-it-works-section" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Simple & Transparent</span>
+        <h2 class="section-title">How Urgent.ng Works</h2>
+        <p class="section-subtitle">
+          Whether you need something urgently handled or you want to make money running tasks in your spare time, the process is fast and seamless.
+        </p>
+      </div>
+
+      <!-- Role Selector Switch -->
+      <div class="role-tab-selector">
+        <div class="tab-pill-box">
+          <button class="tab-pill-btn active" id="tabRequesterBtn" onclick="switchRoleTab('requester')">
+            I Need an Errand Done (Requester)
+          </button>
+          <button class="tab-pill-btn" id="tabRunnerBtn" onclick="switchRoleTab('runner')">
+            I Want to Earn (Runner)
+          </button>
+        </div>
+      </div>
+
+      <!-- Requester Steps -->
+      <div class="steps-grid" id="requesterSteps">
+        <div class="step-card">
+          <div class="step-num-badge">1</div>
+          <h3>1. Post Your Request</h3>
+          <p>Tell us what needs doing, where to pick up, where to deliver, and your preferred timing. Add photos and special instructions.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num-badge">2</div>
+          <h3>2. Receive Price Offers</h3>
+          <p>Nearby available runners receive your alert and bid the exact price they will charge to get it done.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num-badge">3</div>
+          <h3>3. Choose Your Runner</h3>
+          <p>Compare runner ratings, reviews, past completed tasks, and prices. Select the best match with one click.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num-badge">4</div>
+          <h3>4. Delivered & Paid</h3>
+          <p>Your runner completes the errand. Once you inspect and confirm receipt, pay the runner directly via transfer or cash upon delivery.</p>
+        </div>
+      </div>
+
+      <!-- Runner Steps (Initially Hidden) -->
+      <div class="steps-grid" id="runnerSteps" style="display:none;">
+        <div class="step-card">
+          <div class="step-num-badge">1</div>
+          <h3>1. Discover Nearby Tasks</h3>
+          <p>See a real-time list of errand requests in your neighborhood (Lekki, Yaba, Ikeja, Garki, etc.) with clear distance estimates.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num-badge">2</div>
+          <h3>2. Submit Your Price</h3>
+          <p>Set how much you want to charge and your expected delivery time. You are your own boss with zero forced pricing.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num-badge">3</div>
+          <h3>3. Run the Errand</h3>
+          <p>When the requester accepts your offer, pick up the item, communicate clearly, deliver promptly, and collect payment upon delivery.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num-badge">4</div>
+          <h3>4. Direct Payment</h3>
+          <p>Get paid directly by the requester upon completion via bank transfer or cash in hand with zero platform deductions.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================================
+       LIVE ERRANDS MARKETPLACE BOARD
+       ============================================================ -->
+  <section class="errands-board-section" id="live-errands">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Marketplace Feed</span>
+        <h2 class="section-title">Active Errands Happening Now</h2>
+        <p class="section-subtitle">
+          Real errands posted by everyday people and businesses across Nigeria. See what's moving right now.
+        </p>
+      </div>
+
+      <!-- Category Filter Chips -->
+      <div class="category-filters-row">
+        <button class="filter-chip active" onclick="filterErrands('all', this)">All Categories</button>
+        <button class="filter-chip" onclick="filterErrands('Delivery', this)">Package Delivery</button>
+        <button class="filter-chip" onclick="filterErrands('Shopping', this)">Market & Shopping</button>
+        <button class="filter-chip" onclick="filterErrands('Document', this)">Urgent Documents</button>
+        <button class="filter-chip" onclick="filterErrands('Food', this)">Food & Cakes</button>
+        <button class="filter-chip" onclick="filterErrands('Physical', this)">In-Person Errand</button>
+      </div>
+
+      <!-- Cards Grid -->
+      <div class="errands-grid" id="errandsGrid">
+        
+        <!-- Card 1 -->
+        <div class="errand-listing-card" data-category="Delivery">
+          <div class="errand-card-header">
+            <div>
+              <span class="badge badge-info">Delivery</span>
+              <h3 class="errand-card-title">Collect Laptop Charger left at Coworking Space</h3>
+            </div>
+            <span class="badge badge-warning">3 Offers</span>
+          </div>
+          <div class="errand-card-body">
+            <div class="errand-route-box">
+              <div class="route-point">
+                <span class="route-dot pickup"></span>
+                <span><strong>Pickup:</strong> Workstation, Victoria Island</span>
+              </div>
+              <div class="route-point">
+                <span class="route-dot dropoff"></span>
+                <span><strong>Drop-off:</strong> Admiralty Way, Lekki 1</span>
+              </div>
+            </div>
+            <p style="font-size:13px; color:var(--cn-blue-800, #10151f);">HP USB-C 65W charger with cable in an envelope at front desk.</p>
+            <div class="errand-meta-row">
+              <span>⏱️ Needed within 1 hr</span>
+              <span>Posted 12m ago</span>
+            </div>
+          </div>
+          <div class="errand-card-footer">
+            <div>
+              <span class="budget-label">Suggested Budget</span>
+              <span class="budget-val">₦2,500</span>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="openOfferModal('Collect Laptop Charger', '₦2,500')">Make an Offer</button>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="errand-listing-card" data-category="Shopping">
+          <div class="errand-card-header">
+            <div>
+              <span class="badge badge-success">Shopping</span>
+              <h3 class="errand-card-title">Buy Fresh Seafood & Catfish from Tejuosho</h3>
+            </div>
+            <span class="badge badge-warning">5 Offers</span>
+          </div>
+          <div class="errand-card-body">
+            <div class="errand-route-box">
+              <div class="route-point">
+                <span class="route-dot pickup"></span>
+                <span><strong>Pickup:</strong> Tejuosho Ultra-Modern Market, Yaba</span>
+              </div>
+              <div class="route-point">
+                <span class="route-dot dropoff"></span>
+                <span><strong>Drop-off:</strong> Surulere, Bode Thomas</span>
+              </div>
+            </div>
+            <p style="font-size:13px; color:var(--cn-blue-800, #10151f);">I will transfer grocery money upfront once runner is at the market stand.</p>
+            <div class="errand-meta-row">
+              <span>⏱️ Complete before 3:00 PM</span>
+              <span>Posted 25m ago</span>
+            </div>
+          </div>
+          <div class="errand-card-footer">
+            <div>
+              <span class="budget-label">Runner Fee</span>
+              <span class="budget-val">₦4,000</span>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="openOfferModal('Tejuosho Seafood Shopping', '₦4,000')">Make an Offer</button>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="errand-listing-card" data-category="Document">
+          <div class="errand-card-header">
+            <div>
+              <span class="badge badge-warning">Document</span>
+              <h3 class="errand-card-title">Urgent High Court Certified True Copy (CTC)</h3>
+            </div>
+            <span class="badge badge-warning">2 Offers</span>
+          </div>
+          <div class="errand-card-body">
+            <div class="errand-route-box">
+              <div class="route-point">
+                <span class="route-dot pickup"></span>
+                <span><strong>Pickup:</strong> Lagos High Court, Igbosere</span>
+              </div>
+              <div class="route-point">
+                <span class="route-dot dropoff"></span>
+                <span><strong>Drop-off:</strong> Law Chambers, Marina</span>
+              </div>
+            </div>
+            <p style="font-size:13px; color:var(--cn-blue-800, #10151f);">Document is already stamped and ready with Registrar Room 12.</p>
+            <div class="errand-meta-row">
+              <span>⏱️ ASAP / Immediate</span>
+              <span>Posted 6m ago</span>
+            </div>
+          </div>
+          <div class="errand-card-footer">
+            <div>
+              <span class="budget-label">Suggested Budget</span>
+              <span class="budget-val">₦3,500</span>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="openOfferModal('High Court Document Dispatch', '₦3,500')">Make an Offer</button>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="errand-listing-card" data-category="Food">
+          <div class="errand-card-header">
+            <div>
+              <span class="badge badge-info">Food</span>
+              <h3 class="errand-card-title">Pick up 2-Tier Birthday Cake in Temperature Box</h3>
+            </div>
+            <span class="badge badge-warning">4 Offers</span>
+          </div>
+          <div class="errand-card-body">
+            <div class="errand-route-box">
+              <div class="route-point">
+                <span class="route-dot pickup"></span>
+                <span><strong>Pickup:</strong> Cakes by Tola, Ikeja</span>
+              </div>
+              <div class="route-point">
+                <span class="route-dot dropoff"></span>
+                <span><strong>Drop-off:</strong> Magodo Phase 2</span>
+              </div>
+            </div>
+            <p style="font-size:13px; color:var(--cn-blue-800, #10151f);">Fragile! Requires car runner or careful dispatch bag.</p>
+            <div class="errand-meta-row">
+              <span>⏱️ Before 5:00 PM today</span>
+              <span>Posted 40m ago</span>
+            </div>
+          </div>
+          <div class="errand-card-footer">
+            <div>
+              <span class="budget-label">Runner Fee</span>
+              <span class="budget-val">₦5,000</span>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="openOfferModal('Birthday Cake Delivery', '₦5,000')">Make an Offer</button>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="errand-listing-card" data-category="Physical">
+          <div class="errand-card-header">
+            <div>
+              <span class="badge badge-neutral">Physical</span>
+              <h3 class="errand-card-title">Inspect Used Car Engine at Mechanic Workshop</h3>
+            </div>
+            <span class="badge badge-warning">1 Offer</span>
+          </div>
+          <div class="errand-card-body">
+            <div class="errand-route-box">
+              <div class="route-point">
+                <span class="route-dot pickup"></span>
+                <span><strong>Location:</strong> Berger Auto Yard, Ojodu</span>
+              </div>
+              <div class="route-point">
+                <span class="route-dot dropoff"></span>
+                <span><strong>Task:</strong> Send 4K video walkaround & engine sound</span>
+              </div>
+            </div>
+            <p style="font-size:13px; color:var(--cn-blue-800, #10151f);">I am in Abuja buying from a Lagos seller. Need honest eye-witness confirmation.</p>
+            <div class="errand-meta-row">
+              <span>⏱️ Within 3 hours</span>
+              <span>Posted 18m ago</span>
+            </div>
+          </div>
+          <div class="errand-card-footer">
+            <div>
+              <span class="budget-label">Suggested Budget</span>
+              <span class="budget-val">₦7,500</span>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="openOfferModal('Car Video Inspection', '₦7,500')">Make an Offer</button>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="errand-listing-card" data-category="Delivery">
+          <div class="errand-card-header">
+            <div>
+              <span class="badge badge-info">Delivery</span>
+              <h3 class="errand-card-title">Collect Fabric Samples from Balogun Market</h3>
+            </div>
+            <span class="badge badge-warning">6 Offers</span>
+          </div>
+          <div class="errand-card-body">
+            <div class="errand-route-box">
+              <div class="route-point">
+                <span class="route-dot pickup"></span>
+                <span><strong>Pickup:</strong> Balogun Island, Lagos Island</span>
+              </div>
+              <div class="route-point">
+                <span class="route-dot dropoff"></span>
+                <span><strong>Drop-off:</strong> Fashion Studio, Lekki Phase 1</span>
+              </div>
+            </div>
+            <p style="font-size:13px; color:var(--cn-blue-800, #10151f);">Vendor name: Iya Basira, shop B14. Small waterproof parcel.</p>
+            <div class="errand-meta-row">
+              <span>⏱️ Today before 2 PM</span>
+              <span>Posted 10m ago</span>
+            </div>
+          </div>
+          <div class="errand-card-footer">
+            <div>
+              <span class="budget-label">Suggested Budget</span>
+              <span class="budget-val">₦3,000</span>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="openOfferModal('Balogun Fabric Samples', '₦3,000')">Make an Offer</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="text-align: center; margin-top: var(--space-3xl);">
+        <button class="btn btn-outline btn-lg" onclick="window.location.href='discovery.html'" style="color:var(--cn-blue-800, #10151f); border-color:var(--cn-green-500); font-weight:800;">
+          View More &rarr;
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RUNNER EARNINGS CALCULATOR
+       ============================================================ -->
+  <section class="earnings-section" id="earn-money">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Earn on Your Terms</span>
+        <h2 class="section-title">Turn Your Free Time into Reliable Daily Income</h2>
+        <p class="section-subtitle">
+          Whether you walk, take a bus, ride a bike, or drive, earn by completing quick errands in your neighborhood.
+        </p>
+      </div>
+
+      <div class="calculator-card">
+        <div class="calc-controls">
+          <div class="slider-group">
+            <div class="slider-header">
+              <label class="slider-label" for="errandsSlider">Errands completed per day</label>
+              <span class="slider-display" id="errandsCountDisplay">4 errands / day</span>
+            </div>
+            <input type="range" class="custom-range" id="errandsSlider" min="1" max="12" value="4" oninput="updateEarnings()">
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <label class="slider-label" for="priceSlider">Average earning per errand</label>
+              <span class="slider-display" id="priceCountDisplay">₦3,500</span>
+            </div>
+            <input type="range" class="custom-range" id="priceSlider" min="1500" max="8000" step="500" value="3500" oninput="updateEarnings()">
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <label class="slider-label" for="daysSlider">Working days per week</label>
+              <span class="slider-display" id="daysCountDisplay">5 days / week</span>
+            </div>
+            <input type="range" class="custom-range" id="daysSlider" min="1" max="7" value="5" oninput="updateEarnings()">
+          </div>
+        </div>
+
+        <div class="calc-results-box">
+          <span class="results-eyebrow">Estimated Monthly Take-Home</span>
+          <div class="results-amount" id="monthlyTotalDisplay">₦280,000</div>
+          <p class="results-note">Paid directly into your Nigerian bank account with instant wallet withdrawals.</p>
+          <button class="btn btn-primary btn-md" style="margin-top:8px;" onclick="openRunnerModal()">
+            Start Earning as a Runner
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       COMMUNITY SAFETY & SMART ERRAND GUIDELINES
+       ============================================================ -->
+  <section class="trust-security-section" id="trust-safety">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Community Safety</span>
+        <h2 class="section-title">Tips for Safe & Seamless Errands</h2>
+        <p class="section-subtitle">
+          Urgent.ng connects you directly with independent local runners. Here is how to keep every errand smooth, reliable, and secure.
+        </p>
+      </div>
+
+      <div class="security-grid">
+        <div class="security-card">
+          <div class="security-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </div>
+          <h3>Pay Only on Delivery</h3>
+          <p>Never pay for errand labor upfront. Inspect your delivered package or shopping purchase with official receipts before transferring funds or handing over cash.</p>
+        </div>
+
+        <div class="security-card">
+          <div class="security-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          </div>
+          <h3>Check Ratings & Reviews</h3>
+          <p>Before accepting a bid, review the runner's completed task count, star ratings, and honest feedback left by other community members in your area.</p>
+        </div>
+
+        <div class="security-card">
+          <div class="security-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          </div>
+          <h3>Use Public Landmarks</h3>
+          <p>For handovers, choose well-lit public spots like shopping malls, fuel stations, or office gates. Keep all errand terms and expectations documented in in-app chat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FAQ ACCORDION
+       ============================================================ -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-tag">Got Questions?</span>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Everything you need to know about posting and running errands.</p>
+      </div>
+
+      <div class="faq-accordion">
+        <div class="faq-item open">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>How do payments work? When do I pay the runner?</span>
+            <span class="faq-chevron">&darr;</span>
+          </button>
+          <div class="faq-answer">
+            You pay the runner directly via bank transfer or cash only AFTER your errand is completed and you have inspected your items or receipts in hand. We strongly advise never sending money or advance fees upfront to any runner before the task is fulfilled.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>Can one account both post errands and run errands?</span>
+            <span class="faq-chevron">&darr;</span>
+          </button>
+          <div class="faq-answer">
+            Yes! Urgent.ng uses a unified single sign-on system. You can switch between Requester Mode (posting tasks) and Runner Mode (browsing errands to earn) right from your profile menu without creating separate accounts.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>How does pricing work? Is there a fixed delivery fee?</span>
+            <span class="faq-chevron">&darr;</span>
+          </button>
+          <div class="faq-answer">
+            No fixed fees! Urgent.ng is a free-market bidding platform. When you post an errand, nearby runners propose what they will charge based on traffic, distance, and urgency. You compare their prices, estimated times, and reputation, and choose the deal that fits your budget best.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>How quickly do runners respond to requests?</span>
+            <span class="faq-chevron">&darr;</span>
+          </button>
+          <div class="faq-answer">
+            In bustling commercial hubs like Ikeja, Victoria Island, Yaba, Lekki, and Surulere, you typically receive your first 2 to 4 price offers within 5 to 10 minutes of publishing your request.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            <span>How do runners receive payment?</span>
+            <span class="faq-chevron">&darr;</span>
+          </button>
+          <div class="faq-answer">
+            Once the requester confirms completion, funds instantly reflect in your Urgent.ng runner wallet. You can click "Withdraw" at any time to transfer money directly into any Nigerian commercial or microfinance bank via instant NIP transfer.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CONVERSION CTA BANNER
+       ============================================================ -->
+  <section class="cta-banner-section">
+    <div class="container">
+      <div class="cta-banner-card">
+        <div class="cta-content">
+          <h2 class="cta-title">Ready to get that urgent task sorted today?</h2>
+          <p class="cta-desc">
+            Stop stressing over Lagos traffic and endless calls. Post your errand in 60 seconds and let trusted nearby runners handle the rest.
+          </p>
+          <div class="cta-btns-row">
+            <button class="btn btn-primary btn-lg" onclick="openPostErrandModal()">
+              Post an Errand Now &rarr;
+            </button>
+            <button class="btn btn-secondary btn-lg" onclick="openRunnerModal()">
+              Sign Up as a Runner
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#" class="brand-logo" style="color:#ffffff;">
+            <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#93C700"/><path d="M17 6L9 18H16L15 26L23 14H16L17 6Z" fill="white"/></svg>
+            <span>urgent<span class="logo-badge">.ng</span></span>
+          </a>
+          <p>
+            Nigeria's trusted peer-to-peer errand marketplace. Connecting people with tasks to available runners nearby with secure escrow payments.
+          </p>
+          <div style="font-size: 13px; color: var(--cn-green-400);">Part of the ConnectNigeria Network</div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Marketplace</h4>
+          <ul class="footer-links">
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#live-errands">Active Errands</a></li>
+            <li><a href="javascript:void(0)" onclick="openPostErrandModal()">Post an Errand</a></li>
+            <li><a href="#earn-money">Runner Earnings</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Safety & Trust</h4>
+          <ul class="footer-links">
+            <li><a href="#trust-safety">Escrow Protection</a></li>
+            <li><a href="#trust-safety">Identity Verification</a></li>
+            <li><a href="#trust-safety">Runner Code of Conduct</a></li>
+            <li><a href="#faq">Dispute Resolution</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul class="footer-links">
+            <li><a href="#">About Urgent.ng</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Contact Support</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Urgent.ng Technologies Limited. All rights reserved.</div>
+        <div style="display:flex; gap:16px;">
+          <span>Lagos</span>
+          <span>Abuja</span>
+          <span>Port Harcourt</span>
+          <span>Ibadan</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       MODAL 0: EXPANDED LOGIN MODAL (Role Choice & Google + Phone Flow)
+       ============================================================ -->
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-header">
+        <h3 class="modal-title">Sign In to Urgent.ng</h3>
+        <button class="modal-close-btn" onclick="closeModals()">&times;</button>
+      </div>
+
+      <div class="modal-body" style="padding: 28px;">
+        
+        <!-- View A: Standard Login & Google Button -->
+        <div id="modalStandardLoginView">
+          <!-- Role Selector -->
+          <label class="role-choice-label">Select Your Role</label>
+          <div class="role-selector-grid">
+            <button type="button" class="role-card-btn active" id="modalRoleProvider" onclick="setModalLoginRole('provider')">
+              <div class="role-card-top">
+                <span class="role-icon">💼</span>
+                <div class="role-radio-dot"></div>
+              </div>
+              <div class="role-name">Service Provider</div>
+              <div class="role-desc">Post tasks & hire runners</div>
+            </button>
+
+            <button type="button" class="role-card-btn" id="modalRoleRunner" onclick="setModalLoginRole('runner')">
+              <div class="role-card-top">
+                <span class="role-icon">🏃</span>
+                <div class="role-radio-dot"></div>
+              </div>
+              <div class="role-name">Errand Runner</div>
+              <div class="role-desc">Browse tasks & earn</div>
+            </button>
+          </div>
+
+          <!-- Google Auth CTA -->
+          <button type="button" class="btn-google-auth" onclick="startModalGoogleAuth()">
+            <svg class="google-icon" width="20" height="20" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span id="modalGoogleBtnText">Continue with Google as Service Provider</span>
+          </button>
+
+          <div class="auth-divider">
+            <span>or with email / phone</span>
+          </div>
+
+          <form onsubmit="handleModalLoginSubmit(event)">
+            <div class="form-group" style="margin-bottom:14px;">
+              <label class="form-label" for="modalLoginIdentifier" id="modalIdentLabel">Email Address or Phone Number</label>
+              <input type="text" class="form-input" id="modalLoginIdentifier" placeholder="e.g. adeleke@business.ng or 0802 345 6789" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom:16px;">
+              <label class="form-label" for="modalLoginPassword">Password</label>
+              <input type="password" class="form-input" id="modalLoginPassword" placeholder="••••••••••••" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" style="width:100%; justify-content:center;" id="modalSubmitBtn">
+              Sign In as Service Provider
+            </button>
+          </form>
+
+          <div style="display:flex; justify-content:center; align-items:center; gap:12px; margin-top:20px; flex-wrap:wrap;">
+            <a href="register.html" class="btn btn-ghost btn-sm" style="font-weight:700; color:var(--cn-green-800);">Create Account</a>
+            <span style="color:var(--cn-blue-200);">&bull;</span>
+            <a href="forgot-password.html" class="btn btn-ghost btn-sm" style="color:var(--cn-blue-800, #10151f);">Forgot Password?</a>
+            <span style="color:var(--cn-blue-200);">&bull;</span>
+            <button type="button" class="btn btn-ghost btn-sm" onclick="quickFillModal('runner')" style="color:var(--cn-blue-600); font-weight:600;">🏃 Demo Runner</button>
+          </div>
+        </div>
+
+        <!-- View B: Google Phone Number Required Step -->
+        <div id="modalGooglePhoneView" style="display:none;">
+          <div style="text-align:center; margin-bottom:18px;">
+            <h4 style="font-size:20px; font-weight:800; color:var(--cn-blue-700); margin-bottom:4px;">Link Your Phone Number</h4>
+            <p style="font-size:13px; color:var(--cn-blue-800, #10151f);">To receive delivery calls and errand alerts, provide your Nigerian phone number.</p>
+          </div>
+
+          <div class="google-connected-pill">
+            <div class="g-user-info">
+              <span>Google Account:</span>
+              <strong id="modalGoogleEmail">user.account@gmail.com</strong>
+            </div>
+            <span style="font-size:11px; color:var(--cn-green-800); font-weight:700;">✓ Connected</span>
+          </div>
+
+          <form onsubmit="handleModalGooglePhoneSubmit(event)">
+            <div class="form-group" style="margin-bottom:16px;">
+              <label class="form-label" for="modalGooglePhoneInput">Active Nigerian Phone Number *</label>
+              <div class="phone-prefix-input-wrap">
+                <div class="country-flag-badge">
+                  <span>🇳🇬</span>
+                  <span>+234</span>
+                </div>
+                <input type="tel" id="modalGooglePhoneInput" placeholder="803 123 4567" required autofocus>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:10px;">
+              <button type="button" class="btn btn-secondary btn-md" onclick="cancelModalGoogleStep()" style="flex:1;">
+                Back
+              </button>
+              <button type="submit" class="btn btn-primary btn-md" style="flex:2;">
+                Confirm & Sign In &rarr;
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL 1: POST AN ERRAND WIZARD (FULL WORKFLOW & OFFERS SIM)
+       ============================================================ -->
+  <div class="modal-overlay" id="postErrandModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title" id="postModalTitle">Post a New Errand</h3>
+        <button class="modal-close-btn" onclick="closeModals()">&times;</button>
+      </div>
+
+      <!-- Step 1: Request Form -->
+      <div class="modal-body" id="postErrandFormView">
+        <div class="form-group">
+          <label class="form-label" for="errandTitleInput">What needs to be done? *</label>
+          <input type="text" class="form-input" id="errandTitleInput" placeholder="e.g. Pick up tailored native wear from tailor in Yaba">
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="errandCategorySelect">Category *</label>
+            <select class="form-select" id="errandCategorySelect">
+              <option value="Delivery">Package Delivery</option>
+              <option value="Shopping">Market & Grocery Shopping</option>
+              <option value="Document">Urgent Documents</option>
+              <option value="Food">Food / Cake Dispatch</option>
+              <option value="Queue">Physical Errand / Queue</option>
+              <option value="Other">Other Custom Task</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="errandTimingSelect">When do you need it? *</label>
+            <select class="form-select" id="errandTimingSelect">
+              <option value="Immediately">Urgent / Immediate (Today)</option>
+              <option value="Within 2 Hours">Within 2 Hours</option>
+              <option value="Today Evening">Today Evening</option>
+              <option value="Tomorrow">Scheduled for Tomorrow</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="errandPickupInput">Pickup Location *</label>
+            <input type="text" class="form-input" id="errandPickupInput" placeholder="e.g. 14 Commercial Ave, Sabo Yaba">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="errandDestinationInput">Destination Address *</label>
+            <input type="text" class="form-input" id="errandDestinationInput" placeholder="e.g. Victoria Island, Lagos">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="errandDescInput">Description & Special Instructions</label>
+          <textarea class="form-textarea" id="errandDescInput" placeholder="Provide contact person name, phone number, package fragility, gate code, or specific item details."></textarea>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="errandBudgetInput">Suggested Budget (Optional ₦)</label>
+            <input type="number" class="form-input" id="errandBudgetInput" placeholder="e.g. 3000">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="errandPhoneInput">Your Phone Number (For OTP) *</label>
+            <input type="tel" class="form-input" id="errandPhoneInput" placeholder="0801 234 5678">
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Live Offers Simulation View (After Posting) -->
+      <div class="modal-body offers-simulation-view" id="offersSimView">
+        <div style="text-align:center; padding: 10px 0;">
+          <div class="badge-dot" style="width:12px; height:12px; background:var(--cn-green-500); margin:0 auto 10px auto; animation:pulse 1.5s infinite;"></div>
+          <h4 style="font-size:18px; color:var(--cn-blue-700);">Broadcasting to Nearby Runners...</h4>
+          <p style="font-size:13px; color:var(--cn-blue-800, #10151f); margin-top:4px;">Runners in your area are evaluating your task. Offers will appear below in real-time!</p>
+        </div>
+
+        <div id="simulatedOffersContainer" style="display:flex; flex-direction:column; gap:12px;">
+          <!-- Injected dynamically via JS -->
+        </div>
+      </div>
+
+      <div class="modal-footer" id="postModalFooter">
+        <button class="btn btn-secondary btn-md" onclick="closeModals()">Cancel</button>
+        <button class="btn btn-primary btn-md" id="submitErrandBtn" onclick="submitErrand()">
+          Post Request & Get Offers
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       MODAL 2: BECOME A RUNNER MODAL
+       ============================================================ -->
+  <div class="modal-overlay" id="runnerModal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 class="modal-title">Become an Urgent.ng Runner</h3>
+        <button class="modal-close-btn" onclick="closeModals()">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <p style="font-size:14px; color:var(--cn-blue-800, #10151f);">Join over 5,000 verified runners across Nigeria. Choose the jobs you want, set your prices, and receive instant payouts.</p>
+        
+        <div class="form-group">
+          <label class="form-label" for="runnerNameInput">Full Legal Name (as on Bank/NIN) *</label>
+          <input type="text" class="form-input" id="runnerNameInput" placeholder="e.g. Babatunde Adeleke">
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="runnerPhoneInput">WhatsApp Phone Number *</label>
+            <input type="tel" class="form-input" id="runnerPhoneInput" placeholder="0802 345 6789">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="runnerCitySelect">Operating City / Area *</label>
+            <select class="form-select" id="runnerCitySelect">
+              <option value="Lagos - Island">Lagos (Island - Lekki / VI / Ikoyi)</option>
+              <option value="Lagos - Mainland">Lagos (Mainland - Ikeja / Yaba / Surulere)</option>
+              <option value="Abuja">Abuja (Central / Wuse / Garki / Maitama)</option>
+              <option value="Port Harcourt">Port Harcourt</option>
+              <option value="Ibadan">Ibadan</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="runnerModeSelect">Preferred Transportation Mode</label>
+            <select class="form-select" id="runnerModeSelect">
+              <option value="Motorcycle">Motorcycle / Okada</option>
+              <option value="Bicycle">Bicycle / E-Scooter</option>
+              <option value="Car">Private Car</option>
+              <option value="Walking/Bus">Public Transit & Walking</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="runnerBankSelect">Payout Bank</label>
+            <select class="form-select" id="runnerBankSelect">
+              <option value="GTBank">Guaranty Trust Bank (GTB)</option>
+              <option value="Access">Access Bank</option>
+              <option value="Zenith">Zenith Bank</option>
+              <option value="Kuda">Kuda Microfinance Bank</option>
+              <option value="Opay">OPay / PalmPay</option>
+              <option value="FirstBank">First Bank of Nigeria</option>
+              <option value="UBA">United Bank for Africa (UBA)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary btn-md" onclick="closeModals()">Cancel</button>
+        <button class="btn btn-primary btn-md" onclick="submitRunnerApplication()">
+          Submit Runner Registration
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       FLOATING ACTION BUTTON (FAB) & IN-APP CHAT PREVIEW
+       ============================================================ -->
+  <div class="chat-fab-widget" id="chatFab">
+    <div class="chat-box-popup" id="chatBoxPopup">
+      <div class="chat-box-header">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="badge-dot" style="background:#93c700;"></span>
+          <h4>Urgent.ng Live Support</h4>
+        </div>
+        <button onclick="toggleChatPopup()" style="color:#ffffff; font-size:18px;">&times;</button>
+      </div>
+      <div class="chat-messages-area" id="chatMessagesArea">
+        <div class="chat-bubble incoming">
+          Hello! Need help posting an errand or looking to join as a verified runner? We're online.
+        </div>
+      </div>
+      <div class="chat-input-bar">
+        <input type="text" id="chatInputText" placeholder="Ask a question..." onkeydown="if(event.key==='Enter') sendChatMessage()">
+        <button class="btn btn-sm btn-primary" onclick="sendChatMessage()">Send</button>
+      </div>
+    </div>
+
+    <button class="fab-trigger-btn" onclick="toggleChatPopup()" aria-label="Open support chat">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      <span class="fab-unread-dot"></span>
+    </button>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
