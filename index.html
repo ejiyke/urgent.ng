@@ -85,8 +85,8 @@
 
 
 
-  <!-- ============================================================
-       HERO SECTION (Figma Design with Full Hero Background)
+    <!-- ============================================================
+       HERO SECTION (Figma Design: Desktop 200:2 & Mobile 215:11643)
        ============================================================ -->
   <section class="hero-section">
     <div class="container hero-container">
@@ -99,6 +99,24 @@
         <p class="hero-desc">
           Connect with verified, trusted runners around you in minutes. Set your task, receive competitive price offers, and pay safely only after it's delivered.
         </p>
+
+        <!-- Mobile-Only Media Block (Figma: 215:11643) -->
+        <div class="hero-mobile-media" id="heroMobileMedia">
+          <img src="assets/hero-bg.png" alt="Trusted errand runner" class="hero-mobile-media-img">
+          
+          <!-- Floating Task Done Badge on Mobile -->
+          <div class="hero-floating-badge hero-mobile-badge">
+            <div class="badge-icon-circle">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2e5b00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <div class="badge-text-col">
+              <div class="badge-title">Task Done</div>
+              <div class="badge-subtitle">Inspect items before payment</div>
+            </div>
+          </div>
+        </div>
 
         <div class="hero-actions">
           <button class="btn btn-hero-primary" onclick="window.location.href='discovery.html'">
@@ -115,8 +133,8 @@
       </div>
     </div>
 
-    <!-- Floating Task Done Badge (Figma: 200:2) -->
-    <div class="hero-floating-badge" id="heroTaskDoneBadge">
+    <!-- Desktop Floating Task Done Badge (Figma: 200:2) -->
+    <div class="hero-floating-badge hero-desktop-badge" id="heroTaskDoneBadge">
       <div class="badge-icon-circle">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2e5b00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
           <path d="M5 13l4 4L19 7"/>
