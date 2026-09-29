@@ -3764,3 +3764,32 @@ img {
     max-height: 92vh !important;
   }
 }
+
+
+/* Brand Logo Image */
+.brand-logo-img {
+  height: 44px;
+  width: auto;
+  max-width: 175px;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.25s var(--ease-out-expo);
+}
+
+.brand-logo:hover .brand-logo-img {
+  transform: scale(1.04);
+}
+
+.drawer-header .brand-logo-img {
+  height: 38px;
+  max-width: 150px;
+}
+
+.footer-brand .brand-logo-img {
+  height: 44px;
+  max-width: 180px;
+  background: #ffffff;
+  padding: 6px 12px;
+  border-radius: 10px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
