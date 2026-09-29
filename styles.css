@@ -1,5 +1,5 @@
 /* ============================================================
-   URGENT.NG â€” STYLESHEET (CN DESIGN SYSTEM ARCHITECTURE)
+   URGENT.NG — STYLESHEET (CN DESIGN SYSTEM ARCHITECTURE)
    Based on CN Design System tokens (Archivo, #93C700, #1B2330)
    ============================================================ */
 
@@ -3002,5 +3002,364 @@ img {
 @media (max-width: 820px) {
   .instant-grid-2 {
     grid-template-columns: 1fr;
+  }
+}
+
+
+/* ==========================================================================
+   ADVANCED WEB ANIMATIONS & MICRO-INTERACTIONS
+   ========================================================================== */
+
+/* Motion Timing Tokens */
+:root {
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+  --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-bounce: 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 1. HERO SECTION ENTRANCE & CHOREOGRAPHY */
+.hero-content .hero-title {
+  animation: heroFadeUp 0.8s var(--ease-out-expo) 0.1s backwards;
+}
+
+.hero-content .hero-desc {
+  animation: heroFadeUp 0.8s var(--ease-out-expo) 0.25s backwards;
+}
+
+.hero-content .hero-actions {
+  animation: heroFadeUp 0.8s var(--ease-out-expo) 0.4s backwards;
+}
+
+@keyframes heroFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero Floating Badge Entrance & Hover Dynamics */
+.hero-floating-badge {
+  animation: badgeEntrance 0.9s var(--ease-out-back) 0.5s backwards, floatBadge 4s ease-in-out 1.4s infinite alternate !important;
+  transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s var(--ease-out-expo), border-color 0.3s ease;
+}
+
+@keyframes badgeEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.88);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.hero-floating-badge:hover {
+  transform: translateY(-8px) scale(1.03) !important;
+  box-shadow: 0 20px 40px -6px rgba(16, 21, 31, 0.16), 0 0 24px -2px rgba(133, 196, 36, 0.28) !important;
+  border-color: rgba(133, 196, 36, 0.5) !important;
+  cursor: pointer;
+}
+
+.hero-floating-badge .badge-icon-circle {
+  transition: transform 0.35s var(--ease-out-back), background-color 0.3s ease;
+}
+
+.hero-floating-badge:hover .badge-icon-circle {
+  transform: scale(1.12) rotate(6deg);
+  background-color: #d7f59d;
+}
+
+/* 2. BUTTON SHINE / SHEEN EFFECT & MAGNETIC HOVER */
+.btn-hero-primary,
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s var(--ease-out-expo), box-shadow 0.25s var(--ease-out-expo), background-color 0.2s ease;
+}
+
+.btn-hero-primary::after,
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -75%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg);
+  transition: left 0.75s ease;
+  pointer-events: none;
+}
+
+.btn-hero-primary:hover::after,
+.btn-primary:hover::after {
+  left: 140%;
+}
+
+.btn-hero-primary:hover,
+.btn-primary:hover {
+  transform: translateY(-2.5px);
+  box-shadow: 0 10px 24px -4px rgba(133, 196, 36, 0.45);
+}
+
+.btn-hero-primary:active,
+.btn-primary:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.btn-hero-secondary,
+.btn-secondary,
+.btn-outline,
+.btn-ghost {
+  transition: transform 0.25s var(--ease-out-expo), box-shadow 0.25s var(--ease-out-expo), background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-hero-secondary:hover,
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -3px rgba(16, 21, 31, 0.08);
+}
+
+.btn-hero-secondary:active,
+.btn-secondary:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+/* 3. SCROLL-TRIGGERED REVEAL & STAGGER ENGINE */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.75s var(--ease-out-expo), transform 0.75s var(--ease-out-expo);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Cascade stagger delays */
+.stagger-1 { transition-delay: 80ms; }
+.stagger-2 { transition-delay: 160ms; }
+.stagger-3 { transition-delay: 240ms; }
+.stagger-4 { transition-delay: 320ms; }
+.stagger-5 { transition-delay: 400ms; }
+.stagger-6 { transition-delay: 480ms; }
+
+/* 4. CARD MICRO-INTERACTIONS */
+
+/* Errand Listing Cards */
+.errand-listing-card {
+  transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s var(--ease-out-expo), border-color 0.3s ease;
+  will-change: transform, box-shadow;
+}
+
+.errand-listing-card:hover {
+  transform: translateY(-7px);
+  box-shadow: 0 18px 36px -4px rgba(16, 21, 31, 0.12), 0 4px 12px -2px rgba(16, 21, 31, 0.04);
+  border-color: rgba(133, 196, 36, 0.45);
+}
+
+.errand-listing-card .btn-primary {
+  transition: all 0.25s var(--ease-out-expo);
+}
+
+.errand-listing-card:hover .btn-primary {
+  box-shadow: 0 6px 16px -2px rgba(133, 196, 36, 0.4);
+}
+
+/* How It Works Step Cards */
+.step-card {
+  transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s var(--ease-out-expo), border-color 0.3s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px -4px rgba(16, 21, 31, 0.08), 0 0 0 1px rgba(133, 196, 36, 0.3);
+}
+
+.step-card .step-num-badge {
+  transition: transform 0.35s var(--ease-out-back), background-color 0.3s ease;
+}
+
+.step-card:hover .step-num-badge {
+  transform: scale(1.14) rotate(4deg);
+  background-color: var(--cn-green-500);
+  color: #ffffff;
+}
+
+/* Trust & Security Cards */
+.security-card {
+  transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s var(--ease-out-expo), border-color 0.3s ease;
+}
+
+.security-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 16px 32px -4px rgba(16, 21, 31, 0.08);
+}
+
+.security-card .security-icon-box {
+  transition: transform 0.35s var(--ease-out-back);
+}
+
+.security-card:hover .security-icon-box {
+  transform: scale(1.12) rotate(6deg);
+}
+
+/* Calculator & Instant Request Cards */
+.instant-request-card,
+.calculator-card {
+  transition: transform 0.4s var(--ease-out-expo), box-shadow 0.4s var(--ease-out-expo);
+}
+
+.instant-request-card:hover,
+.calculator-card:hover {
+  box-shadow: 0 20px 44px -8px rgba(16, 21, 31, 0.1);
+}
+
+/* Testimonial Cards */
+.testimonial-card {
+  transition: transform 0.35s var(--ease-out-expo), box-shadow 0.35s var(--ease-out-expo);
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 32px -4px rgba(16, 21, 31, 0.08);
+}
+
+/* 5. FILTER CHIPS ELASTIC TRANSITION */
+.filter-chip {
+  transition: transform 0.25s var(--ease-out-back), background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease;
+}
+
+.filter-chip:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 21, 31, 0.06);
+}
+
+.filter-chip.active {
+  transform: scale(1.04);
+  box-shadow: 0 4px 14px rgba(133, 196, 36, 0.25);
+}
+
+/* 6. TAB SWITCHER FLUID CROSSFADE & SLIDE */
+.tab-fade-slide {
+  animation: tabFadeSlideIn 0.38s var(--ease-out-expo) forwards;
+}
+
+@keyframes tabFadeSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-pill-btn {
+  transition: all 0.25s var(--ease-out-expo);
+}
+
+.tab-pill-btn.active {
+  box-shadow: 0 4px 14px rgba(16, 21, 31, 0.08);
+}
+
+/* 7. RADAR PULSE ON FLOATING CHAT WIDGET */
+.fab-trigger-btn {
+  position: relative;
+  transition: transform 0.35s var(--ease-out-back), box-shadow 0.35s ease;
+  animation: fabRadarPulse 3.6s infinite ease-out;
+}
+
+@keyframes fabRadarPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(133, 196, 36, 0.65), 0 8px 24px rgba(16, 21, 31, 0.2);
+  }
+  65% {
+    box-shadow: 0 0 0 16px rgba(133, 196, 36, 0), 0 8px 24px rgba(16, 21, 31, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(133, 196, 36, 0), 0 8px 24px rgba(16, 21, 31, 0.2);
+  }
+}
+
+.fab-trigger-btn:hover {
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 12px 28px rgba(133, 196, 36, 0.45);
+}
+
+.chat-box-popup {
+  transition: transform 0.35s var(--ease-out-back), opacity 0.3s ease;
+  transform-origin: bottom right;
+}
+
+.chat-box-popup.active {
+  animation: chatPopupIn 0.35s var(--ease-out-back) forwards;
+}
+
+@keyframes chatPopupIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.88) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* 8. FAQ ACCORDION BUTTERY TRANSITION */
+.faq-item {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.faq-item:hover {
+  border-color: rgba(133, 196, 36, 0.35);
+}
+
+.faq-item.open {
+  border-color: var(--cn-green-500);
+  box-shadow: 0 6px 18px -2px rgba(133, 196, 36, 0.12);
+}
+
+.faq-question {
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.faq-question:hover {
+  background-color: var(--cn-green-50, #f8fcf0);
+}
+
+.faq-chevron {
+  transition: transform 0.35s var(--ease-out-back), color 0.2s ease;
+}
+
+/* 9. PREFERS-REDUCED-MOTION ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal-on-scroll {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

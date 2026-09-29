@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavbarScroll();
   initMobileMenu();
   updateEarnings();
+  initScrollAnimations();
 });
 
 // ============================================================
@@ -59,11 +60,17 @@ function switchRoleTab(role) {
     runBtn.classList.remove('active');
     reqSteps.style.display = 'grid';
     runSteps.style.display = 'none';
+    reqSteps.classList.remove('tab-fade-slide');
+    void reqSteps.offsetWidth;
+    reqSteps.classList.add('tab-fade-slide');
   } else {
     runBtn.classList.add('active');
     reqBtn.classList.remove('active');
     runSteps.style.display = 'grid';
     reqSteps.style.display = 'none';
+    runSteps.classList.remove('tab-fade-slide');
+    void runSteps.offsetWidth;
+    runSteps.classList.add('tab-fade-slide');
   }
 }
 
@@ -76,12 +83,15 @@ function filterErrands(category, buttonEl) {
   chips.forEach(chip => chip.classList.remove('active'));
   if (buttonEl) buttonEl.classList.add('active');
 
-  // Filter cards
+  // Filter cards with smooth entrance transition
   const cards = document.querySelectorAll('.errand-listing-card');
+  let visibleIndex = 0;
   cards.forEach(card => {
     const cardCat = card.getAttribute('data-category');
     if (category === 'all' || cardCat === category) {
       card.style.display = 'flex';
+      card.style.animation = `heroFadeUp 0.35s var(--ease-out-expo) ${visibleIndex * 0.05}s backwards`;
+      visibleIndex++;
     } else {
       card.style.display = 'none';
     }
@@ -109,7 +119,13 @@ function updateEarnings() {
 
   // Calculation: (errands * fee * days * 4 weeks)
   const monthlyTotal = errandsPerDay * avgFee * daysPerWeek * 4;
-  document.getElementById('monthlyTotalDisplay').textContent = `₦${monthlyTotal.toLocaleString()}`;
+  const totalDisplay = document.getElementById('monthlyTotalDisplay');
+  if (typeof animateNumberValue === 'function') {
+    animateNumberValue(totalDisplay, prevMonthlyTotal, monthlyTotal, 350);
+    prevMonthlyTotal = monthlyTotal;
+  } else {
+    totalDisplay.textContent = `₦${monthlyTotal.toLocaleString()}`;
+  }
 }
 
 // ============================================================
