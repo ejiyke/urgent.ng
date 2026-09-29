@@ -266,16 +266,40 @@ img {
   letter-spacing: 0.2px;
 }
 
-.badge-success {
-  background-color: var(--cn-green-50);
-  color: var(--cn-green-900);
-  border: 1px solid var(--cn-green-300);
+.badge-success, .badge-shopping {
+  background-color: var(--cn-green-50, #f4fbe6);
+  color: var(--cn-green-900, #3b5000);
+  border: 1px solid var(--cn-green-300, #bbe770);
 }
 
-.badge-warning {
-  background-color: var(--cn-yellow-light);
-  color: var(--cn-yellow-dark);
-  border: 1px solid var(--cn-yellow-light-active);
+.badge-warning, .badge-document {
+  background-color: var(--cn-yellow-light, #fffbee);
+  color: var(--cn-yellow-dark, #ab6216);
+  border: 1px solid var(--cn-yellow-light-active, #fcedbb);
+}
+
+.badge-info, .badge-delivery {
+  background-color: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.badge-food {
+  background-color: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
+
+.badge-neutral, .badge-physical {
+  background-color: var(--cn-blue-50, #eff1f4);
+  color: var(--cn-blue-600, #2d394d);
+  border: 1px solid var(--cn-blue-200, #c5ced9);
+}
+
+.badge-danger, .badge-error {
+  background-color: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
 }
 
 .badge-dot {
