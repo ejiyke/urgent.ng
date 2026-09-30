@@ -31,10 +31,10 @@ The core brand signature used for primary CTAs, active states, confirmation badg
 | `cn-green-100` | `#e8f7cb` | `rgb(232, 247, 203)` | Hover backgrounds for light containers, incoming chat highlights |
 | `cn-green-200` | `#d6f0a3` | `rgb(214, 240, 163)` | Active filter chips, outgoing message bubbles |
 | `cn-green-300` | `#bbe770` | `rgb(187, 231, 112)` | Secondary accents, slider tracks |
-| `cn-green-400` | `#acdc52` | `rgb(172, 220, 82)` | Highlights, icons on dark surfaces |
-| `cn-green-500` | `#93c700` | `rgb(147, 199, 0)` | **Core Brand Primary**: Main CTA buttons, search buttons, active toggles |
-| `cn-green-600` | `#80ad00` | `rgb(128, 173, 0)` | Primary button `:hover` state |
-| `cn-green-700` | `#668a00` | `rgb(102, 138, 0)` | Primary button `:active` / pressed state |
+| `cn-green-400` | `#b8e255` | `rgb(184, 226, 85)` | Secondary accents, highlights |
+| `cn-green-500` | `#a6d445` | `rgb(166, 212, 69)` | **Core Brand Primary**: Main CTA buttons, vibrant accent buttons, search buttons |
+| `cn-green-600` | `#95c434` | `rgb(149, 196, 52)` | Primary button `:hover` state |
+| `cn-green-700` | `#84b326` | `rgb(132, 179, 38)` | Primary button `:active` / pressed state |
 | `cn-green-800` | `#526f00` | `rgb(82, 111, 0)` | Deep green borders, high-contrast accents |
 | `cn-green-900` | `#3b5000` | `rgb(59, 80, 0)` | Dark green text on light green badges |
 
@@ -196,11 +196,12 @@ Buttons are available in 6 hierarchy styles and 3 standard sizes with full state
 - **Large (`lg`):** Height `48px`, font size `16px`, padding `12px 20px`, radius `8px`.
 
 #### Button Hierarchies
-1. **Primary:**
-   - Background: `var(--cn-green-500)` (`#93c700`)
-   - Text: `var(--cn-blue-500)` (`#42526b`), Bold (`700`)
-   - Hover: `var(--cn-green-600)` (`#80ad00`)
-   - Active: `var(--cn-green-700)` (`#668a00`)
+1. **Primary (Vibrant Accent):**
+   - Background: `var(--cn-green-500)` (`#a6d445`)
+   - Text: `var(--cn-blue-800)` (`#10151f`), Ultra-bold / Bold (`700` / `800`)
+   - Hover: `var(--cn-green-600)` (`#95c434`)
+   - Active: `var(--cn-green-700)` (`#84b326`)
+   - Shadow: `0 4px 14px rgba(166, 212, 69, 0.35)`
    - Disabled: `opacity: 0.5`, `cursor: not-allowed`
 2. **Secondary:**
    - Background: `var(--cn-blue-50)` (`#eff1f4`) or `var(--cn-white-200)`

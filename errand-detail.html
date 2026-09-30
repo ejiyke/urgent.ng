@@ -421,8 +421,8 @@
     .btn-submit-offer-lg {
       width: 100%;
       height: 52px;
-      background: #93c700;
-      color: #ffffff;
+      background: #a6d445;
+      color: #10151f;
       border-radius: 10px;
       font-size: 15px;
       font-weight: 800;
@@ -432,16 +432,19 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
-      box-shadow: 0 4px 12px rgba(132, 204, 22, 0.3);
+      box-shadow: 0 4px 14px rgba(166, 212, 69, 0.35);
       transition: all 0.15s ease;
     }
 
     .btn-submit-offer-lg:hover {
-      background: #80ad00;
+      background: #95c434;
+      color: #10151f;
       transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(166, 212, 69, 0.45);
     }
 
     .btn-submit-offer-lg:active {
+      background: #84b326;
       transform: translateY(0);
     }
 
@@ -481,7 +484,7 @@
           <div class="user-avatar" title="Your Profile" style="width:38px; height:38px; border-radius:50%; background:#93c700; color:#ffffff; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.08); border:2px solid #ffffff;">
             EA
           </div>
-          <a href="discovery.html" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:6px; background:#93c700; color: #10151f; border:none; padding:8px 16px; border-radius:8px; font-weight:800; font-size:13px; text-decoration:none; box-shadow: none;">
+          <a href="discovery.html" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:6px; background:#a6d445; color: #10151f; border:none; padding:8px 16px; border-radius:8px; font-weight:800; font-size:13px; text-decoration:none; box-shadow: 0 2px 8px rgba(166, 212, 69, 0.35);">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             <span>Post Errand</span>
           </a>
@@ -891,7 +894,7 @@
         <button type="button" onclick="closeRunnerProfileModal()" style="flex:1; height:44px; background:#f1f5f9; color:#475569; font-weight:700; font-size:13px; border-radius:8px; border:1px solid #cbd5e1; cursor:pointer;">
           Close
         </button>
-        <button type="button" id="modalAcceptOfferBtn" style="flex:2; height:44px; background:#93c700; color: #10151f; font-weight:800; font-size:14px; border-radius:8px; border:none; cursor:pointer; box-shadow: none;">
+        <button type="button" id="modalAcceptOfferBtn" style="flex:2; height:44px; background:#a6d445; color: #10151f; font-weight:800; font-size:14px; border-radius:8px; border:none; cursor:pointer; box-shadow: 0 2px 8px rgba(166, 212, 69, 0.35);">
           Accept Offer &rarr;
         </button>
       </div>
@@ -950,7 +953,7 @@
           <button type="button" onclick="closeEditBidModal()" style="flex:1; height:44px; background:#f1f5f9; color:#475569; font-weight:700; font-size:13px; border-radius:8px; border:1px solid #cbd5e1; cursor:pointer;">
             Cancel
           </button>
-          <button type="submit" style="flex:2; height:44px; background:#93c700; color:#ffffff; font-weight:800; font-size:14px; border-radius:8px; border:none; cursor:pointer; box-shadow: none;">
+          <button type="submit" style="flex:2; height:44px; background:#a6d445; color:#10151f; font-weight:800; font-size:14px; border-radius:8px; border:none; cursor:pointer; box-shadow: 0 2px 8px rgba(166, 212, 69, 0.35);">
             Save Changes &rarr;
           </button>
         </div>
@@ -1615,7 +1618,8 @@
         acceptBtn.onclick = () => showToast('This runner has already been assigned to your errand.');
       } else {
         acceptBtn.textContent = 'Accept Offer (₦' + runner.price.toLocaleString() + ') →';
-        acceptBtn.style.background = '#93c700';
+        acceptBtn.style.background = '#a6d445';
+        acceptBtn.style.color = '#10151f';
         acceptBtn.onclick = () => {
           acceptRunnerOffer(runner.runnerId);
           closeRunnerProfileModal();
@@ -1732,11 +1736,11 @@
                    <span style="background:#16a34a; color:#fff; font-size:12px; font-weight:800; padding:6px 14px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
                      ✓ Assigned Runner
                    </span>
-                   <button type="button" onclick="showToast('💬 Opening live chat with ' + '${r.name}' + '...')" style="background:#93c700; color:#fff; font-size:12px; font-weight:800; padding:6px 12px; border-radius:6px; border:none; cursor:pointer;">
+                   <button type="button" onclick="showToast('💬 Opening live chat with ' + '${r.name}' + '...')" style="background:#a6d445; color:#10151f; font-size:12px; font-weight:800; padding:6px 12px; border-radius:6px; border:none; cursor:pointer; box-shadow:0 2px 8px rgba(166,212,69,0.35);">
                      💬 Chat
                    </button>
                  </div>`
-              : `<button type="button" onclick="acceptRunnerOffer('${r.runnerId}')" style="background:#93c700; color: #10151f; font-size:12.5px; font-weight:800; padding:8px 16px; border-radius:8px; border:none; cursor:pointer; box-shadow: none; transition:all 0.15s ease;">
+              : `<button type="button" onclick="acceptRunnerOffer('${r.runnerId}')" style="background:#a6d445; color: #10151f; font-size:12.5px; font-weight:800; padding:8px 16px; border-radius:8px; border:none; cursor:pointer; box-shadow: 0 2px 8px rgba(166,212,69,0.35); transition:all 0.15s ease;">
                    Accept Offer &rarr;
                  </button>`)
           : '';

@@ -1,6 +1,6 @@
 /* ============================================================
    URGENT.NG — STYLESHEET (CN DESIGN SYSTEM ARCHITECTURE)
-   Based on CN Design System tokens (Archivo, #93C700, #1B2330)
+   Based on CN Design System tokens (Archivo, #a6d445, #1B2330)
    ============================================================ */
 
 :root {
@@ -9,10 +9,10 @@
   --cn-green-100: #e8f7cb;
   --cn-green-200: #d6f0a3;
   --cn-green-300: #bbe770;
-  --cn-green-400: #acdc52;
-  --cn-green-500: #93c700;
-  --cn-green-600: #80ad00;
-  --cn-green-700: #668a00;
+  --cn-green-400: #b8e255;
+  --cn-green-500: #a6d445;
+  --cn-green-600: #95c434;
+  --cn-green-700: #84b326;
   --cn-green-800: #526f00;
   --cn-green-900: #3b5000;
 
@@ -203,18 +203,19 @@ img {
 }
 
 .btn-primary {
-  background-color: var(--cn-green-500);
-  color: var(--cn-blue-500, #42526b);
+  background-color: var(--cn-green-500, #a6d445);
+  color: var(--cn-blue-800, #10151f);
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(147, 199, 0, 0.28);
+  box-shadow: 0 4px 14px rgba(166, 212, 69, 0.35);
 }
 .btn-primary:hover {
-  background-color: var(--cn-green-600);
+  background-color: var(--cn-green-600, #95c434);
+  color: var(--cn-blue-900, #0a0e14);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(147, 199, 0, 0.35);
+  box-shadow: 0 6px 18px rgba(166, 212, 69, 0.45);
 }
 .btn-primary:active {
-  background-color: var(--cn-green-700);
+  background-color: var(--cn-green-700, #84b326);
   transform: translateY(0);
 }
 
@@ -904,26 +905,27 @@ img {
 }
 
 .btn-hero-primary {
-  background-color: var(--cn-green-500, #93c700);
-  color: var(--cn-blue-500, #42526b);
+  background-color: var(--cn-green-500, #a6d445);
+  color: var(--cn-blue-800, #10151f);
   font-family: inherit;
   font-size: 15px;
   font-weight: 700;
   padding: 13px 26px;
-  border-radius: 8px;
+  border-radius: 10px;
   border: none;
   display: inline-flex;
   align-items: center;
   gap: 10px;
   cursor: pointer;
   transition: all var(--transition-fast);
-  box-shadow: 0 3px 10px rgba(147, 199, 0, 0.28);
+  box-shadow: 0 4px 14px rgba(166, 212, 69, 0.35);
 }
 
 .btn-hero-primary:hover {
-  background-color: #83b300;
-  transform: translateY(-1px);
-  box-shadow: 0 5px 14px rgba(147, 199, 0, 0.35);
+  background-color: var(--cn-green-600, #95c434);
+  color: var(--cn-blue-900, #0a0e14);
+  transform: translateY(-1.5px);
+  box-shadow: 0 8px 22px rgba(166, 212, 69, 0.45);
 }
 
 .btn-hero-secondary {
@@ -3116,7 +3118,7 @@ img {
 .btn-hero-primary:hover,
 .btn-primary:hover {
   transform: translateY(-2.5px);
-  box-shadow: 0 10px 24px -4px rgba(133, 196, 36, 0.45);
+  box-shadow: 0 10px 24px -4px rgba(166, 212, 69, 0.45);
 }
 
 .btn-hero-primary:active,
@@ -3866,15 +3868,16 @@ img {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
-    object-position: 72% center !important;
+    object-position: 95% center !important;
     display: block !important;
   }
 
-  /* Floating Task Done Badge Over Mobile Image */
+  /* Floating Task Done Badge Over Mobile Image (Bottom-Right) */
   .hero-floating-badge.hero-mobile-badge {
     display: flex !important;
     position: absolute !important;
-    top: 42% !important;
+    top: auto !important;
+    bottom: 14px !important;
     right: 14px !important;
     background: #ffffff !important;
     border-radius: 14px !important;
@@ -3924,13 +3927,13 @@ img {
   .btn-hero-primary {
     width: 100% !important;
     height: 48px !important;
-    background-color: var(--cn-green-500, #93c700) !important;
-    color: var(--cn-blue-500, #42526b) !important;
+    background-color: var(--cn-green-500, #a6d445) !important;
+    color: var(--cn-blue-800, #10151f) !important;
     font-size: 15px !important;
     font-weight: 700 !important;
     border-radius: 12px !important;
     justify-content: center !important;
-    box-shadow: 0 4px 14px rgba(147, 199, 0, 0.35) !important;
+    box-shadow: 0 4px 14px rgba(166, 212, 69, 0.35) !important;
   }
 
   .btn-hero-secondary {
@@ -3948,25 +3951,88 @@ img {
 }
 
 
-/* Button Label Token: CN blue 500 for all buttons with CN green 500 background */
+/* ============================================================
+   ACCENT BUTTON SYSTEM (Vibrant Bright Lime #a6d445 & Dark Slate Ink #10151f)
+   ============================================================ */
 button.btn-primary,
 .btn-primary,
 .btn-hero-primary,
 .btn-instant-submit,
+.btn-auth-submit,
+.btn-make-offer,
+.btn-submit-offer-lg,
 .btn-primary:visited,
 .btn-hero-primary:visited,
+a.btn-primary,
 button[style*="background: #93c700"],
 button[style*="background:#93c700"],
 button[style*="background-color: #93c700"],
-button[style*="background-color: var(--cn-green-500)"] {
-  color: var(--cn-blue-500, #42526b) !important;
+button[style*="background-color: var(--cn-green-500)"],
+button[style*="background: #a6d445"],
+button[style*="background:#a6d445"],
+button[style*="background-color: #a6d445"],
+a[style*="background: #93c700"],
+a[style*="background:#93c700"],
+a[style*="background: #a6d445"],
+a[style*="background:#a6d445"] {
+  background-color: var(--cn-green-500, #a6d445) !important;
+  color: #10151f !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(166, 212, 69, 0.35) !important;
+}
+
+button.btn-primary:hover,
+.btn-primary:hover,
+.btn-hero-primary:hover,
+.btn-instant-submit:hover,
+.btn-auth-submit:hover,
+a.btn-primary:hover,
+button[style*="background: #93c700"]:hover,
+button[style*="background:#93c700"]:hover,
+button[style*="background: #a6d445"]:hover,
+button[style*="background:#a6d445"]:hover,
+a[style*="background: #93c700"]:hover,
+a[style*="background:#93c700"]:hover,
+a[style*="background: #a6d445"]:hover,
+a[style*="background:#a6d445"]:hover {
+  background-color: var(--cn-green-600, #95c434) !important;
+  color: #10151f !important;
+  box-shadow: 0 8px 20px rgba(166, 212, 69, 0.45) !important;
+}
+
+button.btn-primary:active,
+.btn-primary:active,
+.btn-hero-primary:active,
+.btn-instant-submit:active,
+.btn-auth-submit:active,
+a.btn-primary:active {
+  background-color: var(--cn-green-700, #84b326) !important;
+  color: #10151f !important;
 }
 
 .btn-primary svg,
 .btn-hero-primary svg,
 .btn-instant-submit svg,
+.btn-auth-submit svg,
 .btn-primary svg path,
+.btn-primary svg line,
+.btn-primary svg circle,
 .btn-hero-primary svg line,
 .btn-hero-primary svg path {
-  stroke: var(--cn-blue-500, #42526b) !important;
+  stroke: #10151f !important;
+}
+
+.fab-trigger-btn {
+  background: var(--cn-green-500, #a6d445) !important;
+  color: #10151f !important;
+  box-shadow: 0 8px 24px rgba(166, 212, 69, 0.45) !important;
+}
+
+.fab-trigger-btn:hover {
+  background: var(--cn-green-600, #95c434) !important;
+}
+
+.fab-trigger-btn svg,
+.fab-trigger-btn svg path {
+  stroke: #10151f !important;
 }
