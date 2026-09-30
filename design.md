@@ -64,7 +64,7 @@ The foundational slate/blue grayscale providing depth, typography contrast, and 
 | `cn-blue-200` | `#c5ced9` | `rgb(197, 206, 217)` | Hover borders, active separators |
 | `cn-blue-300` | `#9baac0` | `rgb(155, 170, 192)` | Secondary icons, inactive pagination borders |
 | `cn-blue-400` | `#657996` | `rgb(101, 121, 150)` | Placeholder text, tertiary metadata, timestamps |
-| `cn-blue-500` | `#42526b` | `rgb(66, 82, 107)` | Secondary body copy, subtitle labels |
+| `cn-blue-500` | `#42526b` | `rgb(66, 82, 107)` | Secondary body copy, subtitle labels, button label / text color |
 | `cn-blue-600` | `#2d394d` | `rgb(45, 57, 77)` | Dark buttons, table headers, emphasized metadata |
 | `cn-blue-700` | `#1b2330` | `rgb(27, 35, 48)` | **Primary Text**: Headings, titles, prices, critical labels |
 | `cn-blue-800` | `#10151f` | `rgb(16, 21, 31)` | Deep text, high-emphasis icons |
@@ -198,7 +198,7 @@ Buttons are available in 6 hierarchy styles and 3 standard sizes with full state
 #### Button Hierarchies
 1. **Primary:**
    - Background: `var(--cn-green-500)` (`#93c700`)
-   - Text: `#ffffff`, Bold (`700`)
+   - Text: `var(--cn-blue-500)` (`#42526b`), Bold (`700`)
    - Hover: `var(--cn-green-600)` (`#80ad00`)
    - Active: `var(--cn-green-700)` (`#668a00`)
    - Disabled: `opacity: 0.5`, `cursor: not-allowed`
@@ -366,7 +366,7 @@ Copy and paste the following CSS variable definitions into your root stylesheet 
   --cn-blue-200: #c5ced9;
   --cn-blue-300: #9baac0;
   --cn-blue-400: #657996; /* Muted Text / Placeholder */
-  --cn-blue-500: #42526b; /* Secondary Body Text */
+  --cn-blue-500: #42526b; /* Secondary Body Text & Primary Button Label */
   --cn-blue-600: #2d394d;
   --cn-blue-700: #1b2330; /* Primary Text & Headings */
   --cn-blue-800: #10151f;

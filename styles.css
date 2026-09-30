@@ -204,7 +204,7 @@ img {
 
 .btn-primary {
   background-color: var(--cn-green-500);
-  color: #ffffff;
+  color: var(--cn-blue-500, #42526b);
   font-weight: 700;
   box-shadow: 0 2px 8px rgba(147, 199, 0, 0.28);
 }
@@ -905,7 +905,7 @@ img {
 
 .btn-hero-primary {
   background-color: var(--cn-green-500, #93c700);
-  color: var(--cn-blue-800, #10151f);
+  color: var(--cn-blue-500, #42526b);
   font-family: inherit;
   font-size: 15px;
   font-weight: 700;
@@ -1537,7 +1537,7 @@ img {
 
 .filter-chip.active {
   background-color: var(--cn-green-500);
-  color: var(--cn-blue-800, #10151f);
+  color: var(--cn-blue-500, #42526b);
   border-color: var(--cn-green-500);
   box-shadow: none;
   font-weight: 700;
@@ -3925,7 +3925,7 @@ img {
     width: 100% !important;
     height: 48px !important;
     background-color: var(--cn-green-500, #93c700) !important;
-    color: #10151f !important;
+    color: var(--cn-blue-500, #42526b) !important;
     font-size: 15px !important;
     font-weight: 700 !important;
     border-radius: 12px !important;
@@ -3945,4 +3945,28 @@ img {
     border: none !important;
     box-shadow: none !important;
   }
+}
+
+
+/* Button Label Token: CN blue 500 for all buttons with CN green 500 background */
+button.btn-primary,
+.btn-primary,
+.btn-hero-primary,
+.btn-instant-submit,
+.btn-primary:visited,
+.btn-hero-primary:visited,
+button[style*="background: #93c700"],
+button[style*="background:#93c700"],
+button[style*="background-color: #93c700"],
+button[style*="background-color: var(--cn-green-500)"] {
+  color: var(--cn-blue-500, #42526b) !important;
+}
+
+.btn-primary svg,
+.btn-hero-primary svg,
+.btn-instant-submit svg,
+.btn-primary svg path,
+.btn-hero-primary svg line,
+.btn-hero-primary svg path {
+  stroke: var(--cn-blue-500, #42526b) !important;
 }
