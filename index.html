@@ -241,10 +241,10 @@
                 <button type="button" class="budget-pill active" onclick="selectInstantBudget(3500, this)">₦3,500</button>
                 <button type="button" class="budget-pill" onclick="selectInstantBudget(5000, this)">₦5,000</button>
                 <button type="button" class="budget-pill" onclick="selectInstantBudget(8000, this)">₦8,000</button>
-                <div class="budget-custom-input">
-                  <span>₦</span>
-                  <input type="number" id="instantBudgetInput" value="3500" min="500" step="100" placeholder="Custom" oninput="document.querySelectorAll('.budget-pill').forEach(b => b.classList.remove('active'))">
-                </div>
+              </div>
+              <div class="budget-custom-input">
+                <span>₦</span>
+                <input type="number" id="instantBudgetInput" value="3500" min="500" step="100" placeholder="Custom amount" oninput="document.querySelectorAll('.budget-pill').forEach(b => b.classList.remove('active'))">
               </div>
             </div>
 
