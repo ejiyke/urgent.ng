@@ -10,9 +10,9 @@
   --cn-green-200: #d6f0a3;
   --cn-green-300: #bbe770;
   --cn-green-400: #b8e255;
-  --cn-green-500: #a6d445;
-  --cn-green-600: #95c434;
-  --cn-green-700: #84b326;
+  --cn-green-500: #93c700;
+  --cn-green-600: #80ad00;
+  --cn-green-700: #668a00;
   --cn-green-800: #526f00;
   --cn-green-900: #3b5000;
 
@@ -550,6 +550,13 @@ img {
   justify-content: center;
   padding: var(--space-md);
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.modal-backdrop::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .modal-backdrop.open {
@@ -561,12 +568,20 @@ img {
   border-radius: var(--radius-xl);
   box-shadow: var(--elevation-xl);
   width: 100%;
+  max-width: 760px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
   position: relative;
   animation: modalEnter 200ms ease;
-  overflow: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.modal-dialog::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 @keyframes modalEnter {
@@ -574,9 +589,9 @@ img {
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
-.modal-sm { max-width: 440px; }
-.modal-md { max-width: 580px; }
-.modal-lg { max-width: 820px; }
+.modal-sm { max-width: 520px; }
+.modal-md { max-width: 720px; }
+.modal-lg { max-width: 880px; }
 
 .modal-header {
   padding: var(--space-lg) var(--space-xl);
@@ -1007,8 +1022,8 @@ img {
 /* Hero Floating Task Done Badge (Figma 200:2) */
 .hero-floating-badge {
   position: absolute;
-  top: 52%;
-  right: 17%;
+  top: 54%;
+  right: 3.5%;
   background-color: #ffffff;
   border-radius: 16px;
   padding: 14px 20px;
@@ -1064,14 +1079,14 @@ img {
 
 @media (max-width: 1200px) {
   .hero-floating-badge {
-    right: 10%;
+    right: 2.5%;
     top: 54%;
   }
 }
 
 @media (max-width: 900px) {
   .hero-floating-badge {
-    right: 5%;
+    right: 1.5%;
     top: 56%;
     padding: 10px 16px;
   }
@@ -1585,9 +1600,14 @@ img {
 .errand-card-title {
   font-size: 16px;
   font-weight: 700;
-  color: var(--cn-blue-700);
+  color: var(--cn-green-700, #668a00);
   margin-top: var(--space-xs);
   line-height: 1.4;
+  transition: color var(--transition-fast);
+}
+
+.errand-listing-card:hover .errand-card-title {
+  color: var(--cn-green-800, #526f00);
 }
 
 .errand-card-body {
@@ -2107,13 +2127,20 @@ img {
   border-radius: var(--radius-xl);
   box-shadow: var(--elevation-lg);
   width: 100%;
-  max-width: 600px;
+  max-width: 760px;
   max-height: 90vh;
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   transform: translateY(20px) scale(0.98);
   transition: all var(--transition-normal);
   display: flex;
   flex-direction: column;
+}
+.modal-dialog::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
 }
 
 .modal-overlay.active .modal-dialog {
@@ -2875,7 +2902,7 @@ img {
    EXPANDED LOGIN MODAL & GOOGLE AUTH STYLES
    ============================================================ */
 .modal-dialog.modal-lg {
-  max-width: 680px;
+  max-width: 880px;
 }
 
 .btn-google-auth {
@@ -3777,8 +3804,11 @@ img {
   }
 
   /* 14. Modals */
-  .modal-dialog {
+  .modal-dialog,
+  .discovery-modal-dialog,
+  .discovery-modal-backdrop > div {
     width: calc(100% - 24px) !important;
+    max-width: calc(100% - 24px) !important;
     margin: 12px auto !important;
     padding: 20px 16px !important;
     border-radius: 18px !important;
@@ -4054,4 +4084,154 @@ a.btn-primary:active {
 .fab-trigger-btn svg,
 .fab-trigger-btn svg path {
   stroke: #10151f !important;
+}
+
+/* ============================================================
+   FEED & LISTING PAGINATION COMPONENT (CN DESIGN SYSTEM)
+   ============================================================ */
+.feed-pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 36px;
+  margin-bottom: 60px;
+  padding-top: 24px;
+  border-top: 1px solid var(--cn-blue-100, #e2e8f0);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.pagination-info {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cn-blue-400, #64748b);
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pagination-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 14px;
+  border-radius: var(--radius-md, 8px);
+  border: 1.5px solid var(--cn-blue-200, #cbd5e1);
+  background: var(--cn-white, #ffffff);
+  color: var(--cn-blue-700, #1e293b);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all var(--transition-fast, 150ms ease);
+  user-select: none;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  border-color: var(--cn-green-500, #93c700);
+  color: var(--cn-green-700, #668a00);
+  background: var(--cn-green-50, #f4fbe6);
+}
+
+.pagination-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  border-color: var(--cn-blue-100, #e2e8f0);
+  color: var(--cn-blue-300, #94a3b8);
+  background: var(--cn-blue-50, #f8fafc);
+}
+
+.pagination-pages {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.page-number-btn {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 8px;
+  border-radius: var(--radius-md, 8px);
+  border: 1.5px solid var(--cn-blue-200, #cbd5e1);
+  background: var(--cn-white, #ffffff);
+  color: var(--cn-blue-700, #1e293b);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast, 150ms ease);
+  user-select: none;
+}
+
+.page-number-btn:hover:not(.active) {
+  border-color: var(--cn-green-500, #93c700);
+  color: var(--cn-green-700, #668a00);
+  background: var(--cn-green-50, #f4fbe6);
+}
+
+.page-number-btn.active {
+  background: var(--cn-green-500, #93c700);
+  border-color: var(--cn-green-500, #93c700);
+  color: var(--cn-blue-800, #10151f);
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(147, 199, 0, 0.35);
+  cursor: default;
+}
+
+.pagination-ellipsis {
+  padding: 0 4px;
+  color: var(--cn-blue-300, #94a3b8);
+  font-weight: 700;
+  font-size: 14px;
+  user-select: none;
+}
+
+@media (max-width: 640px) {
+  .feed-pagination-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+}
+
+/* ============================================================
+   UNIVERSAL MODAL ENHANCEMENTS: WIDER WIDTHS & HIDDEN SCROLLBARS
+   ============================================================ */
+.modal-dialog,
+.modal-body,
+.modal-scroll-body,
+.discovery-modal-dialog,
+.discovery-modal-backdrop,
+.discovery-modal-backdrop > div,
+.modal-overlay,
+.modal-backdrop {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.modal-dialog::-webkit-scrollbar,
+.modal-body::-webkit-scrollbar,
+.modal-scroll-body::-webkit-scrollbar,
+.discovery-modal-dialog::-webkit-scrollbar,
+.discovery-modal-backdrop::-webkit-scrollbar,
+.discovery-modal-backdrop > div::-webkit-scrollbar,
+.modal-overlay::-webkit-scrollbar,
+.modal-backdrop::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Ensure discovery and detail page modals have wide, comfortable default sizing */
+.discovery-modal-dialog {
+  max-width: 740px !important;
+  width: 100% !important;
 }

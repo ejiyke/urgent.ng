@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Urgent.ng — On-Demand Errand Marketplace in Nigeria</title>
-  <meta name="description" content="Get anything picked up, delivered, or sorted in minutes. Connect with verified runners nearby across Lagos, Abuja, and major Nigerian cities with secure escrow payments.">
+  <meta name="description" content="Get anything picked up, delivered, or sorted in minutes. Connect with verified runners nearby across Lagos, Abuja, and major Nigerian cities with safe pay on delivery.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2393c700'/><path d='M17 6L9 18H16L15 26L23 14H16L17 6Z' fill='%23ffffff'/></svg>">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
 
@@ -232,7 +233,7 @@
             </div>
           </div>
 
-          <!-- Row 3: Budget Presets, Escrow & Action -->
+          <!-- Row 3: Budget Presets, Direct Payment & Action -->
           <div class="instant-budget-row">
             <div class="budget-selection-col">
               <label class="instant-label">Your Estimated Budget (₦)</label>
@@ -791,7 +792,7 @@
             <img src="assets/logo.png" alt="Urgent.ng - Get it fast" class="brand-logo-img">
           </a>
           <p>
-            Nigeria's trusted peer-to-peer errand marketplace. Connecting people with tasks to available runners nearby with secure escrow payments.
+            Nigeria's trusted peer-to-peer errand marketplace. Connecting people with tasks to available runners nearby with safe pay on delivery.
           </p>
           <div style="font-size: 13px; color: var(--cn-green-400);">Part of the ConnectNigeria Network</div>
         </div>
@@ -809,7 +810,7 @@
         <div class="footer-col">
           <h4>Safety & Trust</h4>
           <ul class="footer-links">
-            <li><a href="#trust-safety">Escrow Protection</a></li>
+            <li><a href="#trust-safety">Safety & Verification</a></li>
             <li><a href="#trust-safety">Identity Verification</a></li>
             <li><a href="#trust-safety">Runner Code of Conduct</a></li>
             <li><a href="#faq">Dispute Resolution</a></li>
@@ -913,44 +914,6 @@
             <span style="color:var(--cn-blue-200);">&bull;</span>
             <button type="button" class="btn btn-ghost btn-sm" onclick="quickFillModal('runner')" style="color:var(--cn-blue-600); font-weight:600;">🏃 Demo Runner</button>
           </div>
-        </div>
-
-        <!-- View B: Google Phone Number Required Step -->
-        <div id="modalGooglePhoneView" style="display:none;">
-          <div style="text-align:center; margin-bottom:18px;">
-            <h4 style="font-size:20px; font-weight:800; color:var(--cn-blue-700); margin-bottom:4px;">Link Your Phone Number</h4>
-            <p style="font-size:13px; color:var(--cn-blue-800, #10151f);">To receive delivery calls and errand alerts, provide your Nigerian phone number.</p>
-          </div>
-
-          <div class="google-connected-pill">
-            <div class="g-user-info">
-              <span>Google Account:</span>
-              <strong id="modalGoogleEmail">user.account@gmail.com</strong>
-            </div>
-            <span style="font-size:11px; color:var(--cn-green-800); font-weight:700;">✓ Connected</span>
-          </div>
-
-          <form onsubmit="handleModalGooglePhoneSubmit(event)">
-            <div class="form-group" style="margin-bottom:16px;">
-              <label class="form-label" for="modalGooglePhoneInput">Active Nigerian Phone Number *</label>
-              <div class="phone-prefix-input-wrap">
-                <div class="country-flag-badge">
-                  <span>🇳🇬</span>
-                  <span>+234</span>
-                </div>
-                <input type="tel" id="modalGooglePhoneInput" placeholder="803 123 4567" required autofocus>
-              </div>
-            </div>
-
-            <div style="display:flex; gap:10px;">
-              <button type="button" class="btn btn-secondary btn-md" onclick="cancelModalGoogleStep()" style="flex:1;">
-                Back
-              </button>
-              <button type="submit" class="btn btn-primary btn-md" style="flex:2;">
-                Confirm & Sign In &rarr;
-              </button>
-            </div>
-          </form>
         </div>
 
       </div>

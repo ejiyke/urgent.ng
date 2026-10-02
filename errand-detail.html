@@ -6,6 +6,8 @@
   <title>Errand Details — Urgent.ng | On-Demand Errand Marketplace</title>
   <meta name="description" content="Review full errand specifications, route map, client notes, and submit competitive bids on Urgent.ng.">
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/x-icon" href="favicon.ico">
   <style>
     /* Scoped Styles for Errand / Product Detail Page */
     .detail-page-body {
@@ -456,6 +458,17 @@
       color: #64748b;
       line-height: 1.5;
     }
+
+    /* Modal Wider Sizing & Hidden Scrollbars */
+    .discovery-modal-backdrop > div {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    .discovery-modal-backdrop > div::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
   </style>
 </head>
 <body class="detail-page-body">
@@ -629,54 +642,13 @@
 
           <!-- Current Offers Placed -->
           <h2 class="section-subhead" style="margin-top:36px;">Live Runner Offers (<span id="detailOffersCount">3</span>)</h2>
-          <p style="font-size:13px; color:#64748b; margin-bottom:16px;">
-            Other errand runners in this neighborhood who have submitted bids for this task:
+          <p id="offersStreamSubtitle" style="font-size:13px; color:#64748b; margin-bottom:16px;">
+            Incoming runner offers are managed under a fair sealed bids policy:
           </p>
 
           <div class="offers-stream-list" id="offersStreamContainer">
-            <div class="offer-stream-row">
-              <div style="display:flex; align-items:center; gap:12px;">
-                <div style="width:38px; height:38px; border-radius:50%; background:#e8f7cb; color:#3b5000; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center;">TO</div>
-                <div>
-                  <div style="font-weight:800; font-size:14px; color:#0f172a;">Tunde Okon <span style="color:#e28a2a; font-size:12px;">★ 4.9</span></div>
-                  <div style="font-size:11px; color:#64748b;">Motorcycle &bull; Ready in 20 mins &bull; 142 completed</div>
-                </div>
-              </div>
-              <div style="text-align:right;">
-                <div style="font-weight:800; font-size:18px; color:#16a34a;">₦2,500</div>
-                <span style="font-size:11px; color:#64748b;">Matching Budget</span>
-              </div>
-            </div>
-
-            <div class="offer-stream-row">
-              <div style="display:flex; align-items:center; gap:12px;">
-                <div style="width:38px; height:38px; border-radius:50%; background:#eff6ff; color:#1e40af; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center;">CE</div>
-                <div>
-                  <div style="font-weight:800; font-size:14px; color:#0f172a;">Chukwudi Eze <span style="color:#e28a2a; font-size:12px;">★ 4.8</span></div>
-                  <div style="font-size:11px; color:#64748b;">Motorcycle &bull; Ready in 35 mins &bull; 210 completed</div>
-                </div>
-              </div>
-              <div style="text-align:right;">
-                <div style="font-weight:800; font-size:18px; color:#0f172a;">₦2,700</div>
-                <span style="font-size:11px; color:#64748b;">Offer</span>
-              </div>
-            </div>
-
-            <div class="offer-stream-row">
-              <div style="display:flex; align-items:center; gap:12px;">
-                <div style="width:38px; height:38px; border-radius:50%; background:#fee2e2; color:#991b1b; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center;">BA</div>
-                <div>
-                  <div style="font-weight:800; font-size:14px; color:#0f172a;">Blessing Adeleke <span style="color:#e28a2a; font-size:12px;">★ 5.0</span></div>
-                  <div style="font-size:11px; color:#64748b;">Car / Sedan &bull; Ready in 45 mins &bull; 89 completed</div>
-                </div>
-              </div>
-              <div style="text-align:right;">
-                <div style="font-weight:800; font-size:18px; color:#0f172a;">₦3,000</div>
-                <span style="font-size:11px; color:#64748b;">Offer</span>
-              </div>
-            </div>
+            <!-- Dynamically populated based on role: Owner vs Runner/Visitor -->
           </div>
-
         </div>
 
       </section>
@@ -812,7 +784,7 @@
   
   <!-- ================= RUNNER PROFILE MODAL ================= -->
   <div class="discovery-modal-backdrop" id="runnerProfileModalBackdrop" onclick="closeRunnerProfileModal(event)" style="position:fixed; inset:0; background:rgba(15,23,42,0.65); backdrop-filter:blur(4px); z-index:9999; display:none; align-items:center; justify-content:center; padding:20px;">
-    <div style="background:#ffffff; border-radius:18px; width:100%; max-width:540px; padding:28px; box-shadow:0 20px 40px rgba(0,0,0,0.2); max-height:90vh; overflow-y:auto; position:relative;" onclick="event.stopPropagation()">
+    <div style="background:#ffffff; border-radius:18px; width:100%; max-width:740px; padding:32px; box-shadow:0 20px 40px rgba(0,0,0,0.2); max-height:90vh; overflow-y:auto; position:relative;" onclick="event.stopPropagation()">
       <button type="button" onclick="closeRunnerProfileModal()" style="position:absolute; top:20px; right:20px; font-size:24px; color:#94a3b8; background:none; border:none; cursor:pointer; line-height:1;">&times;</button>
 
       <!-- Runner Header -->
@@ -903,7 +875,7 @@
 
   <!-- ================= EDIT BID MODAL ================= -->
   <div class="discovery-modal-backdrop" id="editBidModalBackdrop" onclick="closeEditBidModal(event)" style="position:fixed; inset:0; background:rgba(15,23,42,0.65); backdrop-filter:blur(4px); z-index:9999; display:none; align-items:center; justify-content:center; padding:20px;">
-    <div style="background:#ffffff; border-radius:18px; width:100%; max-width:500px; padding:28px; box-shadow:0 20px 40px rgba(0,0,0,0.2);" onclick="event.stopPropagation()">
+    <div style="background:#ffffff; border-radius:18px; width:100%; max-width:700px; padding:32px; box-shadow:0 20px 40px rgba(0,0,0,0.2); max-height:90vh; overflow-y:auto;" onclick="event.stopPropagation()">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
         <h3 style="font-size:18px; font-weight:800; color:#0f172a; margin:0;">✏️ Edit Your Offer</h3>
         <button type="button" onclick="closeEditBidModal()" style="font-size:24px; color:#94a3b8; background:none; border:none; cursor:pointer; line-height:1;">&times;</button>
@@ -960,7 +932,97 @@
       </form>
     </div>
   </div>
-<!-- Toast Notification -->
+
+  <!-- ================= CONFIRM COMPLETION & REVIEW MODAL ================= -->
+  <div class="discovery-modal-backdrop" id="completionReviewModalBackdrop" onclick="closeCompletionReviewModal(event)" style="position:fixed; inset:0; background:rgba(15,23,42,0.65); backdrop-filter:blur(4px); z-index:9999; display:none; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:#ffffff; border-radius:18px; width:100%; max-width:740px; padding:32px; box-shadow:0 20px 40px rgba(0,0,0,0.2); max-height:90vh; overflow-y:auto;" onclick="event.stopPropagation()">
+      
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px;">
+        <div>
+          <span style="display:inline-flex; align-items:center; gap:4px; background:#ecfdf5; color:#059669; font-size:11px; font-weight:800; padding:2px 8px; border-radius:9999px; text-transform:uppercase; margin-bottom:6px;">
+            Direct Marketplace Settlement
+          </span>
+          <h3 style="font-size:19px; font-weight:800; color:#0f172a; margin:0;">Confirm Task Completed & Paid</h3>
+        </div>
+        <button type="button" onclick="closeCompletionReviewModal()" style="font-size:24px; color:#94a3b8; background:none; border:none; cursor:pointer; line-height:1;">&times;</button>
+      </div>
+
+      <!-- Runner summary strip -->
+      <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; margin-bottom:18px; display:flex; align-items:center; justify-content:space-between;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div id="reviewRunnerAvatar" style="width:38px; height:38px; border-radius:50%; background:#e8f7cb; color:#3b5000; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center;">TO</div>
+          <div>
+            <div id="reviewRunnerName" style="font-weight:800; font-size:14px; color:#0f172a;">Tunde Okon</div>
+            <div id="reviewRunnerTransport" style="font-size:11.5px; color:#64748b;">Motorcycle (Express)</div>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:10px; font-weight:700; color:#94a3b8; text-transform:uppercase;">Agreed Fee</div>
+          <div id="reviewRunnerPrice" style="font-weight:800; font-size:17px; color:#16a34a;">₦6,500</div>
+        </div>
+      </div>
+
+      <!-- Confirmation Checkboxes -->
+      <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:14px; margin-bottom:20px;">
+        <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer; font-size:13px; color:#166534; font-weight:600; line-height:1.45; margin-bottom:10px;">
+          <input type="checkbox" id="confirmDeliveryCheck" style="width:18px; height:18px; accent-color:#16a34a; margin-top:2px;" onchange="validateReviewSubmitState()" checked>
+          <span>I confirm that the errand has been satisfactorily delivered and completed.</span>
+        </label>
+        <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer; font-size:13px; color:#166534; font-weight:600; line-height:1.45;">
+          <input type="checkbox" id="confirmPaymentCheck" style="width:18px; height:18px; accent-color:#16a34a; margin-top:2px;" onchange="validateReviewSubmitState()" checked>
+          <span>I have made direct payment (<span id="reviewPaymentAmount">₦6,500</span>) to the runner via Cash or Bank Transfer.</span>
+        </label>
+      </div>
+
+      <!-- Rating Section -->
+      <div style="margin-bottom:18px; text-align:center;">
+        <div style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">Rate Runner Experience</div>
+        <div id="starRatingContainer" style="display:inline-flex; gap:8px; font-size:32px; cursor:pointer; user-select:none;">
+          <span class="star-item" data-value="1" onclick="setStarRating(1)" onmouseover="hoverStarRating(1)" onmouseout="resetStarRating()" style="color:#e28a2a; transition:transform 0.15s ease;">★</span>
+          <span class="star-item" data-value="2" onclick="setStarRating(2)" onmouseover="hoverStarRating(2)" onmouseout="resetStarRating()" style="color:#e28a2a; transition:transform 0.15s ease;">★</span>
+          <span class="star-item" data-value="3" onclick="setStarRating(3)" onmouseover="hoverStarRating(3)" onmouseout="resetStarRating()" style="color:#e28a2a; transition:transform 0.15s ease;">★</span>
+          <span class="star-item" data-value="4" onclick="setStarRating(4)" onmouseover="hoverStarRating(4)" onmouseout="resetStarRating()" style="color:#e28a2a; transition:transform 0.15s ease;">★</span>
+          <span class="star-item" data-value="5" onclick="setStarRating(5)" onmouseover="hoverStarRating(5)" onmouseout="resetStarRating()" style="color:#e28a2a; transition:transform 0.15s ease;">★</span>
+        </div>
+        <div id="starRatingLabel" style="font-size:13px; font-weight:700; color:#16a34a; margin-top:4px;">★★★★★ Exceptional Service (5.0)</div>
+      </div>
+
+      <!-- Compliment Badges -->
+      <div style="margin-bottom:18px;">
+        <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:8px;">
+          Quick Compliments (Select all that apply)
+        </label>
+        <div id="complimentBadgesList" style="display:flex; flex-wrap:wrap; gap:8px;">
+          <span class="compliment-badge active" onclick="toggleComplimentBadge(this)" style="font-size:12px; font-weight:700; padding:6px 12px; border-radius:9999px; cursor:pointer; border:1px solid #93c700; background:#f4fbe6; color:#2d4000; transition:all 0.15s ease;">⚡ Fast & Punctual</span>
+          <span class="compliment-badge active" onclick="toggleComplimentBadge(this)" style="font-size:12px; font-weight:700; padding:6px 12px; border-radius:9999px; cursor:pointer; border:1px solid #93c700; background:#f4fbe6; color:#2d4000; transition:all 0.15s ease;">📦 Handled with Care</span>
+          <span class="compliment-badge" onclick="toggleComplimentBadge(this)" style="font-size:12px; font-weight:700; padding:6px 12px; border-radius:9999px; cursor:pointer; border:1px solid #e2e8f0; background:#f8fafc; color:#475569; transition:all 0.15s ease;">💬 Great Communication</span>
+          <span class="compliment-badge" onclick="toggleComplimentBadge(this)" style="font-size:12px; font-weight:700; padding:6px 12px; border-radius:9999px; cursor:pointer; border:1px solid #e2e8f0; background:#f8fafc; color:#475569; transition:all 0.15s ease;">🤝 Polite & Trustworthy</span>
+          <span class="compliment-badge" onclick="toggleComplimentBadge(this)" style="font-size:12px; font-weight:700; padding:6px 12px; border-radius:9999px; cursor:pointer; border:1px solid #e2e8f0; background:#f8fafc; color:#475569; transition:all 0.15s ease;">🏍️ Skilled Rider</span>
+        </div>
+      </div>
+
+      <!-- Written Review Note -->
+      <div style="margin-bottom:20px;">
+        <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">
+          Write a Public Review (Optional)
+        </label>
+        <textarea id="reviewTextInput" style="width:100%; height:75px; border:1px solid #cbd5e1; border-radius:8px; padding:8px 12px; font-size:13px; font-family:inherit; resize:none;" placeholder="Share your experience with this runner to help other clients on Urgent.ng..."></textarea>
+      </div>
+
+      <!-- Submit Action -->
+      <div style="display:flex; gap:10px;">
+        <button type="button" onclick="closeCompletionReviewModal()" style="flex:1; height:44px; background:#f1f5f9; color:#475569; font-weight:700; font-size:13px; border-radius:8px; border:1px solid #cbd5e1; cursor:pointer;">
+          Not Yet
+        </button>
+        <button type="button" id="submitReviewBtn" onclick="handleSubmitCompletionReview()" style="flex:2; height:44px; background:#a6d445; color:#10151f; font-weight:800; font-size:14px; border-radius:8px; border:none; cursor:pointer; box-shadow:0 2px 8px rgba(166,212,69,0.35);">
+          Submit Review & Close Errand &rarr;
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
   <div id="toastContainer" style="position:fixed; bottom:24px; right:24px; z-index:9999; display:flex; flex-direction:column; gap:8px;"></div>
 
   <!-- SCRIPT LOGIC -->
@@ -1020,7 +1082,10 @@
     };
 
     let acceptedRunnerId = null;
-    const myTasksList = ['ER-05'];
+    let isErrandCompleted = false;
+    let errandReviewData = null;
+    let currentRating = 5;
+    const myTasksList = ['ER-05', 'ER-04', 'ER-16', 'ER-06', 'ER-12', 'ER-13', 'ER-14', 'ER-09'];
 
     const errandDatabase = {
       'ER-01': {
@@ -1264,6 +1329,116 @@
         distance: '8.1 km (approx 24m via bike)',
         clientName: 'Zahra Couture Studio',
         clientInitials: 'ZC'
+      },
+      'ER-12': {
+        id: 'ER-12',
+        category: 'DELIVERY',
+        badgeClass: 'badge-delivery',
+        offersCount: 5,
+        title: 'Pick up Dry-Cleaned Agbada & Lace Attire from Laundromat',
+        pickupTitle: 'Snow White Drycleaners, Ikeja GRA',
+        pickupNote: 'Ticket #SW-8812. Ready at express collection desk.',
+        dropTitle: 'Omole Phase 1 Estate',
+        dropNote: 'Gate 2, House 14B. Handover to Mrs. Folashade or security desk.',
+        desc: '3 pressed traditional outfits on hangers in transparent protective garment bags. Runner must keep outfits flat across the car back seat.',
+        metaTime: 'Before 4:00 PM today',
+        postedAgo: 'Posted 15m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 4000,
+        itemType: 'Dry Cleaning & Traditional Attire',
+        fragility: 'Delicate Pressed Fabrics / Keep Flat',
+        weight: '3 garment bags (< 2.5 kg)',
+        distance: '5.8 km (approx 16m via car)',
+        clientName: 'Mrs. Folashade Adeleke',
+        clientInitials: 'FA'
+      },
+      'ER-13': {
+        id: 'ER-13',
+        category: 'SHOPPING',
+        badgeClass: 'badge-shopping',
+        offersCount: 3,
+        title: 'Purchase Emergency Inhaler & Prescription Drugs at Pharmacy',
+        pickupTitle: 'Medplus Pharmacy, Victoria Island',
+        pickupNote: 'Pharmacist counter. Order prescription code #MP-209.',
+        dropTitle: 'Oniru Private Estate',
+        dropNote: 'Villa 7, Block C. Ring doorbell directly upon arrival.',
+        desc: 'Prescription photo sent in chat. Need ventolin inhaler and augmentin syrup immediately. Will transfer drug funds directly upon runner arrival at counter.',
+        metaTime: 'Needed within 1 hr',
+        postedAgo: 'Posted 8m ago',
+        priceType: 'RUNNER FEE',
+        price: 3500,
+        itemType: 'Urgent Pharmacy & Medicine',
+        fragility: 'Time-critical Healthcare Parcel',
+        weight: 'Pharmacy pouch (< 0.5 kg)',
+        distance: '4.2 km (approx 12m via bike)',
+        clientName: 'Dr. Tolu Adeyemi',
+        clientInitials: 'TA'
+      },
+      'ER-14': {
+        id: 'ER-14',
+        category: 'DOCUMENT',
+        badgeClass: 'badge-document',
+        offersCount: 2,
+        title: 'Retrieve Stamped Survey Plan at Lands Bureau Registry',
+        pickupTitle: 'Lands Bureau, Alausa Secretariat, Ikeja',
+        pickupNote: 'File reference number LP-902-88. Official collection slip provided in chat.',
+        dropTitle: 'Law Office, Lekki Phase 1',
+        dropNote: '4th Floor, Maritime House. Handover directly to Managing Partner.',
+        desc: 'Original stamped architectural and boundary survey plans inside moisture-proof hardboard envelope. Requires trusted, verified runner.',
+        metaTime: 'Today before 3:30 PM',
+        postedAgo: 'Posted 30m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 6000,
+        itemType: 'Government Registry Land Documents',
+        fragility: 'Confidential Legal Documents',
+        weight: 'Hardboard Envelope (< 1 kg)',
+        distance: '24.1 km (approx 45m via car)',
+        clientName: 'Barrister Nnamdi O.',
+        clientInitials: 'NO'
+      },
+      'ER-15': {
+        id: 'ER-15',
+        category: 'FOOD',
+        badgeClass: 'badge-food',
+        offersCount: 4,
+        title: 'Collect 4 Packs of Party Jollof & Grilled Suya Platter',
+        pickupTitle: 'Mega Chicken, Ikota Shopping Complex',
+        pickupNote: 'Express dispatch order #MC-412. Food is pre-paid and packed in hot thermal box.',
+        dropTitle: 'Chevron Drive, Lekki',
+        dropNote: 'Handover at residential entrance gate to security or client.',
+        desc: 'Order #MC-412 already paid online. Runner just needs to inspect package seal, pick up insulated hot box, and deliver urgently.',
+        metaTime: 'ASAP / Immediate',
+        postedAgo: 'Posted 5m ago',
+        priceType: 'RUNNER FEE',
+        price: 3000,
+        itemType: 'Hot Catering & Fast Food',
+        fragility: 'Keep Upright / Perishable',
+        weight: '4 packs in insulated carrier (approx 3 kg)',
+        distance: '5.1 km (approx 14m via bike)',
+        clientName: 'Kemi Balogun',
+        clientInitials: 'KB'
+      },
+      'ER-16': {
+        id: 'ER-16',
+        category: 'PHYSICAL',
+        badgeClass: 'badge-physical',
+        offersCount: 2,
+        title: 'Verify Generator Capacity & Sound Level at Co-working Space',
+        pickupTitle: 'Workstation Cowork, Marina',
+        pickupNote: 'Ask for Facility Engineer Mr. Sunday at lower maintenance bay.',
+        dropTitle: 'Digital Inspection Report',
+        dropNote: 'Send decibel meter screenshot and 50kVA rating plate photo.',
+        desc: 'Testing silent generator noise for soundproof podcast studio lease. Requires 15 mins on-site presence, taking video of generator during changeover.',
+        metaTime: 'Within 2 hours',
+        postedAgo: 'Posted 20m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 5000,
+        itemType: 'On-site Inspection & Verification',
+        fragility: 'Sound & Photo Verification',
+        weight: 'N/A',
+        distance: 'On-site Physical Run (Marina)',
+        clientName: 'Studio Podcaster Media',
+        clientInitials: 'SP'
       }
     };
 
@@ -1414,7 +1589,7 @@
         if (manageCardEl) manageCardEl.style.display = 'none';
         if (ownerCardEl) {
           ownerCardEl.style.display = 'block';
-          document.getElementById('ownerErrandBudget').textContent = '₦' + item.price.toLocaleString();
+          renderOwnerManageCard();
         }
 
         // Render incoming runner offers with notes, profile click, and Accept buttons
@@ -1544,38 +1719,50 @@
       }
     }
 
+    function focusOfferForm() {
+      const input = document.getElementById('detailOfferAmount');
+      if (input) {
+        input.focus();
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
     function handleDetailOfferSubmit(e) {
       e.preventDefault();
-      const amount = document.getElementById('detailOfferAmount').value;
-      const eta = document.getElementById('detailOfferEta').value;
-      const transport = document.getElementById('detailOfferTransport').value;
+      const amount = Number(document.getElementById('detailOfferAmount').value) || 2500;
+      const eta = document.getElementById('detailOfferEta').value || '30 mins';
+      const transport = document.getElementById('detailOfferTransport').value || 'Motorcycle';
+      const noteInput = document.getElementById('detailOfferNote');
+      const note = (noteInput && noteInput.value.trim()) ? noteInput.value.trim() : 'Ready to complete this errand quickly and safely.';
 
-      // Add to live offers list
-      const container = document.getElementById('offersStreamContainer');
-      const newRow = document.createElement('div');
-      newRow.className = 'offer-stream-row';
-      newRow.style.borderColor = '#93c700';
-      newRow.style.backgroundColor = '#f4fbe6';
-      newRow.innerHTML = `
-        <div style="display:flex; align-items:center; gap:12px;">
-          <div style="width:38px; height:38px; border-radius:50%; background:#93c700; color:#ffffff; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center;">YOU</div>
-          <div>
-            <div style="font-weight:800; font-size:14px; color:#0f172a;">Your Bid (Runner) <span style="color:#16a34a; font-size:11px; font-weight:700;">JUST NOW</span></div>
-            <div style="font-size:11px; color:#64748b;">${transport} &bull; Ready in ${eta}</div>
-          </div>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-weight:800; font-size:18px; color:#16a34a;">₦${Number(amount).toLocaleString()}</div>
-          <span style="font-size:11px; color:#15803d; font-weight:700;">Submitted</span>
-        </div>
-      `;
-      container.prepend(newRow);
+      const params = new URLSearchParams(window.location.search);
+      const errandId = params.get('id') || 'ER-01';
 
+      // Save user bid to database
+      myBidsDatabase[errandId] = {
+        status: 'pending',
+        statusLabel: 'Pending Review',
+        statusColor: '#b45309',
+        statusBg: '#fffbeb',
+        statusBorder: '#fde68a',
+        amount: amount,
+        eta: eta,
+        transport: transport,
+        timeAgo: 'Submitted just now',
+        note: note
+      };
+
+      const errand = errandDatabase[errandId] || errandDatabase['ER-01'];
+      errand.offersCount = (errand.offersCount || 3) + 1;
       const countSpan = document.getElementById('detailOffersCount');
-      countSpan.textContent = Number(countSpan.textContent) + 1;
-      document.getElementById('detailOffersPill').textContent = (Number(countSpan.textContent)) + ' OFFERS RECEIVED';
+      if (countSpan) countSpan.textContent = errand.offersCount;
+      const pill = document.getElementById('detailOffersPill');
+      if (pill) pill.textContent = errand.offersCount + ' OFFERS RECEIVED';
 
-      showToast('🚀 Offer of ₦' + Number(amount).toLocaleString() + ' sent to requester!');
+      // Re-load to switch to Bidder View with pinned bid and sealed notice!
+      loadErrandDetails();
+
+      showToast('🚀 Offer of ₦' + amount.toLocaleString() + ' sent to requester!');
     }
 
     function showToast(msg) {
@@ -1597,6 +1784,10 @@
     let currentSelectedRunner = null;
 
     function openRunnerProfile(runnerId) {
+      if (!isOwnerView()) {
+        showToast('🔒 Competitor profiles and notes are confidential to the task creator.');
+        return;
+      }
       const runner = runnerOffersDatabase[runnerId];
       if (!runner) return;
       currentSelectedRunner = runner;
@@ -1689,21 +1880,305 @@
       showToast('✅ Your offer has been updated to ₦' + newAmount.toLocaleString() + '!');
     }
 
+    function renderOwnerManageCard() {
+      const ownerCardEl = document.getElementById('ownerManageCard');
+      if (!ownerCardEl) return;
+
+      const params = new URLSearchParams(window.location.search);
+      const errandId = params.get('id') || 'ER-01';
+      const item = errandDatabase[errandId] || errandDatabase['ER-01'];
+
+      if (isErrandCompleted && errandReviewData) {
+        // STATE 3: COMPLETED & REVIEWED
+        const runner = runnerOffersDatabase[acceptedRunnerId] || { name: 'Runner', price: item.price };
+        const starString = '★'.repeat(errandReviewData.rating) + '☆'.repeat(5 - errandReviewData.rating);
+        const tagsHtml = errandReviewData.tags.map(t => 
+          `<span style="background:#f4fbe6; color:#2d4000; font-size:11px; font-weight:700; padding:3px 8px; border-radius:9999px; border:1px solid #d9f09e;">${t}</span>`
+        ).join(' ');
+
+        ownerCardEl.innerHTML = `
+          <div style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; border-radius:10px; padding:10px 14px; font-size:12.5px; font-weight:800; display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+            <span style="font-size:15px;">★</span>
+            <span>Errand Completed & Reviewed</span>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <div style="font-size:13.5px; font-weight:800; color:#0f172a;">${runner.name}</div>
+              <span style="color:#e28a2a; font-weight:800; font-size:15px;">${starString}</span>
+            </div>
+            <div style="font-size:12px; color:#16a34a; font-weight:700; margin-bottom:10px;">
+              ✓ ₦${runner.price.toLocaleString()} Paid Directly to Runner
+            </div>
+            <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:8px; padding:10px 12px; font-size:12.5px; color:#334155; line-height:1.45; font-style:italic; margin-bottom:10px;">
+              "${errandReviewData.note}"
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              ${tagsHtml}
+            </div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <a href="discovery.html" style="width:100%; height:44px; background:#a6d445; color:#10151f; font-weight:800; font-size:13.5px; border-radius:8px; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(166,212,69,0.35);">
+              Browse Live Errands &rarr;
+            </a>
+            <button type="button" onclick="showToast('Receipt saved to device.')" style="width:100%; height:38px; background:#f8fafc; color:#334155; font-weight:700; font-size:12.5px; border-radius:8px; border:1px solid #cbd5e1; cursor:pointer;">
+              📄 Download Errand Summary
+            </button>
+          </div>
+        `;
+
+      } else if (acceptedRunnerId) {
+        // STATE 2: RUNNER ASSIGNED — TASK IN PROGRESS
+        const runner = runnerOffersDatabase[acceptedRunnerId];
+
+        ownerCardEl.innerHTML = `
+          <div style="background:#eff6ff; border:1px solid #bfdbfe; color:#1e40af; border-radius:10px; padding:10px 14px; font-size:12.5px; font-weight:800; display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+            <span style="width:8px; height:8px; border-radius:50%; background:#2563eb; display:inline-block; box-shadow:0 0 0 2.5px rgba(37,99,235,0.25);"></span>
+            <span>Task In Progress — Runner Assigned</span>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <div style="display:flex; align-items:center; gap:10px;">
+                <div style="width:40px; height:40px; border-radius:50%; background:${runner.badgeBg}; color:${runner.badgeColor}; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
+                  ${runner.initials}
+                </div>
+                <div>
+                  <div style="font-weight:800; font-size:14px; color:#0f172a;">${runner.name}</div>
+                  <div style="font-size:11.5px; color:#64748b;">${runner.transport} &bull; ★ ${runner.rating}</div>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:10px; font-weight:800; color:#94a3b8; text-transform:uppercase;">AGREED FEE</div>
+                <div style="font-weight:800; font-size:19px; color:#16a34a;">₦${runner.price.toLocaleString()}</div>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:8px;">
+              <button type="button" onclick="contactAssignedRunner('call')" style="flex:1; height:36px; background:#ffffff; color:#0f172a; font-weight:700; font-size:12px; border-radius:6px; border:1px solid #cbd5e1; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px;">
+                📞 Call
+              </button>
+              <button type="button" onclick="contactAssignedRunner('whatsapp')" style="flex:1; height:36px; background:#25d366; color:#ffffff; font-weight:700; font-size:12px; border-radius:6px; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px;">
+                💬 WhatsApp
+              </button>
+              <button type="button" onclick="contactAssignedRunner('chat')" style="flex:1; height:36px; background:#a6d445; color:#10151f; font-weight:800; font-size:12px; border-radius:6px; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:4px;">
+                Chat
+              </button>
+            </div>
+          </div>
+
+          <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:8px; padding:10px 12px; margin-bottom:16px; font-size:12px; color:#92400e; line-height:1.45;">
+            <strong>💡 Direct Marketplace Payment:</strong> Settle payment of <strong>₦${runner.price.toLocaleString()}</strong> directly with the runner (Cash or Bank Transfer) once they deliver and you inspect the items.
+          </div>
+
+          <button type="button" onclick="openCompletionReviewModal()" style="width:100%; height:48px; background:#a6d445; color:#10151f; font-weight:800; font-size:13.5px; border-radius:10px; border:none; cursor:pointer; box-shadow:0 3px 10px rgba(166,212,69,0.35); display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:10px;">
+            ✓ Confirm Task Completed & Paid
+          </button>
+
+          <button type="button" onclick="showToast('Contacting Urgent.ng marketplace support...')" style="width:100%; height:34px; background:none; color:#64748b; font-weight:600; font-size:12px; border:none; cursor:pointer;">
+            Need Help with this Task?
+          </button>
+        `;
+
+      } else {
+        // STATE 1: OPEN FOR SELECTION
+        ownerCardEl.innerHTML = `
+          <div style="background:#ecfdf5; border:1px solid #a7f3d0; color:#065f46; border-radius:10px; padding:10px 14px; font-size:12.5px; font-weight:800; display:flex; align-items:center; gap:8px; margin-bottom:16px;">
+            <span style="width:8px; height:8px; border-radius:50%; background:#10b981; display:inline-block; box-shadow:0 0 0 2.5px rgba(16,185,129,0.3);"></span>
+            <span id="ownerErrandStatusText">3 Runner Offers Received — Open for Selection</span>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:16px;">
+            <div style="font-size:11px; font-weight:800; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">YOUR BUDGET</div>
+            <div style="font-size:28px; font-weight:800; color:#0f172a; line-height:1.2;" id="ownerErrandBudget">₦${item.price.toLocaleString()}</div>
+            <div style="font-size:12px; color:#16a34a; font-weight:700; margin-top:4px;" id="ownerLowestOfferText">Lowest Runner Bid: ₦6,500</div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:18px;">
+            <button type="button" onclick="showToast('📢 Re-broadcasted errand to 18 runners nearby!')" style="width:100%; height:44px; background:#a6d445; color:#10151f; font-weight:800; font-size:13.5px; border-radius:8px; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 2px 8px rgba(166,212,69,0.35);">
+              📢 Boost Broadcast to Nearby Runners
+            </button>
+            <button type="button" onclick="showToast('✏️ Edit Errand Modal opened.')" style="width:100%; height:40px; background:#f8fafc; color:#1e293b; font-weight:700; font-size:13px; border-radius:8px; border:1px solid #cbd5e1; cursor:pointer;">
+              ✏️ Edit Errand Specifications
+            </button>
+            <button type="button" onclick="showToast('Errand cancelled.')" style="width:100%; height:32px; background:none; color:#ef4444; font-weight:700; font-size:12px; border:none; cursor:pointer;">
+              Cancel Errand
+            </button>
+          </div>
+        `;
+      }
+    }
+
+    function contactAssignedRunner(type) {
+      const runner = runnerOffersDatabase[acceptedRunnerId];
+      if (!runner) return;
+      if (type === 'call') {
+        showToast('📞 Calling ' + runner.name + ' at ' + (runner.phone || '+234 803 123 4567') + '...');
+      } else if (type === 'whatsapp') {
+        showToast('💬 Opening WhatsApp chat with ' + runner.name + '...');
+      } else {
+        showToast('💬 Opening in-app chat with ' + runner.name + '...');
+      }
+    }
+
+    function openCompletionReviewModal() {
+      if (!acceptedRunnerId) {
+        showToast('Please accept a runner offer first.');
+        return;
+      }
+      const runner = runnerOffersDatabase[acceptedRunnerId];
+      if (!runner) return;
+
+      const avatarEl = document.getElementById('reviewRunnerAvatar');
+      if (avatarEl) {
+        avatarEl.textContent = runner.initials;
+        avatarEl.style.background = runner.badgeBg;
+        avatarEl.style.color = runner.badgeColor;
+      }
+      const nameEl = document.getElementById('reviewRunnerName');
+      if (nameEl) nameEl.textContent = runner.name;
+      const transEl = document.getElementById('reviewRunnerTransport');
+      if (transEl) transEl.textContent = runner.transport;
+      const priceEl = document.getElementById('reviewRunnerPrice');
+      if (priceEl) priceEl.textContent = '₦' + runner.price.toLocaleString();
+      const amountEl = document.getElementById('reviewPaymentAmount');
+      if (amountEl) amountEl.textContent = '₦' + runner.price.toLocaleString();
+
+      setStarRating(5);
+      validateReviewSubmitState();
+
+      const modal = document.getElementById('completionReviewModalBackdrop');
+      if (modal) modal.style.display = 'flex';
+    }
+
+    function closeCompletionReviewModal(e) {
+      if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+      const modal = document.getElementById('completionReviewModalBackdrop');
+      if (modal) modal.style.display = 'none';
+    }
+
+    const ratingLabelsMap = {
+      1: '★☆☆☆☆ Poor Service (1.0)',
+      2: '★★☆☆☆ Fair Service (2.0)',
+      3: '★★★☆☆ Good Service (3.0)',
+      4: '★★★★☆ Very Good Service (4.0)',
+      5: '★★★★★ Exceptional Service (5.0)'
+    };
+
+    function setStarRating(rating) {
+      currentRating = rating;
+      updateStarRatingDisplay(rating);
+    }
+
+    function hoverStarRating(rating) {
+      updateStarRatingDisplay(rating);
+    }
+
+    function resetStarRating() {
+      updateStarRatingDisplay(currentRating);
+    }
+
+    function updateStarRatingDisplay(rating) {
+      const stars = document.querySelectorAll('#starRatingContainer .star-item');
+      stars.forEach((star, idx) => {
+        if (idx < rating) {
+          star.style.color = '#e28a2a';
+        } else {
+          star.style.color = '#cbd5e1';
+        }
+      });
+      const label = document.getElementById('starRatingLabel');
+      if (label) {
+        label.textContent = ratingLabelsMap[rating] || (rating + '.0 Stars');
+      }
+    }
+
+    function toggleComplimentBadge(badgeEl) {
+      badgeEl.classList.toggle('active');
+      if (badgeEl.classList.contains('active')) {
+        badgeEl.style.borderColor = '#93c700';
+        badgeEl.style.background = '#f4fbe6';
+        badgeEl.style.color = '#2d4000';
+      } else {
+        badgeEl.style.borderColor = '#e2e8f0';
+        badgeEl.style.background = '#f8fafc';
+        badgeEl.style.color = '#475569';
+      }
+    }
+
+    function validateReviewSubmitState() {
+      const deliveryCheck = document.getElementById('confirmDeliveryCheck');
+      const paymentCheck = document.getElementById('confirmPaymentCheck');
+      const submitBtn = document.getElementById('submitReviewBtn');
+      if (!submitBtn) return;
+      const isReady = deliveryCheck && deliveryCheck.checked && paymentCheck && paymentCheck.checked;
+      submitBtn.disabled = !isReady;
+      submitBtn.style.opacity = isReady ? '1' : '0.5';
+      submitBtn.style.cursor = isReady ? 'pointer' : 'not-allowed';
+    }
+
+    function handleSubmitCompletionReview() {
+      const deliveryCheck = document.getElementById('confirmDeliveryCheck');
+      const paymentCheck = document.getElementById('confirmPaymentCheck');
+
+      if (!deliveryCheck || !paymentCheck || !deliveryCheck.checked || !paymentCheck.checked) {
+        showToast('⚠️ Please confirm task delivery and direct payment before completing.');
+        return;
+      }
+
+      const runner = runnerOffersDatabase[acceptedRunnerId];
+      if (!runner) return;
+
+      const reviewInput = document.getElementById('reviewTextInput');
+      const reviewText = (reviewInput && reviewInput.value.trim()) ? reviewInput.value.trim() : 'Fast, reliable, and smooth communication. Paid directly on delivery!';
+      const activeTags = [];
+      document.querySelectorAll('#complimentBadgesList .compliment-badge.active').forEach(b => {
+        activeTags.push(b.textContent.trim());
+      });
+
+      isErrandCompleted = true;
+      errandReviewData = {
+        runnerId: acceptedRunnerId,
+        runnerName: runner.name,
+        rating: currentRating,
+        tags: activeTags,
+        note: reviewText,
+        amount: runner.price,
+        date: 'Just now'
+      };
+
+      // Update runner stats in DB
+      runner.completedErrands = (runner.completedErrands || 100) + 1;
+      runner.reviewsCount = (runner.reviewsCount || 50) + 1;
+
+      closeCompletionReviewModal();
+      renderOwnerManageCard();
+      renderLiveOffersStream(true);
+
+      // Update Top Status Pill
+      const pill = document.getElementById('detailOffersPill');
+      if (pill) {
+        pill.textContent = 'TASK COMPLETED & PAID';
+        pill.style.background = '#ecfdf5';
+        pill.style.color = '#059669';
+      }
+
+      showToast('🎉 Errand completed! Thank you for reviewing ' + runner.name + '.');
+    }
+
     function acceptRunnerOffer(runnerId) {
       const runner = runnerOffersDatabase[runnerId];
       if (!runner) return;
       acceptedRunnerId = runnerId;
 
       // Update Owner Sidebar if on posted errand
-      const statusText = document.getElementById('ownerErrandStatusText');
-      if (statusText) {
-        statusText.textContent = 'Runner Assigned: ' + runner.name + ' (' + runner.transport + ')';
-      }
+      renderOwnerManageCard();
 
       // Re-render offers stream to reflect accepted state
       renderLiveOffersStream(isOwnerView());
 
-      showToast('🎉 You accepted ' + runner.name + "'s offer of ₦" + runner.price.toLocaleString() + '! Safe escrow payment initialized.');
+      showToast('🎉 You accepted ' + runner.name + "'s offer of ₦" + runner.price.toLocaleString() + '! Contact details unlocked.');
     }
 
     function isOwnerView() {
@@ -1714,81 +2189,252 @@
 
     function renderLiveOffersStream(isOwner) {
       const container = document.getElementById('offersStreamContainer');
+      const subtitle = document.getElementById('offersStreamSubtitle');
       if (!container) return;
       container.innerHTML = '';
 
-      const runnerIds = ['run-101', 'run-102', 'run-103'];
-      runnerIds.forEach(id => {
-        const r = runnerOffersDatabase[id];
-        if (!r) return;
+      const errandId = new URLSearchParams(window.location.search).get('id') || 'ER-01';
+      const userBid = myBidsDatabase[errandId];
+      const errand = errandDatabase[errandId] || errandDatabase['ER-01'];
 
-        const isAccepted = (acceptedRunnerId === r.runnerId);
+      if (isOwner) {
+        // ==========================================
+        // OWNER VIEW: Full visibility of all runner offers, ratings & pitch notes
+        // ==========================================
+        if (subtitle) {
+          if (isErrandCompleted) {
+            subtitle.textContent = 'This errand has been completed and payment settled directly with your assigned runner:';
+          } else if (acceptedRunnerId) {
+            subtitle.textContent = 'Task is currently in progress with your assigned runner:';
+          } else {
+            subtitle.textContent = 'Review incoming offers from verified runners. Compare quotes, vehicle types, and personal pitch notes to hire the right runner:';
+          }
+        }
 
-        const card = document.createElement('div');
-        card.className = 'offer-stream-row';
-        card.style.cssText = isAccepted 
-          ? 'background:#f0fdf4; border:2px solid #16a34a; border-radius:14px; padding:18px; margin-bottom:14px; display:block; box-shadow:0 4px 14px rgba(22,163,74,0.15);'
-          : 'background:#ffffff; border:1px solid #e2e8f0; border-radius:14px; padding:18px; margin-bottom:14px; display:block; transition:all 0.2s ease;';
+        const runnerIds = ['run-101', 'run-102', 'run-103'];
+        runnerIds.forEach(id => {
+          const r = runnerOffersDatabase[id];
+          if (!r) return;
 
-        const acceptButtonHtml = isOwner 
-          ? (isAccepted 
-              ? `<div style="display:flex; align-items:center; gap:8px;">
-                   <span style="background:#16a34a; color:#fff; font-size:12px; font-weight:800; padding:6px 14px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
-                     ✓ Assigned Runner
-                   </span>
-                   <button type="button" onclick="showToast('💬 Opening live chat with ' + '${r.name}' + '...')" style="background:#a6d445; color:#10151f; font-size:12px; font-weight:800; padding:6px 12px; border-radius:6px; border:none; cursor:pointer; box-shadow:0 2px 8px rgba(166,212,69,0.35);">
-                     💬 Chat
-                   </button>
-                 </div>`
-              : `<button type="button" onclick="acceptRunnerOffer('${r.runnerId}')" style="background:#a6d445; color: #10151f; font-size:12.5px; font-weight:800; padding:8px 16px; border-radius:8px; border:none; cursor:pointer; box-shadow: 0 2px 8px rgba(166,212,69,0.35); transition:all 0.15s ease;">
-                   Accept Offer &rarr;
-                 </button>`)
-          : '';
+          const isAccepted = (acceptedRunnerId === r.runnerId);
 
-        card.innerHTML = `
-          <!-- Top Row: Clickable Runner Avatar, Name, Rating & Price -->
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:12px;">
-            <div style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="openRunnerProfile('${r.runnerId}')" title="Click to view ${r.name}'s verified profile">
-              <div style="width:44px; height:44px; border-radius:50%; background:${r.badgeBg}; color:${r.badgeColor}; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
-                ${r.initials}
-              </div>
-              <div>
-                <div style="display:flex; align-items:center; gap:6px;">
-                  <span style="font-weight:800; font-size:15px; color:#0f172a; text-decoration:underline; text-decoration-color:transparent; transition:all 0.15s ease;" onmouseover="this.style.textDecorationColor='#0f172a'" onmouseout="this.style.textDecorationColor='transparent'">
-                    ${r.name}
+          const card = document.createElement('div');
+          card.className = 'offer-stream-row';
+          card.style.cssText = isAccepted 
+            ? 'background:#f0fdf4; border:2px solid #16a34a; border-radius:14px; padding:18px; margin-bottom:14px; display:block; box-shadow:0 4px 14px rgba(22,163,74,0.15);'
+            : 'background:#ffffff; border:1px solid #e2e8f0; border-radius:14px; padding:18px; margin-bottom:14px; display:block; transition:all 0.2s ease;' + (acceptedRunnerId && !isAccepted ? ' opacity:0.65;' : '');
+
+          let acceptButtonHtml = '';
+          if (isAccepted) {
+            if (isErrandCompleted) {
+              acceptButtonHtml = `
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="background:#16a34a; color:#fff; font-size:12px; font-weight:800; padding:6px 14px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
+                    ★ Completed & Paid
                   </span>
-                  <span style="color:#e28a2a; font-size:12px; font-weight:700;">★ ${r.rating}</span>
-                  <span style="background:#ecfdf5; color:#059669; font-size:10px; font-weight:800; padding:1px 6px; border-radius:4px;">VERIFIED</span>
+                  <button type="button" onclick="showToast('💬 Opening chat with ' + '${r.name}' + '...')" style="background:#a6d445; color:#10151f; font-size:12px; font-weight:800; padding:6px 12px; border-radius:6px; border:none; cursor:pointer; box-shadow:0 2px 8px rgba(166,212,69,0.35);">
+                    💬 Chat
+                  </button>
                 </div>
-                <div style="font-size:11.5px; color:#64748b; margin-top:2px;">
-                  ${r.transport} &bull; Ready in ${r.eta} &bull; ${r.completedErrands} tasks completed
+              `;
+            } else {
+              acceptButtonHtml = `
+                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                  <span style="background:#16a34a; color:#fff; font-size:12px; font-weight:800; padding:6px 12px; border-radius:6px; display:inline-flex; align-items:center; gap:4px;">
+                    ✓ Assigned Runner
+                  </span>
+                  <button type="button" onclick="showToast('💬 Opening live chat with ' + '${r.name}' + '...')" style="background:#ffffff; color:#0f172a; font-size:12px; font-weight:700; padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; cursor:pointer;">
+                    💬 Chat
+                  </button>
+                  <button type="button" onclick="openCompletionReviewModal()" style="background:#a6d445; color:#10151f; font-size:12px; font-weight:800; padding:6px 12px; border-radius:6px; border:none; cursor:pointer; box-shadow:0 2px 8px rgba(166,212,69,0.35);">
+                    ✓ Confirm Paid & Review &rarr;
+                  </button>
                 </div>
+              `;
+            }
+          } else if (acceptedRunnerId) {
+            acceptButtonHtml = `
+              <span style="background:#f1f5f9; color:#64748b; font-size:11.5px; font-weight:700; padding:5px 10px; border-radius:6px;">
+                Offer Closed
+              </span>
+            `;
+          } else {
+            acceptButtonHtml = `
+              <button type="button" onclick="acceptRunnerOffer('${r.runnerId}')" style="background:#a6d445; color: #10151f; font-size:12.5px; font-weight:800; padding:8px 16px; border-radius:8px; border:none; cursor:pointer; box-shadow: 0 2px 8px rgba(166,212,69,0.35); transition:all 0.15s ease;">
+                Accept Offer &rarr;
+              </button>
+            `;
+          }
+
+          let reviewSnippetHtml = '';
+          if (isAccepted && isErrandCompleted && errandReviewData) {
+            const stars = '★'.repeat(errandReviewData.rating);
+            reviewSnippetHtml = `
+              <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:12.5px; color:#166534;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                  <strong style="color:#0f172a;">Your Verified Review:</strong>
+                  <span style="color:#e28a2a; font-weight:800;">${stars}</span>
+                </div>
+                "${errandReviewData.note}"
+              </div>
+            `;
+          }
+
+          card.innerHTML = `
+            <!-- Top Row: Clickable Runner Avatar, Name, Rating & Price -->
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:12px;">
+              <div style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="openRunnerProfile('${r.runnerId}')" title="Click to view ${r.name}'s verified profile">
+                <div style="width:44px; height:44px; border-radius:50%; background:${r.badgeBg}; color:${r.badgeColor}; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; border:2px solid #ffffff; box-shadow:0 2px 6px rgba(0,0,0,0.08);">
+                  ${r.initials}
+                </div>
+                <div>
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <span style="font-weight:800; font-size:15px; color:#0f172a; text-decoration:underline; text-decoration-color:transparent; transition:all 0.15s ease;" onmouseover="this.style.textDecorationColor='#0f172a'" onmouseout="this.style.textDecorationColor='transparent'">
+                      ${r.name}
+                    </span>
+                    <span style="color:#e28a2a; font-size:12px; font-weight:700;">★ ${r.rating}</span>
+                    <span style="background:#ecfdf5; color:#059669; font-size:10px; font-weight:800; padding:1px 6px; border-radius:4px;">VERIFIED</span>
+                  </div>
+                  <div style="font-size:11.5px; color:#64748b; margin-top:2px;">
+                    ${r.transport} &bull; Ready in ${r.eta} &bull; ${r.completedErrands} tasks completed
+                  </div>
+                </div>
+              </div>
+
+              <div style="text-align:right;">
+                <div style="font-size:10px; font-weight:800; color:#94a3b8; text-transform:uppercase;">OFFER</div>
+                <div style="font-weight:800; font-size:20px; color:#16a34a;">₦${r.price.toLocaleString()}</div>
               </div>
             </div>
 
-            <div style="text-align:right;">
-              <div style="font-size:10px; font-weight:800; color:#94a3b8; text-transform:uppercase;">OFFER</div>
-              <div style="font-weight:800; font-size:20px; color:#16a34a;">₦${r.price.toLocaleString()}</div>
+            <!-- Note Block: Those who offer me (Prominently shown) -->
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:3px solid #93c700; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:13px; color:#334155; line-height:1.45;">
+              <div style="font-size:10.5px; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:3px; letter-spacing:0.5px;">Runner Note:</div>
+              "${r.note}"
             </div>
-          </div>
 
-          <!-- Note Block: Those who offer me (Prominently shown) -->
-          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:3px solid #93c700; border-radius:8px; padding:10px 14px; margin-bottom:12px; font-size:13px; color:#334155; line-height:1.45;">
-            <div style="font-size:10.5px; font-weight:800; color:#64748b; text-transform:uppercase; margin-bottom:3px; letter-spacing:0.5px;">Runner Note:</div>
-            "${r.note}"
-          </div>
+            ${reviewSnippetHtml}
 
-          <!-- Bottom Action Row: Click profile link & Accept button -->
-          <div style="display:flex; justify-content:space-between; align-items:center; pt-2; border-top:1px solid #f1f5f9; padding-top:10px;">
-            <button type="button" onclick="openRunnerProfile('${r.runnerId}')" style="background:none; border:none; color:#2563eb; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px; padding:0;">
-              👤 View Full Profile & Reviews &rarr;
-            </button>
-            ${acceptButtonHtml}
-          </div>
-        `;
+            <!-- Bottom Action Row: Click profile link & Accept button -->
+            <div style="display:flex; justify-content:space-between; align-items:center; pt-2; border-top:1px solid #f1f5f9; padding-top:10px;">
+              <button type="button" onclick="openRunnerProfile('${r.runnerId}')" style="background:none; border:none; color:#2563eb; font-size:12px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:4px; padding:0;">
+                👤 View Full Profile & Reviews &rarr;
+              </button>
+              ${acceptButtonHtml}
+            </div>
+          `;
 
-        container.appendChild(card);
-      });
+          container.appendChild(card);
+        });
+
+      } else {
+        // ==========================================
+        // NON-OWNER VIEW (Option 1: Sealed Bids Model)
+        // Competing runner quotes, identities, and pitch notes are SEALED.
+        // ==========================================
+        const offersCount = (errand && errand.offersCount) ? errand.offersCount : 3;
+
+        const sealedCard = document.createElement('div');
+        sealedCard.className = 'sealed-bids-card';
+        sealedCard.style.cssText = 'background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:22px; margin-bottom:14px; display:block;';
+
+        if (userBid) {
+          // Runner who has already submitted an offer:
+          if (subtitle) {
+            subtitle.textContent = 'This errand operates under a Sealed Bids policy to protect runner pricing and fair competition:';
+          }
+
+          sealedCard.innerHTML = `
+            <div style="display:flex; gap:16px; align-items:flex-start;">
+              <div style="width:44px; height:44px; border-radius:12px; background:#eff6ff; color:#2563eb; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:22px; border:1px solid #dbeafe;">
+                🔒
+              </div>
+              <div style="flex:1;">
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <h3 style="font-size:15px; font-weight:800; color:#0f172a; margin:0;">Sealed Bidding Active</h3>
+                    <span style="background:#e8f7cb; color:#3b5000; font-size:10px; font-weight:800; padding:2px 8px; border-radius:9999px;">PRIVACY PROTECTED</span>
+                  </div>
+                  <span style="font-size:11.5px; font-weight:700; color:#64748b; background:#ffffff; border:1px solid #e2e8f0; padding:3px 8px; border-radius:6px;">
+                    ${offersCount} Total Offers Placed
+                  </span>
+                </div>
+                <p style="font-size:13px; color:#475569; line-height:1.55; margin:0 0 14px 0;">
+                  Other runners have placed offers on this task. To ensure fair competition and prevent price undercutting, competing bid amounts and runner pitch notes are confidential and visible only to the errand requester.
+                </p>
+                <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:12px 14px; display:flex; flex-wrap:wrap; gap:16px; font-size:12px; color:#334155;">
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <span style="color:#16a34a; font-weight:800;">✓</span>
+                    <span>Your quote & pitch note delivered directly to client</span>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <span style="color:#16a34a; font-weight:800;">⚡</span>
+                    <span>Instant notification when client responds</span>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:6px;">
+                    <span style="color:#16a34a; font-weight:800;">🤝</span>
+                    <span>Direct pay on delivery — settle with runner on completion</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          // Browsing Visitor / Runner who hasn't submitted yet:
+          if (subtitle) {
+            subtitle.textContent = 'This errand operates under a Sealed Bids policy to ensure fair market rates and runner privacy:';
+          }
+
+          sealedCard.innerHTML = `
+            <div style="display:flex; gap:16px; align-items:flex-start;">
+              <div style="width:44px; height:44px; border-radius:12px; background:#eff6ff; color:#2563eb; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:22px; border:1px solid #dbeafe;">
+                🔒
+              </div>
+              <div style="flex:1;">
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <h3 style="font-size:15px; font-weight:800; color:#0f172a; margin:0;">Sealed Bidding System</h3>
+                    <span style="background:#ecfdf5; color:#059669; font-size:10px; font-weight:800; padding:2px 8px; border-radius:9999px;">CONFIDENTIAL BIDS</span>
+                  </div>
+                  <span style="font-size:12px; font-weight:800; color:#16a34a; background:#f0fdf4; border:1px solid #bbf7d0; padding:3px 10px; border-radius:6px;">
+                    ${offersCount} Verified Offers Submitted
+                  </span>
+                </div>
+                <p style="font-size:13px; color:#475569; line-height:1.55; margin:0 0 14px 0;">
+                  To prevent price undercutting and protect individual pitch strategies, all runner offers and personal notes are private between the runner and the task creator. Only the client can view and compare competing proposals.
+                </p>
+                <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:12px 14px; display:grid; grid-template-columns:repeat(auto-fit, minmax(160px, 1fr)); gap:12px; margin-bottom:14px;">
+                  <div>
+                    <div style="font-size:10.5px; font-weight:800; color:#94a3b8; text-transform:uppercase;">Competition</div>
+                    <div style="font-size:13px; font-weight:800; color:#0f172a; margin-top:2px;">${offersCount} Active Bids</div>
+                  </div>
+                  <div>
+                    <div style="font-size:10.5px; font-weight:800; color:#94a3b8; text-transform:uppercase;">Status</div>
+                    <div style="font-size:13px; font-weight:800; color:#16a34a; margin-top:2px; display:flex; align-items:center; gap:5px;">
+                      <span style="width:7px; height:7px; border-radius:50%; background:#16a34a; display:inline-block;"></span>
+                      Open for Offers
+                    </div>
+                  </div>
+                  <div>
+                    <div style="font-size:10.5px; font-weight:800; color:#94a3b8; text-transform:uppercase;">Client Budget</div>
+                    <div style="font-size:13px; font-weight:800; color:#0f172a; margin-top:2px;">₦${errand.price.toLocaleString()} (${errand.priceType})</div>
+                  </div>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; pt-2;">
+                  <span style="font-size:12px; color:#64748b;">
+                    Want to run this errand? Submit your quote and availability on the sidebar.
+                  </span>
+                  <button type="button" onclick="focusOfferForm()" style="background:#a6d445; color:#10151f; font-weight:800; font-size:12.5px; padding:8px 16px; border-radius:8px; border:none; cursor:pointer; box-shadow:0 2px 8px rgba(166,212,69,0.35); transition:all 0.15s ease;">
+                    Place Your Offer Now &rarr;
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        container.appendChild(sealedCard);
+      }
     }
 </script>
 </body>

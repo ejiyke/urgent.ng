@@ -9,6 +9,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/x-icon" href="favicon.ico">
   <style>
     body {
       background: linear-gradient(135deg, #f4fbe6 0%, #eff1f4 50%, #ffffff 100%);
@@ -456,64 +458,6 @@
         </form>
       </div>
 
-      <!-- ================= VIEW 2: GOOGLE PHONE NUMBER COMPLETION STEP ================= -->
-      <div class="google-phone-view" id="googlePhoneView">
-        <div class="auth-title-row">
-          <div style="display:inline-flex; align-items:center; justify-content:center; width:52px; height:52px; border-radius:50%; background:var(--cn-green-50); margin-bottom:12px;">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#668a00" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-          </div>
-          <h2 class="auth-title" style="font-size:24px;">Link Your Phone Number</h2>
-          <p class="auth-sub">Required to coordinate delivery errands and dispatch live notifications</p>
-        </div>
-
-        <!-- Google Account Connected Badge -->
-        <div class="google-connected-pill">
-          <div class="g-user-info">
-            <svg width="20" height="20" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-            </svg>
-            <div>
-              <strong id="googleAccountEmail">adeleke.folashade@gmail.com</strong>
-              <div style="font-size:11px; color:var(--cn-green-800);">✓ Google Authenticated</div>
-            </div>
-          </div>
-          <button type="button" class="btn btn-ghost btn-sm" onclick="cancelGoogleStep()" style="font-size:11px;">Change</button>
-        </div>
-
-        <form onsubmit="handleGooglePhoneComplete(event)">
-          <div class="auth-form-group">
-            <label class="auth-label" for="googlePhoneInput">Active Nigerian Phone Number <span style="color:#dc2626;">*</span></label>
-            <div class="phone-prefix-input-wrap">
-              <div class="country-flag-badge">
-                <span>🇳🇬</span>
-                <span>+234</span>
-              </div>
-              <input type="tel" id="googlePhoneInput" placeholder="803 123 4567" required pattern="[0-9\s]{9,12}" autofocus>
-            </div>
-            <small style="display:block; margin-top:6px; font-size:11px; color:var(--cn-blue-400);">Runners & requesters will call or SMS you on this number during deliveries.</small>
-          </div>
-
-          <div class="auth-form-group">
-            <label class="remember-label" style="font-size:12px;">
-              <input type="checkbox" id="whatsappOptIn" checked>
-              <span>This phone number is registered on WhatsApp (Recommended)</span>
-            </label>
-          </div>
-
-          <div style="display:flex; gap:12px; margin-top:24px;">
-            <button type="button" class="btn btn-secondary btn-lg" onclick="cancelGoogleStep()" style="flex:1;">
-              Back
-            </button>
-            <button type="submit" class="btn btn-primary btn-lg" style="flex:2;">
-              Complete Sign In &rarr;
-            </button>
-          </div>
-        </form>
-      </div>
-
       <!-- ================= SUCCESS OVERLAY ================= -->
       <div class="auth-success-overlay" id="successOverlay">
         <div class="success-icon-box">
@@ -623,52 +567,30 @@
     }
 
     // ================= GOOGLE AUTH WORKFLOW =================
+    // Users signing in with Google do NOT have to provide their phone number
     function startGoogleAuthFlow() {
-      // Simulate Google OAuth account pick
-      const standardView = document.getElementById('standardLoginView');
-      const phoneView = document.getElementById('googlePhoneView');
-      const googleEmail = document.getElementById('googleAccountEmail');
-
-      if (activeRole === 'provider') {
-        googleEmail.textContent = 'adeleke.business@gmail.com';
-      } else {
-        googleEmail.textContent = 'tunde.okon.runner@gmail.com';
-      }
-
-      standardView.style.display = 'none';
-      phoneView.classList.add('active');
-      document.getElementById('googlePhoneInput').focus();
-    }
-
-    function cancelGoogleStep() {
-      document.getElementById('googlePhoneView').classList.remove('active');
-      document.getElementById('standardLoginView').style.display = 'block';
-    }
-
-    function handleGooglePhoneComplete(e) {
-      e.preventDefault();
-      const phone = document.getElementById('googlePhoneInput').value.trim();
       const overlay = document.getElementById('successOverlay');
       const successTitle = document.getElementById('successTitle');
       const successMsg = document.getElementById('successMsg');
 
+      const isProvider = activeRole === 'provider';
       const userProfile = {
         role: activeRole,
-        name: activeRole === 'provider' ? 'Adeleke Boutique' : 'Tunde Okon',
-        phone: phone,
+        name: isProvider ? 'Adeleke Boutique' : 'Tunde Okon',
+        email: isProvider ? 'adeleke.business@gmail.com' : 'tunde.okon.runner@gmail.com',
+        authMethod: 'google',
         loginTime: new Date().toISOString()
       };
       localStorage.setItem('urgent_user', JSON.stringify(userProfile));
 
-      if (activeRole === 'provider') {
-        successTitle.textContent = 'Google Sign-In Connected!';
-        successMsg.textContent = 'Phone (+234 ' + phone + ') linked. Routing to Discovery Feed...';
+      if (isProvider) {
+        successTitle.textContent = 'Signed In with Google!';
+        successMsg.textContent = 'Welcome back, Adeleke Boutique! Signed in securely via Google. Routing to your Discovery Feed...';
       } else {
-        successTitle.textContent = 'Google Runner Account Ready!';
-        successMsg.textContent = 'Phone (+234 ' + phone + ') linked. Routing to neighborhood errand feed...';
+        successTitle.textContent = 'Signed In with Google!';
+        successMsg.textContent = 'Welcome back, Tunde Okon! Signed in securely via Google. Routing to neighborhood errand feed...';
       }
 
-      document.getElementById('googlePhoneView').classList.remove('active');
       overlay.classList.add('active');
       setTimeout(() => {
         window.location.href = 'discovery.html';

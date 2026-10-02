@@ -484,8 +484,8 @@ function openLoginModal(e) {
   if (e) e.preventDefault();
   const modal = document.getElementById('loginModal');
   if (modal) {
-    document.getElementById('modalStandardLoginView').style.display = 'block';
-    document.getElementById('modalGooglePhoneView').style.display = 'none';
+    const standardView = document.getElementById('modalStandardLoginView');
+    if (standardView) standardView.style.display = 'block';
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
   } else {
@@ -519,32 +519,19 @@ function setModalLoginRole(role) {
   }
 }
 
+// When signing in with Google, users do not need to provide a phone number
 function startModalGoogleAuth() {
-  document.getElementById('modalStandardLoginView').style.display = 'none';
-  document.getElementById('modalGooglePhoneView').style.display = 'block';
-  document.getElementById('modalGoogleEmail').textContent = modalActiveRole === 'provider' 
-    ? 'adeleke.business@gmail.com' 
-    : 'tunde.runner@gmail.com';
-  document.getElementById('modalGooglePhoneInput').focus();
-}
-
-function cancelModalGoogleStep() {
-  document.getElementById('modalGooglePhoneView').style.display = 'none';
-  document.getElementById('modalStandardLoginView').style.display = 'block';
-}
-
-function handleModalGooglePhoneSubmit(e) {
-  e.preventDefault();
-  const phone = document.getElementById('modalGooglePhoneInput').value.trim();
   closeModals();
+  const isProvider = modalActiveRole === 'provider';
   const userProfile = {
     role: modalActiveRole,
-    name: modalActiveRole === 'provider' ? 'Adeleke Boutique' : 'Tunde Okon',
-    phone: phone,
+    name: isProvider ? 'Adeleke Boutique' : 'Tunde Okon',
+    email: isProvider ? 'adeleke.business@gmail.com' : 'tunde.runner@gmail.com',
+    authMethod: 'google',
     loginTime: new Date().toISOString()
   };
   localStorage.setItem('urgent_user', JSON.stringify(userProfile));
-  showToast(`🎉 Signed in via Google! Routing to discovery feed...`);
+  showToast(`🎉 Signed in with Google as ${isProvider ? 'Service Provider' : 'Errand Runner'}! Routing to discovery...`);
   setTimeout(() => {
     window.location.href = 'discovery.html';
   }, 800);

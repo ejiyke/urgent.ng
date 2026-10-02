@@ -6,8 +6,16 @@
   <title>Discovery Feed — Urgent.ng | Live Neighborhood Errands & Requests</title>
   <meta name="description" content="Browse live errands in Lagos and across Nigeria. Find nearby tasks to run, submit price bids, or track your posted errands in real-time.">
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/x-icon" href="favicon.ico">
   <style>
     /* Scoped Discovery Page Styling matching user's exact specification */
+    :root {
+      --cn-green-500: #93c700;
+      --cn-green-600: #80ad00;
+      --cn-green-700: #668a00;
+    }
+
     .discovery-page-wrapper {
       background-color: #f8fafc;
       min-height: 100vh;
@@ -312,10 +320,15 @@
     .errand-card-title {
       font-size: 17px;
       font-weight: 800;
-      color: #0f172a;
+      color: var(--cn-green-700, #668a00);
       line-height: 1.35;
       margin: 0 0 16px 0;
       min-height: 46px;
+      transition: color var(--transition-fast, 150ms ease);
+    }
+
+    .errand-card:hover .errand-card-title {
+      color: var(--cn-green-800, #526f00);
     }
 
     .route-info-box {
@@ -459,12 +472,22 @@
 
     .discovery-modal-dialog {
       background: #ffffff;
-      border-radius: 16px;
+      border-radius: 18px;
       width: 100%;
-      max-width: 520px;
-      padding: 28px;
+      max-width: 740px;
+      max-height: 90vh;
+      overflow-y: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding: 30px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
       animation: modalFadeIn 0.2s ease-out;
+    }
+
+    .discovery-modal-dialog::-webkit-scrollbar {
+      display: none;
+      width: 0;
+      height: 0;
     }
 
     @keyframes modalFadeIn {
@@ -575,6 +598,120 @@
     .bid-status-chip.active .bid-status-dot {
       box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.4);
     }
+
+    /* ================= FEED PAGINATION STYLING ================= */
+    .feed-pagination-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 36px;
+      margin-bottom: 60px;
+      padding-top: 24px;
+      border-top: 1px solid #e2e8f0;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .pagination-info {
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pagination-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 38px;
+      padding: 0 14px;
+      border-radius: var(--radius-md, 8px);
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--cn-blue-700, #1e293b);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all var(--transition-fast, 150ms ease);
+      user-select: none;
+    }
+
+    .pagination-btn:hover:not(:disabled) {
+      border-color: var(--cn-green-500, #93c700);
+      color: var(--cn-green-700, #668a00);
+      background: var(--cn-green-50, #f4fbe6);
+    }
+
+    .pagination-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      border-color: #e2e8f0;
+      color: #94a3b8;
+      background: #f8fafc;
+    }
+
+    .pagination-pages {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .page-number-btn {
+      min-width: 38px;
+      height: 38px;
+      padding: 0 8px;
+      border-radius: var(--radius-md, 8px);
+      border: 1.5px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--cn-blue-700, #1e293b);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition-fast, 150ms ease);
+      user-select: none;
+    }
+
+    .page-number-btn:hover:not(.active) {
+      border-color: var(--cn-green-500, #93c700);
+      color: var(--cn-green-700, #668a00);
+      background: var(--cn-green-50, #f4fbe6);
+    }
+
+    .page-number-btn.active {
+      background: var(--cn-green-500, #93c700);
+      border-color: var(--cn-green-500, #93c700);
+      color: #10151f;
+      font-weight: 800;
+      box-shadow: 0 2px 8px rgba(147, 199, 0, 0.35);
+      cursor: default;
+    }
+
+    .pagination-ellipsis {
+      padding: 0 4px;
+      color: #94a3b8;
+      font-weight: 700;
+      font-size: 14px;
+      user-select: none;
+    }
+
+    @media (max-width: 640px) {
+      .feed-pagination-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        text-align: center;
+      }
+    }
   </style>
 </head>
 <body class="discovery-page-wrapper">
@@ -672,6 +809,28 @@
           </button>
         </div>
 
+        <!-- Posted Errand Status Filter (Quick Filter in Posted Errands) -->
+        <div class="filter-pills-row" id="postedStatusChipsContainer" style="display:none; margin-bottom:14px;">
+          <button class="bid-status-chip active" data-status="all" onclick="selectPostedStatusFilter('all', this)">
+            All Posted (<span id="postedStatusCountAll">0</span>)
+          </button>
+          <button class="bid-status-chip" data-status="open" onclick="selectPostedStatusFilter('open', this)">
+            <span class="bid-status-dot dot-pulse-green"></span> Open for Offers (<span id="postedStatusCountOpen">0</span>)
+          </button>
+          <button class="bid-status-chip" data-status="in-progress" onclick="selectPostedStatusFilter('in-progress', this)">
+            <span class="bid-status-dot dot-pulse-blue"></span> In Progress (<span id="postedStatusCountInProgress">0</span>)
+          </button>
+          <button class="bid-status-chip" data-status="awaiting-review" onclick="selectPostedStatusFilter('awaiting-review', this)">
+            <span class="bid-status-dot dot-pulse-amber"></span> Awaiting Review (<span id="postedStatusCountAwaiting">0</span>)
+          </button>
+          <button class="bid-status-chip" data-status="completed" onclick="selectPostedStatusFilter('completed', this)">
+            <span class="bid-status-dot dot-pulse-green"></span> Completed & Paid (<span id="postedStatusCountCompleted">0</span>)
+          </button>
+          <button class="bid-status-chip" data-status="cancelled" onclick="selectPostedStatusFilter('cancelled', this)">
+            <span class="bid-status-dot dot-gray"></span> Cancelled (<span id="postedStatusCountCancelled">0</span>)
+          </button>
+        </div>
+
         <!-- Category Pills Filter -->
         <div class="filter-pills-row" id="categoryChipsContainer">
           <button class="filter-chip active" data-cat="all" onclick="selectFilterCategory('all', this)">
@@ -742,6 +901,22 @@
           Try adjusting your search query, selecting another category, or resetting filters.
         </p>
         <button class="btn btn-secondary btn-sm" onclick="resetAllFilters()">Reset All Filters</button>
+      </div>
+
+      <!-- ================= PAGINATION COMPONENT ================= -->
+      <div class="feed-pagination-container" id="feedPaginationContainer">
+        <div class="pagination-info" id="paginationInfo">Showing 1–6 of 16 live errands</div>
+        <div class="pagination-controls" id="paginationControls">
+          <button type="button" class="pagination-btn pagination-prev" id="paginationPrevBtn" onclick="changePage(currentPage - 1)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            <span>Previous</span>
+          </button>
+          <div class="pagination-pages" id="paginationPages"></div>
+          <button type="button" class="pagination-btn pagination-next" id="paginationNextBtn" onclick="changePage(currentPage + 1)">
+            <span>Next</span>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
       </div>
 
     </div>
@@ -1069,6 +1244,91 @@
         priceType: 'SUGGESTED BUDGET',
         price: 5000,
         area: 'Victoria Island'
+      },
+      {
+        id: 'ER-12',
+        category: 'DELIVERY',
+        badgeClass: 'badge-delivery',
+        offersCount: 5,
+        title: 'Pick up Dry-Cleaned Agbada & Lace Attire from Laundromat',
+        pickupLabel: 'Pickup:',
+        pickupVal: 'Snow White Drycleaners, Ikeja GRA',
+        dropLabel: 'Drop-off:',
+        dropVal: 'Omole Phase 1 Estate',
+        desc: '3 pressed traditional outfits on hangers in transparent garment bags. Delivery receipt signed at gate.',
+        metaTime: 'Before 4:00 PM today',
+        postedAgo: 'Posted 15m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 4000,
+        area: 'Ikeja'
+      },
+      {
+        id: 'ER-13',
+        category: 'SHOPPING',
+        badgeClass: 'badge-shopping',
+        offersCount: 3,
+        title: 'Purchase Emergency Inhaler & Prescription Drugs at Pharmacy',
+        pickupLabel: 'Pickup:',
+        pickupVal: 'Medplus Pharmacy, Victoria Island',
+        dropLabel: 'Drop-off:',
+        dropVal: 'Oniru Private Estate',
+        desc: 'Prescription photo sent in chat. Need ventolin inhaler and augmentin syrup immediately.',
+        metaTime: 'Needed within 1 hr',
+        postedAgo: 'Posted 8m ago',
+        priceType: 'RUNNER FEE',
+        price: 3500,
+        area: 'Victoria Island'
+      },
+      {
+        id: 'ER-14',
+        category: 'DOCUMENT',
+        badgeClass: 'badge-document',
+        offersCount: 2,
+        title: 'Retrieve Stamped Survey Plan at Lands Bureau Registry',
+        pickupLabel: 'Pickup:',
+        pickupVal: 'Lands Bureau, Alausa Secretariat, Ikeja',
+        dropLabel: 'Drop-off:',
+        dropVal: 'Law Office, Lekki Phase 1',
+        desc: 'File reference number LP-902-88. Official collection slip will be provided to runner upon arrival.',
+        metaTime: 'Today before 3:30 PM',
+        postedAgo: 'Posted 30m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 6000,
+        area: 'Ikeja'
+      },
+      {
+        id: 'ER-15',
+        category: 'FOOD',
+        badgeClass: 'badge-food',
+        offersCount: 4,
+        title: 'Collect 4 Packs of Party Jollof & Grilled Suya Platter',
+        pickupLabel: 'Pickup:',
+        pickupVal: 'Mega Chicken, Ikota Shopping Complex',
+        dropLabel: 'Drop-off:',
+        dropVal: 'Chevron Drive, Lekki',
+        desc: 'Order #MC-412 already paid online. Runner just needs to pick up insulated hot box and deliver.',
+        metaTime: 'ASAP / Immediate',
+        postedAgo: 'Posted 5m ago',
+        priceType: 'RUNNER FEE',
+        price: 3000,
+        area: 'Victoria Island'
+      },
+      {
+        id: 'ER-16',
+        category: 'PHYSICAL',
+        badgeClass: 'badge-physical',
+        offersCount: 2,
+        title: 'Verify Generator Capacity & Sound Level at Co-working Space',
+        pickupLabel: 'Location:',
+        pickupVal: 'Workstation Cowork, Marina',
+        dropLabel: 'Task:',
+        dropVal: 'Take decibel meter reading & verify 50kVA specs',
+        desc: 'Testing silent generator noise for recording studio lease. Requires 15 mins on-site presence.',
+        metaTime: 'Within 2 hours',
+        postedAgo: 'Posted 20m ago',
+        priceType: 'SUGGESTED BUDGET',
+        price: 5000,
+        area: 'Marina'
       }
     ];
 
@@ -1166,10 +1426,131 @@
 
     // My bids ID list
     let myOffersList = ['ER-01', 'ER-02', 'ER-03', 'ER-07', 'ER-08', 'ER-09', 'ER-10', 'ER-11'];
-    let myTasksList = ['ER-05'];
+
+    // DETAILED POSTED ERRANDS REGISTRY (Cards across different lifecycle statuses)
+    const myPostedTasks = {
+      'ER-05': {
+        status: 'open',
+        statusLabel: '3 Runner Offers Received',
+        statusColor: '#059669',
+        statusBg: '#ecfdf5',
+        statusBorder: '#a7f3d0',
+        dotClass: 'dot-pulse-green',
+        actionLabel: 'Review Offers (3) →',
+        actionColor: '#059669',
+        note: 'Lowest runner bid: ₦6,500 by Tunde Okon • Compare quotes, vehicles & hire your runner.',
+        runner: null
+      },
+      'ER-04': {
+        status: 'open',
+        statusLabel: '4 Runner Offers Received',
+        statusColor: '#059669',
+        statusBg: '#ecfdf5',
+        statusBorder: '#a7f3d0',
+        dotClass: 'dot-pulse-green',
+        actionLabel: 'Review Offers (4) →',
+        actionColor: '#059669',
+        note: '4 runners bidding with temperature-controlled carriers • Lowest quote: ₦4,500.',
+        runner: null
+      },
+      'ER-16': {
+        status: 'open',
+        statusLabel: 'Broadcasted — 1 Offer Received',
+        statusColor: '#b45309',
+        statusBg: '#fffbeb',
+        statusBorder: '#fde68a',
+        dotClass: 'dot-pulse-amber',
+        actionLabel: 'Review Offer (1) →',
+        actionColor: '#b45309',
+        note: 'Broadcasting to 18 runners nearby in Marina. First offer received 5m ago.',
+        runner: null
+      },
+      'ER-06': {
+        status: 'in-progress',
+        statusLabel: 'Task In Progress — Runner Assigned',
+        statusColor: '#1d4ed8',
+        statusBg: '#eff6ff',
+        statusBorder: '#bfdbfe',
+        dotClass: 'dot-pulse-blue',
+        actionLabel: 'Manage Runner →',
+        actionColor: '#1d4ed8',
+        note: 'Assigned to Tunde Okon (₦3,000 agreed fee) • Runner en route to Balogun Market. Direct pay on delivery.',
+        runner: {
+          name: 'Tunde Okon',
+          phone: '+234 803 123 4567',
+          price: 3000,
+          transport: 'Motorcycle'
+        }
+      },
+      'ER-12': {
+        status: 'in-progress',
+        statusLabel: 'Task In Progress — Pickup Complete',
+        statusColor: '#1d4ed8',
+        statusBg: '#eff6ff',
+        statusBorder: '#bfdbfe',
+        dotClass: 'dot-pulse-blue',
+        actionLabel: 'Track Delivery →',
+        actionColor: '#1d4ed8',
+        note: 'Assigned to Blessing Adeleke (₦4,000 agreed fee) • 3 dry-cleaned Agbada outfits collected safely.',
+        runner: {
+          name: 'Blessing Adeleke',
+          phone: '+234 901 234 5678',
+          price: 4000,
+          transport: 'Car / Sedan'
+        }
+      },
+      'ER-13': {
+        status: 'awaiting-review',
+        statusLabel: 'Delivered — Confirm & Pay Directly',
+        statusColor: '#d97706',
+        statusBg: '#fffbeb',
+        statusBorder: '#fde68a',
+        dotClass: 'dot-pulse-amber',
+        actionLabel: 'Confirm & Review →',
+        actionColor: '#d97706',
+        note: 'Runner delivered inhaler to Oniru gate! Confirm satisfactory delivery and settle ₦3,500 direct payment.',
+        runner: {
+          name: 'Fatima Garba',
+          phone: '+234 812 345 6789',
+          price: 3500,
+          transport: 'Motorcycle'
+        }
+      },
+      'ER-14': {
+        status: 'completed',
+        statusLabel: 'Completed & Paid — Reviewed 5.0 ★',
+        statusColor: '#059669',
+        statusBg: '#ecfdf5',
+        statusBorder: '#a7f3d0',
+        dotClass: 'dot-pulse-green',
+        actionLabel: 'View Summary →',
+        actionColor: '#059669',
+        note: 'Survey plan safely retrieved from Lands Bureau & delivered • ₦6,000 paid directly to runner.',
+        runner: {
+          name: 'Babatunde Jinadu',
+          price: 6000,
+          rating: 5.0
+        }
+      },
+      'ER-09': {
+        status: 'cancelled',
+        statusLabel: 'Cancelled by You (Closed)',
+        statusColor: '#64748b',
+        statusBg: '#f8fafc',
+        statusBorder: '#e2e8f0',
+        dotClass: 'dot-gray',
+        actionLabel: 'Closed Task →',
+        actionColor: '#64748b',
+        note: 'Task was cancelled because the tailor rescheduled collection time. No fees incurred.',
+        runner: null
+      }
+    };
+
+    let myTasksList = ['ER-05', 'ER-04', 'ER-16', 'ER-06', 'ER-12', 'ER-13', 'ER-14', 'ER-09'];
 
     let currentCategory = 'all';
     let currentBidStatusFilter = 'all';
+    let currentPostedStatusFilter = 'all';
     let currentViewTab = 'all'; // 'all', 'offers', 'tasks'
 
     function initUserSession() {
@@ -1261,6 +1642,47 @@
       applyFilters();
     }
 
+    function updatePostedStatusCounts() {
+      const total = myTasksList.length;
+      let openCount = 0;
+      let inProgressCount = 0;
+      let awaitingCount = 0;
+      let completedCount = 0;
+      let cancelledCount = 0;
+
+      myTasksList.forEach(id => {
+        const pt = myPostedTasks[id];
+        if (pt) {
+          if (pt.status === 'open') openCount++;
+          else if (pt.status === 'in-progress') inProgressCount++;
+          else if (pt.status === 'awaiting-review') awaitingCount++;
+          else if (pt.status === 'completed') completedCount++;
+          else if (pt.status === 'cancelled') cancelledCount++;
+        }
+      });
+
+      const elAll = document.getElementById('postedStatusCountAll');
+      const elOpen = document.getElementById('postedStatusCountOpen');
+      const elInProgress = document.getElementById('postedStatusCountInProgress');
+      const elAwaiting = document.getElementById('postedStatusCountAwaiting');
+      const elCompleted = document.getElementById('postedStatusCountCompleted');
+      const elCancelled = document.getElementById('postedStatusCountCancelled');
+
+      if (elAll) elAll.textContent = total;
+      if (elOpen) elOpen.textContent = openCount;
+      if (elInProgress) elInProgress.textContent = inProgressCount;
+      if (elAwaiting) elAwaiting.textContent = awaitingCount;
+      if (elCompleted) elCompleted.textContent = completedCount;
+      if (elCancelled) elCancelled.textContent = cancelledCount;
+    }
+
+    function selectPostedStatusFilter(status, btn) {
+      document.querySelectorAll('#postedStatusChipsContainer .bid-status-chip').forEach(c => c.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      currentPostedStatusFilter = status;
+      applyFilters();
+    }
+
     function showLiveErrands(e) {
       if (e) e.preventDefault();
       currentViewTab = 'all';
@@ -1269,6 +1691,8 @@
       
       // Controls visibility
       document.getElementById('bidStatusChipsContainer').style.display = 'none';
+      const postedChips = document.getElementById('postedStatusChipsContainer');
+      if (postedChips) postedChips.style.display = 'none';
       document.getElementById('categoryChipsContainer').style.display = 'flex';
       const secFilters = document.getElementById('secondaryFiltersRow');
       if (secFilters) secFilters.style.display = 'flex';
@@ -1285,6 +1709,8 @@
       
       // Controls visibility: show status chips, hide category chips and secondary dropdown filters
       document.getElementById('bidStatusChipsContainer').style.display = 'flex';
+      const postedChips = document.getElementById('postedStatusChipsContainer');
+      if (postedChips) postedChips.style.display = 'none';
       document.getElementById('categoryChipsContainer').style.display = 'none';
       const secFilters = document.getElementById('secondaryFiltersRow');
       if (secFilters) secFilters.style.display = 'none';
@@ -1300,13 +1726,16 @@
       updateNavTabStyles('posted');
       document.getElementById('feedHeroHeadline').textContent = "Posted Errands (Tasks You\'ve Created & Received Bids)";
       
-      // Controls visibility
+      // Controls visibility: show posted status chips, hide bid status & category chips
       document.getElementById('bidStatusChipsContainer').style.display = 'none';
-      document.getElementById('categoryChipsContainer').style.display = 'flex';
+      document.getElementById('categoryChipsContainer').style.display = 'none';
+      const postedChips = document.getElementById('postedStatusChipsContainer');
+      if (postedChips) postedChips.style.display = 'flex';
       const secFilters = document.getElementById('secondaryFiltersRow');
-      if (secFilters) secFilters.style.display = 'flex';
-      document.getElementById('feedSearchInput').placeholder = 'Search your posted errands...';
+      if (secFilters) secFilters.style.display = 'none';
+      document.getElementById('feedSearchInput').placeholder = 'Search your posted errands by status, task name, or runner...';
 
+      updatePostedStatusCounts();
       applyFilters();
     }
 
@@ -1339,9 +1768,28 @@
         };
 
         const isBidsTab = (currentViewTab === 'offers');
+        const isTasksTab = (currentViewTab === 'tasks');
         const userBid = myBids[item.id];
+        const postedTask = myPostedTasks[item.id];
 
-        // Format bid status banner if on My Bids or if user bid exists
+        // Format card click target
+        card.onclick = () => {
+          const targetUrl = isTasksTab 
+            ? 'product-detail.html?id=' + encodeURIComponent(item.id) + '&view=owner'
+            : 'product-detail.html?id=' + encodeURIComponent(item.id);
+          window.location.href = targetUrl;
+        };
+        card.onkeydown = (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const targetUrl = isTasksTab 
+              ? 'product-detail.html?id=' + encodeURIComponent(item.id) + '&view=owner'
+              : 'product-detail.html?id=' + encodeURIComponent(item.id);
+            window.location.href = targetUrl;
+          }
+        };
+
+        // Format bid / posted status banner if on My Bids or Posted Errands
         let statusBannerHtml = '';
         let statusNoteHtml = '';
         if (isBidsTab && userBid) {
@@ -1358,6 +1806,36 @@
           statusNoteHtml = `
             <div style="background:#f8fafc; border-left:3px solid ${userBid.statusColor}; padding:6px 10px; border-radius:4px; font-size:11.5px; color:#475569; margin-bottom:12px;">
               💡 ${userBid.note}
+            </div>
+          `;
+        } else if (isTasksTab && postedTask) {
+          statusBannerHtml = `
+            <div class="bid-status-banner" style="background:${postedTask.statusBg}; border:1px solid ${postedTask.statusBorder}; color:${postedTask.statusColor};">
+              <div class="bid-status-left" style="display:flex; align-items:center; gap:6px;">
+                <span class="bid-status-dot ${postedTask.dotClass}"></span>
+                <span style="font-weight:800;">${postedTask.statusLabel}</span>
+              </div>
+              <div style="font-size:11px; opacity:0.85; font-weight:700;">${item.postedAgo}</div>
+            </div>
+          `;
+
+          let runnerSummaryStrip = '';
+          if (postedTask.runner) {
+            runnerSummaryStrip = `
+              <div style="display:flex; align-items:center; justify-content:space-between; background:#ffffff; border:1px solid ${postedTask.statusBorder}; border-radius:6px; padding:6px 10px; margin-top:6px; font-size:11.5px;">
+                <div style="display:flex; align-items:center; gap:6px; color:#0f172a; font-weight:700;">
+                  <span>👤 Assigned: <strong>${postedTask.runner.name}</strong></span>
+                  <span style="color:#64748b;">(${postedTask.runner.transport || 'Runner'})</span>
+                </div>
+                <div style="color:#16a34a; font-weight:800;">₦${postedTask.runner.price.toLocaleString()} agreed</div>
+              </div>
+            `;
+          }
+
+          statusNoteHtml = `
+            <div style="background:#f8fafc; border-left:3px solid ${postedTask.statusColor}; padding:8px 10px; border-radius:6px; font-size:11.5px; color:#334155; margin-bottom:12px; line-height:1.45;">
+              <div>${postedTask.note}</div>
+              ${runnerSummaryStrip}
             </div>
           `;
         }
@@ -1389,6 +1867,42 @@
               </div>
               <div style="display:flex; align-items:center; gap:8px;">
                 <span style="font-size:11.5px; font-weight:700; color:${userBid.statusColor};">${actionLabel}</span>
+                <div class="card-arrow-icon" style="display:flex; align-items:center;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (isTasksTab && postedTask) {
+          let budgetMetaText = 'YOUR BUDGET';
+          let budgetMetaAmount = '₦' + item.price.toLocaleString();
+          let subnoteText = 'Direct Marketplace Settlement';
+
+          if (postedTask.status === 'in-progress' && postedTask.runner) {
+            budgetMetaText = 'AGREED FEE';
+            budgetMetaAmount = '₦' + postedTask.runner.price.toLocaleString();
+            subnoteText = 'Direct Pay on Delivery';
+          } else if (postedTask.status === 'completed' && postedTask.runner) {
+            budgetMetaText = 'TOTAL PAID';
+            budgetMetaAmount = '₦' + postedTask.runner.price.toLocaleString();
+            subnoteText = 'Settled Directly with Runner';
+          } else if (postedTask.status === 'awaiting-review' && postedTask.runner) {
+            budgetMetaText = 'PENDING SETTLEMENT';
+            budgetMetaAmount = '₦' + postedTask.runner.price.toLocaleString();
+            subnoteText = 'Confirm & Pay on Delivery';
+          } else if (postedTask.status === 'cancelled') {
+            subnoteText = 'No Fee Incurred';
+          }
+
+          bottomRowHtml = `
+            <div class="errand-card-bottom">
+              <div>
+                <div class="budget-subtext">${budgetMetaText}</div>
+                <div class="budget-price">${budgetMetaAmount}</div>
+                <div style="font-size:10.5px; font-weight:700; color:#64748b; margin-top:2px;">${subnoteText}</div>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-size:12px; font-weight:800; color:${postedTask.actionColor};">${postedTask.actionLabel}</span>
                 <div class="card-arrow-icon" style="display:flex; align-items:center;">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
@@ -1457,6 +1971,117 @@
       });
     }
 
+    /* ================= FEED PAGINATION LOGIC ================= */
+    const ITEMS_PER_PAGE = 6;
+    let currentPage = 1;
+    let currentFilteredList = [];
+
+    function changePage(newPage, shouldScroll = true) {
+      const totalItems = currentFilteredList.length;
+      const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+      if (newPage < 1 || newPage > totalPages) return;
+      currentPage = newPage;
+
+      renderCurrentPage();
+
+      if (shouldScroll) {
+        const gridEl = document.getElementById('errandFeedGrid');
+        if (gridEl) {
+          const headerOffset = 100;
+          const elementPosition = gridEl.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({
+            top: Math.max(0, offsetPosition),
+            behavior: 'smooth'
+          });
+        }
+      }
+    }
+
+    function renderCurrentPage() {
+      const totalItems = currentFilteredList.length;
+      const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE) || 1;
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+
+      const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+      const pageItems = currentFilteredList.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+      renderCards(pageItems);
+      renderPaginationControls(totalItems, totalPages, startIndex, pageItems.length);
+    }
+
+    function renderPaginationControls(totalItems, totalPages, startIndex, countOnPage) {
+      const container = document.getElementById('feedPaginationContainer');
+      const info = document.getElementById('paginationInfo');
+      const pagesWrap = document.getElementById('paginationPages');
+      const prevBtn = document.getElementById('paginationPrevBtn');
+      const nextBtn = document.getElementById('paginationNextBtn');
+
+      if (!container) return;
+
+      if (totalItems === 0) {
+        container.style.display = 'none';
+        return;
+      }
+
+      container.style.display = 'flex';
+
+      const entityName = currentViewTab === 'offers' ? 'bids' : (currentViewTab === 'tasks' ? 'posted tasks' : 'live errands');
+      const endIdx = startIndex + countOnPage;
+      info.textContent = `Showing ${startIndex + 1}–${endIdx} of ${totalItems} ${entityName}`;
+
+      if (prevBtn) prevBtn.disabled = (currentPage <= 1);
+      if (nextBtn) nextBtn.disabled = (currentPage >= totalPages);
+
+      if (!pagesWrap) return;
+      pagesWrap.innerHTML = '';
+
+      if (totalPages <= 7) {
+        for (let p = 1; p <= totalPages; p++) {
+          pagesWrap.appendChild(createPageBtn(p));
+        }
+      } else {
+        pagesWrap.appendChild(createPageBtn(1));
+
+        if (currentPage > 3) {
+          const ellipsis = document.createElement('span');
+          ellipsis.className = 'pagination-ellipsis';
+          ellipsis.textContent = '…';
+          pagesWrap.appendChild(ellipsis);
+        }
+
+        const start = Math.max(2, currentPage - 1);
+        const end = Math.min(totalPages - 1, currentPage + 1);
+        for (let p = start; p <= end; p++) {
+          pagesWrap.appendChild(createPageBtn(p));
+        }
+
+        if (currentPage < totalPages - 2) {
+          const ellipsis = document.createElement('span');
+          ellipsis.className = 'pagination-ellipsis';
+          ellipsis.textContent = '…';
+          pagesWrap.appendChild(ellipsis);
+        }
+
+        pagesWrap.appendChild(createPageBtn(totalPages));
+      }
+    }
+
+    function createPageBtn(pageNumber) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'page-number-btn' + (pageNumber === currentPage ? ' active' : '');
+      btn.textContent = pageNumber;
+      btn.setAttribute('aria-label', 'Go to page ' + pageNumber);
+      if (pageNumber === currentPage) {
+        btn.setAttribute('aria-current', 'page');
+      } else {
+        btn.onclick = () => changePage(pageNumber);
+      }
+      return btn;
+    }
+
     function selectFilterCategory(cat, btn) {
       document.querySelectorAll('#categoryChipsContainer .filter-chip').forEach(c => c.classList.remove('active'));
       if (btn) btn.classList.add('active');
@@ -1480,8 +2105,13 @@
             if (!b || b.status !== currentBidStatusFilter) return false;
           }
         }
-        if (currentViewTab === 'tasks' && !myTasksList.includes(item.id)) {
-          return false;
+        if (currentViewTab === 'tasks') {
+          if (!myTasksList.includes(item.id)) return false;
+          // Status filter in Posted Errands
+          if (currentPostedStatusFilter !== 'all') {
+            const pt = myPostedTasks[item.id];
+            if (!pt || pt.status !== currentPostedStatusFilter) return false;
+          }
         }
 
         // Search
@@ -1491,12 +2121,14 @@
           const matchPickup = item.pickupVal.toLowerCase().includes(search);
           const matchDrop = item.dropVal.toLowerCase().includes(search);
           const bidInfo = myBids[item.id];
-          const matchStatus = bidInfo ? (bidInfo.status.toLowerCase().includes(search) || bidInfo.statusLabel.toLowerCase().includes(search) || bidInfo.note.toLowerCase().includes(search)) : false;
-          if (!matchTitle && !matchDesc && !matchPickup && !matchDrop && !matchStatus) return false;
+          const matchBid = bidInfo ? (bidInfo.status.toLowerCase().includes(search) || bidInfo.statusLabel.toLowerCase().includes(search) || bidInfo.note.toLowerCase().includes(search)) : false;
+          const postedInfo = myPostedTasks[item.id];
+          const matchPosted = postedInfo ? (postedInfo.status.toLowerCase().includes(search) || postedInfo.statusLabel.toLowerCase().includes(search) || postedInfo.note.toLowerCase().includes(search) || (postedInfo.runner && postedInfo.runner.name.toLowerCase().includes(search))) : false;
+          if (!matchTitle && !matchDesc && !matchPickup && !matchDrop && !matchBid && !matchPosted) return false;
         }
 
         // Category filter (only in Live Errands or All view)
-        if (currentViewTab !== 'offers' && currentCategory !== 'all' && item.category !== currentCategory) {
+        if (currentViewTab === 'all' && currentCategory !== 'all' && item.category !== currentCategory) {
           return false;
         }
 
@@ -1525,7 +2157,9 @@
         filtered.sort((a, b) => b.offersCount - a.offersCount);
       }
 
-      renderCards(filtered);
+      currentFilteredList = filtered;
+      currentPage = 1;
+      renderCurrentPage();
     }
 
     function resetAllFilters() {
@@ -1533,8 +2167,9 @@
       document.getElementById('areaFilterSelect').value = 'all';
       document.getElementById('urgencyFilterSelect').value = 'all';
       document.getElementById('sortFilterSelect').value = 'newest';
-      selectFilterCategory('all', document.querySelector('[data-cat="all"]'));
-      selectBidStatusFilter('all', document.querySelector('[data-status="all"]'));
+      selectFilterCategory('all', document.querySelector('#categoryChipsContainer [data-cat="all"]'));
+      selectBidStatusFilter('all', document.querySelector('#bidStatusChipsContainer [data-status="all"]'));
+      selectPostedStatusFilter('all', document.querySelector('#postedStatusChipsContainer [data-status="all"]'));
     }
 
     // Modal Bidding
@@ -1667,7 +2302,7 @@
       } else if (window.location.hash === '#posted-errands') {
         showPostedErrands();
       } else {
-        renderCards(errands);
+        applyFilters();
       }
     });
   </script>
