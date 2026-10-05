@@ -8,9 +8,25 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2.5">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="alternate icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    .instant-grid-2 {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 16px !important;
+    }
+    .instant-grid-2 > * {
+      min-width: 0 !important;
+      width: 100% !important;
+    }
+    @media (max-width: 820px) {
+      .instant-grid-2 {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -218,7 +234,9 @@
               <div class="instant-input-wrapper">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
                 <select id="instantCategory" class="instant-select" required onchange="handleInstantCategoryChange(this.value)">
-                  <option value="Delivery" selected>📦 Package Delivery</option>
+                  <option value="Price confirmation" selected>🏷️ Price confirmation</option>
+                  <option value="Sell fast">⚡ Sell fast</option>
+                  <option value="Delivery">📦 Package Delivery</option>
                   <option value="Shopping">🛒 Market Shopping</option>
                   <option value="Document">📄 Document Pickup</option>
                   <option value="Food">🍲 Food / Groceries</option>
@@ -374,6 +392,8 @@
       <!-- Category Filter Chips -->
       <div class="category-filters-row">
         <button class="filter-chip active" onclick="filterErrands('all', this)">All Categories</button>
+        <button class="filter-chip" onclick="filterErrands('Price confirmation', this)">Price confirmation</button>
+        <button class="filter-chip" onclick="filterErrands('Sell fast', this)">Sell fast</button>
         <button class="filter-chip" onclick="filterErrands('Delivery', this)">Package Delivery</button>
         <button class="filter-chip" onclick="filterErrands('Shopping', this)">Market & Shopping</button>
         <button class="filter-chip" onclick="filterErrands('Document', this)">Urgent Documents</button>
@@ -383,6 +403,111 @@
 
       <!-- Cards Grid -->
       <div class="errands-grid" id="errandsGrid">
+        
+        <!-- Task: Confirm price of 32 inche tv in Alaba market -->
+        <div class="errand-listing-card" data-category="Price confirmation">
+          <div class="errand-card-header">
+            <div>
+              <span class="badge badge-warning">Price confirmation</span>
+              <h3 class="errand-card-title">Confirm price of 32 inche tv in Alaba market</h3>
+            </div>
+            <span class="badge badge-warning">4 Offers</span>
+          </div>
+          <div class="errand-card-body">
+            <div class="errand-route-box">
+              <div class="route-point">
+                <span class="route-dot pickup"></span>
+                <span><strong>Location:</strong> Electronics Section, Alaba Int'l Market</span>
+              </div>
+              <div class="route-point">
+                <span class="route-dot dropoff"></span>
+                <span><strong>Task:</strong> Verify prices of 32" TVs & video call from shop</span>
+              </div>
+            </div>
+            <p style="font-size:13px; color:var(--cn-blue-800, #10151f);">Need an honest runner on ground to check current retail & wholesale prices for 32 inche TVs across 3 major shops.</p>
+            <div class="errand-meta-row">
+              <span>⏱️ Within 2 hours</span>
+              <span>Posted 6m ago</span>
+            </div>
+          </div>
+          <div class="errand-card-footer">
+            <div>
+              <span class="budget-label">Suggested Budget</span>
+              <span class="budget-val">₦3,500</span>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="openOfferModal('Confirm price of 32 inche tv in Alaba market', '₦3,500')">Make an Offer</button>
+          </div>
+        </div>
+
+        <!-- Task: Sell my flate screen 38 inches tv -->
+        <div class="errand-listing-card" data-category="Sell fast">
+          <div class="errand-card-header">
+            <div>
+              <span class="badge badge-success">Sell fast</span>
+              <h3 class="errand-card-title">Sell my flate screen 38 inches tv</h3>
+            </div>
+            <span class="badge badge-warning">2 Offers</span>
+          </div>
+          <div class="errand-card-body">
+            <div class="errand-route-box">
+              <div class="route-point">
+                <span class="route-dot pickup"></span>
+                <span><strong>Pickup:</strong> 14 Admiralty Way, Lekki Phase 1</span>
+              </div>
+              <div class="route-point">
+                <span class="route-dot dropoff"></span>
+                <span><strong>Drop-off:</strong> Buyer destination in Lagos</span>
+              </div>
+            </div>
+            <p style="font-size:13px; color:var(--cn-blue-800, #10151f);">Flate screen 38 inches TV in crisp working condition with wall bracket & remote. Need trusted runner to inspect and deliver to buyer with safe payment on delivery.</p>
+            <div class="errand-meta-row">
+              <span>⏱️ Today ASAP</span>
+              <span>Posted 14m ago</span>
+            </div>
+          </div>
+          <div class="errand-card-footer">
+            <div>
+              <span class="budget-label">Suggested Budget</span>
+              <span class="budget-val">₦5,000</span>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="openOfferModal('Sell my flate screen 38 inches tv', '₦5,000')">Make an Offer</button>
+          </div>
+        </div>
+
+        <!-- Task: Confirm price of iPhone 15 Pro at Computer Village -->
+        <div class="errand-listing-card" data-category="Price confirmation">
+          <div class="errand-card-header">
+            <div>
+              <span class="badge badge-warning">Price confirmation</span>
+              <h3 class="errand-card-title">Confirm price of iPhone 15 Pro at Computer Village</h3>
+            </div>
+            <span class="badge badge-warning">3 Offers</span>
+          </div>
+          <div class="errand-card-body">
+            <div class="errand-route-box">
+              <div class="route-point">
+                <span class="route-dot pickup"></span>
+                <span><strong>Location:</strong> Otigba Street, Computer Village, Ikeja</span>
+              </div>
+              <div class="route-point">
+                <span class="route-dot dropoff"></span>
+                <span><strong>Task:</strong> Verify genuine prices across 2 trusted shops</span>
+              </div>
+            </div>
+            <p style="font-size:13px; color:var(--cn-blue-800, #10151f);">Need a tech-savvy runner on Otigba Street to cross-check genuine prices and battery health warranties before purchase.</p>
+            <div class="errand-meta-row">
+              <span>⏱️ Within 1 hour</span>
+              <span>Posted 4m ago</span>
+            </div>
+          </div>
+          <div class="errand-card-footer">
+            <div>
+              <span class="budget-label">Suggested Budget</span>
+              <span class="budget-val">₦3,000</span>
+            </div>
+            <button class="btn btn-sm btn-primary" onclick="openOfferModal('Confirm price of iPhone 15 Pro', '₦3,000')">Make an Offer</button>
+          </div>
+        </div>
         
         <!-- Card 1 -->
         <div class="errand-listing-card" data-category="Delivery">
@@ -992,7 +1117,9 @@
             <div class="instant-input-wrapper">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
               <select id="errandCategorySelect" class="instant-select" required>
-                <option value="Delivery" selected>📦 Package Delivery</option>
+                <option value="Price confirmation" selected>🏷️ Price confirmation</option>
+                <option value="Sell fast">⚡ Sell fast</option>
+                <option value="Delivery">📦 Package Delivery</option>
                 <option value="Shopping">🛒 Market Shopping</option>
                 <option value="Document">📄 Document Pickup</option>
                 <option value="Food">🍲 Food / Groceries</option>

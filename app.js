@@ -393,7 +393,7 @@ function showToast(message) {
 // ============================================================
 // INSTANT ERRAND REQUEST SECTION HANDLERS
 // ============================================================
-let currentInstantCategory = 'Delivery';
+let currentInstantCategory = 'Price confirmation';
 
 function selectInstantCategory(btn, category, icon, placeholder) {
   document.querySelectorAll('.instant-cat-btn').forEach(b => b.classList.remove('active'));
@@ -578,6 +578,8 @@ function handleInstantCategoryChange(cat) {
   const titleInput = document.getElementById('instantTaskTitle');
   if (!titleInput) return;
   const placeholders = {
+    'Price confirmation': 'e.g. Check and confirm current selling price of goods or materials at market / store',
+    'Sell fast': 'e.g. Find quick buyer or dispatch urgent items for sale across town',
     'Delivery': 'e.g. Deliver package / item from pickup address to destination',
     'Shopping': 'e.g. Buy fresh ingredients from Mile 12 or items from Balogun Market',
     'Document': 'e.g. Retrieve stamped passport / legal CTC from VFS Global or Court',
