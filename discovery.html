@@ -994,58 +994,103 @@
         <button type="button" onclick="closePostModal()" style="font-size:22px; color:#94a3b8; line-height:1; background:none; border:none; cursor:pointer;">&times;</button>
       </div>
 
-      <form id="discoveryPostForm" onsubmit="handleDiscoveryPostSubmit(event)">
-        <div style="margin-bottom:12px;">
-          <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Task Title *</label>
-          <input type="text" id="newErrandTitle" class="search-field" style="padding-left:14px;" placeholder="e.g. Deliver Package to Victoria Island" required>
-        </div>
-
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
-          <div>
-            <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Category *</label>
-            <select id="newErrandCategory" class="filter-select" style="width:100%; height:44px;">
-              <option value="DELIVERY">DELIVERY</option>
-              <option value="SHOPPING">SHOPPING</option>
-              <option value="DOCUMENT">DOCUMENT</option>
-              <option value="FOOD">FOOD</option>
-              <option value="PHYSICAL">PHYSICAL</option>
-            </select>
+      <form id="discoveryPostForm" onsubmit="handleDiscoveryPostSubmit(event)" style="display:flex; flex-direction:column; gap:16px;">
+        <!-- Row 1 (Top): Your Estimated Budget (₦) -->
+        <div class="instant-budget-top">
+          <div class="instant-label-row">
+            <label class="instant-label" for="newErrandBudget">Your Estimated Budget (₦) <span class="req">*</span></label>
+            <span class="instant-optional-hint" style="color:var(--cn-green-700); font-weight:700;">⚡ Pay directly on delivery</span>
           </div>
-          <div>
-            <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Timing *</label>
-            <select id="newErrandUrgency" class="filter-select" style="width:100%; height:44px;">
-              <option value="Needed within 1 hr">Needed within 1 hr</option>
-              <option value="Complete before 3:00 PM">Complete before 3:00 PM</option>
-              <option value="ASAP / Immediate">ASAP / Immediate</option>
-              <option value="Before 5:00 PM today">Before 5:00 PM today</option>
-            </select>
+          <div class="instant-budget-top-grid">
+            <div class="budget-presets-pills">
+              <button type="button" class="budget-pill" onclick="selectDiscoveryModalBudget(2000, this)">₦2,000</button>
+              <button type="button" class="budget-pill active" onclick="selectDiscoveryModalBudget(3500, this)">₦3,500</button>
+              <button type="button" class="budget-pill" onclick="selectDiscoveryModalBudget(5000, this)">₦5,000</button>
+              <button type="button" class="budget-pill" onclick="selectDiscoveryModalBudget(8000, this)">₦8,000</button>
+            </div>
+            <div class="budget-custom-input">
+              <span>₦</span>
+              <input type="number" id="newErrandBudget" value="3500" min="500" step="100" placeholder="Custom amount" oninput="document.querySelectorAll('#postModalBackdrop .budget-pill').forEach(b => b.classList.remove('active'))" required>
+            </div>
           </div>
         </div>
 
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
-          <div>
-            <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Pickup Location *</label>
-            <input type="text" id="newErrandPickup" class="search-field" style="padding-left:14px;" placeholder="e.g. Lekki Phase 1" required>
+        <!-- Row 2: Category & Task Title -->
+        <div class="instant-grid-2">
+          <div class="instant-form-group">
+            <label class="instant-label" for="newErrandCategory">Errand Category <span class="req">*</span></label>
+            <div class="instant-input-wrapper">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              <select id="newErrandCategory" class="instant-select" required>
+                <option value="DELIVERY" selected>📦 Package Delivery</option>
+                <option value="SHOPPING">🛒 Market Shopping</option>
+                <option value="DOCUMENT">📄 Document Pickup</option>
+                <option value="FOOD">🍲 Food / Groceries</option>
+                <option value="PHYSICAL">🔧 Physical / Inspection</option>
+              </select>
+            </div>
           </div>
-          <div>
-            <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Drop-off Location *</label>
-            <input type="text" id="newErrandDest" class="search-field" style="padding-left:14px;" placeholder="e.g. Victoria Island" required>
+
+          <div class="instant-form-group">
+            <label class="instant-label" for="newErrandTitle">What needs to be done? <span class="req">*</span></label>
+            <div class="instant-input-wrapper">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <input type="text" id="newErrandTitle" class="instant-input" placeholder="e.g. Deliver Package to Victoria Island" required>
+            </div>
           </div>
         </div>
 
-        <div style="margin-bottom:12px;">
-          <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Description</label>
-          <textarea id="newErrandDesc" class="search-field" style="height:65px; padding:10px 14px; resize:none;" placeholder="Special instructions, gate codes, contact person..."></textarea>
+        <!-- Row 3: Pickup, Drop-off & Timing -->
+        <div class="instant-grid-3">
+          <div class="instant-form-group">
+            <label class="instant-label" for="newErrandPickup">Pickup Location <span class="req">*</span></label>
+            <div class="instant-input-wrapper">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <input type="text" id="newErrandPickup" class="instant-input" placeholder="e.g. Lekki Phase 1" required>
+            </div>
+          </div>
+
+          <div class="instant-form-group">
+            <label class="instant-label" for="newErrandDest">Drop-off Location <span class="req">*</span></label>
+            <div class="instant-input-wrapper">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+              <input type="text" id="newErrandDest" class="instant-input" placeholder="e.g. Victoria Island" required>
+            </div>
+          </div>
+
+          <div class="instant-form-group">
+            <label class="instant-label" for="newErrandUrgency">When do you need it?</label>
+            <div class="instant-input-wrapper">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+              <select id="newErrandUrgency" class="instant-select">
+                <option value="Needed within 1 hr" selected>⚡ Express (Needed within 1 hr)</option>
+                <option value="Complete before 3:00 PM">🕒 Fast (Before 3:00 PM)</option>
+                <option value="ASAP / Immediate">⚡ ASAP / Immediate</option>
+                <option value="Before 5:00 PM today">🌅 Flexible (Before 5:00 PM today)</option>
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div style="margin-bottom:18px;">
-          <label style="display:block; font-size:12px; font-weight:700; color:#1e293b; margin-bottom:4px;">Budget Amount (₦) *</label>
-          <input type="number" id="newErrandBudget" class="search-field" style="padding-left:14px;" value="3500" required>
+        <!-- Row 4: Description -->
+        <div class="instant-form-group">
+          <div class="instant-label-row">
+            <label class="instant-label" for="newErrandDesc">Errand Description & Details</label>
+            <span class="instant-optional-hint">Optional</span>
+          </div>
+          <div class="instant-input-wrapper instant-textarea-wrapper">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon textarea-icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            <textarea id="newErrandDesc" class="instant-input instant-textarea" rows="3" placeholder="Special instructions, gate codes, contact person..."></textarea>
+          </div>
         </div>
 
-        <div style="display:flex; gap:10px;">
-          <button type="button" onclick="closePostModal()" style="flex:1; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px; font-weight:700; color:#475569; background:#fff; cursor:pointer;">Cancel</button>
-          <button type="submit" class="btn-make-offer" style="flex:2; padding:10px;">Broadcast Errand &rarr;</button>
+        <!-- Bottom Action: Broadcast Errand to Runners (Aligned to the Right) -->
+        <div class="instant-submit-row" style="display:flex; justify-content:space-between; align-items:center; width:100%; padding-top:14px; border-top:1px solid #e2e8f0;">
+          <button type="button" onclick="closePostModal()" style="padding:10px 18px; border:1px solid #cbd5e1; border-radius:8px; font-size:13px; font-weight:700; color:#475569; background:#fff; cursor:pointer;">Cancel</button>
+          <button type="submit" class="btn btn-primary btn-xl btn-instant-submit" style="margin-left:auto; width:auto;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+            Broadcast Errand to Runners
+          </button>
         </div>
       </form>
     </div>
@@ -2221,6 +2266,13 @@
     }
 
     // Modal Post
+    function selectDiscoveryModalBudget(amount, btn) {
+      document.querySelectorAll('#postModalBackdrop .budget-pill').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      const input = document.getElementById('newErrandBudget');
+      if (input) input.value = amount;
+    }
+
     function openPostModal() {
       document.getElementById('postModalBackdrop').classList.add('active');
     }

@@ -2638,6 +2638,52 @@ img {
   gap: var(--space-md);
 }
 
+/* Instant Budget Placement at Top */
+.instant-budget-top {
+  background: var(--cn-green-50, #f4fbe6);
+  border: 1.5px solid var(--cn-green-200, #d6f0a3);
+  border-radius: var(--radius-lg, 12px);
+  padding: 16px 20px;
+}
+
+.instant-budget-top-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 14px;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.instant-budget-top-grid .budget-presets-pills {
+  margin-top: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.instant-budget-top-grid .budget-pill {
+  height: 42px;
+  font-size: 13px;
+}
+
+.instant-budget-top-grid .budget-custom-input {
+  margin-top: 0;
+  height: 42px;
+}
+
+.instant-submit-row {
+  display: flex !important;
+  justify-content: flex-end !important;
+  width: 100% !important;
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--cn-blue-100);
+}
+
+.instant-submit-row .btn-instant-submit {
+  margin-left: auto !important;
+  width: auto;
+}
+
 .instant-budget-row {
   display: flex;
   align-items: flex-end;
@@ -2789,9 +2835,14 @@ img {
     flex-direction: column;
     align-items: stretch;
   }
-  .btn-instant-submit {
-    width: 100%;
-    justify-content: center;
+  .instant-submit-row {
+    display: flex !important;
+    justify-content: flex-end !important;
+    width: 100% !important;
+  }
+  .instant-submit-row .btn-instant-submit {
+    margin-left: auto !important;
+    width: auto !important;
   }
 }
 
@@ -3590,6 +3641,32 @@ img {
     grid-template-columns: 1fr !important;
     gap: 14px !important;
   }
+  .instant-budget-top {
+    padding: 14px !important;
+  }
+  .instant-budget-top-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+  .instant-budget-top-grid .budget-presets-pills {
+    gap: 6px !important;
+  }
+  .instant-budget-top-grid .budget-pill {
+    height: 36px !important;
+    font-size: 12px !important;
+  }
+  .instant-budget-top-grid .budget-custom-input {
+    height: 44px !important;
+  }
+  .instant-submit-row {
+    display: flex !important;
+    justify-content: flex-end !important;
+    width: 100% !important;
+  }
+  .instant-submit-row .btn-instant-submit {
+    margin-left: auto !important;
+    width: auto !important;
+  }
   .instant-budget-row {
     flex-direction: column !important;
     align-items: stretch !important;
@@ -3622,11 +3699,6 @@ img {
   }
   .instant-submit-col {
     width: 100% !important;
-  }
-  .btn-instant-submit {
-    width: 100% !important;
-    height: 50px !important;
-    justify-content: center !important;
   }
   .instant-card-trust-footer {
     grid-template-columns: 1fr !important;

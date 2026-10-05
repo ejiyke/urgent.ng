@@ -440,9 +440,16 @@ function applyInstantTag(title, pickup, dest, category, budget) {
 }
 
 function selectInstantBudget(amount, pillBtn) {
-  document.querySelectorAll('.budget-pill').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('#instant-request .budget-pill').forEach(p => p.classList.remove('active'));
   if (pillBtn) pillBtn.classList.add('active');
   const budgetInput = document.getElementById('instantBudgetInput');
+  if (budgetInput) budgetInput.value = amount;
+}
+
+function selectModalBudget(amount, pillBtn) {
+  document.querySelectorAll('#postErrandModal .budget-pill').forEach(p => p.classList.remove('active'));
+  if (pillBtn) pillBtn.classList.add('active');
+  const budgetInput = document.getElementById('errandBudgetInput');
   if (budgetInput) budgetInput.value = amount;
 }
 
