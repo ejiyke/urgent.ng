@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Errand Chat & Negotiations — Urgent.ng | Contextual Messaging</title>
+  <meta name="description" content="In-app messaging between requesters and verified runners for price agreements, counter-offers, receipt sharing, and secure coordination.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=2.5">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    body {
+      background-color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: var(--font-family-primary, 'Archivo', sans-serif);
+      color: #0f172a;
+      overflow: hidden;
+    }
+
+    /* Top Nav */
+    .chat-nav-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 50;
+    }
+
+    /* Main Chat Layout */
+    .chat-layout {
+      display: grid;
+      grid-template-columns: 340px 1fr 340px;
+      height: calc(100vh - 64px);
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    @media (max-width: 1100px) {
+      .chat-layout {
+        grid-template-columns: 320px 1fr;
+      }
+      .chat-detail-sidebar {
+        display: none;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .chat-layout {
+        grid-template-columns: 1fr;
+      }
+      .chat-conv-sidebar {
+        display: none;
+      }
+      .chat-conv-sidebar.mobile-open {
+        display: flex;
+        position: fixed;
+        inset: 64px 0 0 0;
+        z-index: 100;
+        background: #ffffff;
+      }
+    }
+
+    /* Left Sidebar: Conversations */
+    .chat-conv-sidebar {
+      border-right: 1px solid #e2e8f0;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .conv-header {
+      padding: 16px;
+      border-bottom: 1px solid #e2e8f0;
+      background: #ffffff;
+    }
+    .conv-item {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      cursor: pointer;
+      display: flex;
+      gap: 12px;
+      transition: background 0.15s ease;
+      background: #ffffff;
+      position: relative;
+    }
+    .conv-item:hover {
+      background: #f8fafc;
+    }
+    .conv-item.active {
+      background: #f4fbe6;
+      border-left: 4px solid #93c700;
+    }
+    .conv-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #93c700;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .conv-online-dot {
+      position: absolute;
+      bottom: 1px;
+      right: 1px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #22c55e;
+      border: 2px solid #ffffff;
+    }
+    .conv-info {
+      flex: 1;
+      min-width: 0;
+    }
+    .conv-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3px;
+    }
+    .conv-name {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .conv-time {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+    .conv-errand-badge {
+      font-size: 10.5px;
+      color: #3b5000;
+      background: #e8f7cb;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 3px;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .conv-preview {
+      font-size: 12px;
+      color: #64748b;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .conv-unread-pill {
+      background: #93c700;
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 999px;
+      margin-left: 6px;
+    }
+
+    /* Center Column: Active Chat Feed */
+    .chat-feed-col {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background: #ffffff;
+      position: relative;
+    }
+    .chat-feed-header {
+      padding: 12px 20px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      flex-shrink: 0;
+    }
+    .chat-user-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chat-messages-scroll {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background: #f8fafc;
+    }
+
+    /* Message Bubbles */
+    .msg-group {
+      display: flex;
+      flex-direction: column;
+      max-width: 72%;
+    }
+    .msg-group.incoming {
+      align-self: flex-start;
+    }
+    .msg-group.outgoing {
+      align-self: flex-end;
+    }
+    .msg-bubble {
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-size: 13.5px;
+      line-height: 1.45;
+      position: relative;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    }
+    .msg-group.incoming .msg-bubble {
+      background: #ffffff;
+      color: #0f172a;
+      border: 1px solid #e2e8f0;
+      border-bottom-left-radius: 4px;
+    }
+    .msg-group.outgoing .msg-bubble {
+      background: #93c700;
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+    }
+    .msg-meta {
+      font-size: 10.5px;
+      color: #94a3b8;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .msg-group.outgoing .msg-meta {
+      align-self: flex-end;
+      color: #64748b;
+    }
+
+    /* Special Chat Cards: Price Agreement / Counter Offer */
+    .chat-action-card {
+      background: #ffffff;
+      border: 1.5px solid #d6f0a3;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin: 4px 0;
+    }
+    .counter-offer-box {
+      background: #fffbeb;
+      border: 1.5px solid #fde68a;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 4px 0;
+    }
+
+    /* Image Attachment */
+    .chat-img-attachment {
+      max-width: 240px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 6px;
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    /* Chat Input Bar */
+    .chat-input-bar {
+      border-top: 1px solid #e2e8f0;
+      padding: 12px 20px;
+      background: #ffffff;
+      flex-shrink: 0;
+    }
+    .quick-actions-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .quick-chip-btn {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .quick-chip-btn:hover {
+      background: #e8f7cb;
+      color: #3b5000;
+      border-color: #d6f0a3;
+    }
+    .input-compose-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .chat-text-input {
+      flex: 1;
+      height: 44px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 0 16px;
+      font-size: 13.5px;
+      outline: none;
+      font-family: inherit;
+      color: #0f172a;
+    }
+    .chat-text-input:focus {
+      border-color: #93c700;
+      background: #ffffff;
+    }
+    .chat-send-btn {
+      height: 44px;
+      padding: 0 18px;
+      background: #93c700;
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Right Column: Errand Details Drawer */
+    .chat-detail-sidebar {
+      border-left: 1px solid #e2e8f0;
+      background: #ffffff;
+      padding: 20px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    /* Modals */
+    .c-modal-backdrop {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+    .c-modal-backdrop.active {
+      display: flex;
+    }
+    .c-modal-dialog {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 480px;
+      padding: 26px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: modalFadeIn 0.2s ease;
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Toast */
+    .toast-box {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      font-size: 13.5px;
+      font-weight: 600;
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast-box.show { display: flex; }
+  </style>
+</head>
+<body>
+
+  <!-- ================= TOP HEADER ================= -->
+  <header class="chat-nav-header">
+    <div style="display:flex; align-items:center; gap:24px;">
+      <a href="index.html" class="brand-logo" style="text-decoration:none; display:flex; align-items:center;">
+        <img src="assets/logo.png" alt="Urgent.ng - Get it fast" class="brand-logo-img" style="height:38px; max-width:150px; object-fit:contain;">
+      </a>
+      <span style="font-size:13px; font-weight:700; color:#64748b;" class="hide-mobile">
+        / In-App Errand Messenger & Negotiations
+      </span>
+    </div>
+
+    <div style="display:flex; align-items:center; gap:12px;">
+      <a href="requester-dashboard.html" class="btn btn-secondary btn-sm" style="background:#ffffff; border:1px solid #cbd5e1; color:#334155; padding:7px 14px; border-radius:8px; font-weight:700; text-decoration:none; font-size:12.5px;">
+        Requester Dashboard
+      </a>
+      <a href="runner-dashboard.html" class="btn btn-secondary btn-sm" style="background:#ffffff; border:1px solid #cbd5e1; color:#334155; padding:7px 14px; border-radius:8px; font-weight:700; text-decoration:none; font-size:12.5px;">
+        Runner Dashboard
+      </a>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CHAT LAYOUT ================= -->
+  <div class="chat-layout">
+    
+    <!-- LEFT SIDEBAR: CONVERSATION LIST -->
+    <aside class="chat-conv-sidebar" id="convSidebar">
+      <div class="conv-header">
+        <h2 style="font-size:16px; font-weight:800; color:#0f172a; margin:0 0 4px;">Errand Messages</h2>
+        <div style="font-size:12px; color:#64748b;">Active errands with assigned runners</div>
+      </div>
+
+      <!-- Conv 1 (Active Delivery) -->
+      <div class="conv-item active" onclick="switchConversation(1, this)">
+        <div class="conv-avatar">
+          TO
+          <span class="conv-online-dot"></span>
+        </div>
+        <div class="conv-info">
+          <div class="conv-top-row">
+            <span class="conv-name">Tunde Okon (Runner)</span>
+            <span class="conv-time">2m ago</span>
+          </div>
+          <div class="conv-errand-badge">📦 Package Delivery to VI</div>
+          <div class="conv-preview">I've picked up the clothing box from Admiralty Way.</div>
+        </div>
+        <span class="conv-unread-pill">1</span>
+      </div>
+
+      <!-- Conv 2 (Price Confirmation) -->
+      <div class="conv-item" onclick="switchConversation(2, this)">
+        <div class="conv-avatar" style="background:#2563eb;">
+          TO
+          <span class="conv-online-dot"></span>
+        </div>
+        <div class="conv-info">
+          <div class="conv-top-row">
+            <span class="conv-name">Tunde Okon (Runner)</span>
+            <span class="conv-time">18m ago</span>
+          </div>
+          <div class="conv-errand-badge" style="background:#fef3c7; color:#92400e;">🏷️ Price Confirmation: 32" TV</div>
+          <div class="conv-preview">I'm entering the electrical mart gate now.</div>
+        </div>
+      </div>
+
+      <!-- Conv 3 (Sell Fast Negotiation) -->
+      <div class="conv-item" onclick="switchConversation(3, this)">
+        <div class="conv-avatar" style="background:#f59e0b;">
+          EN
+        </div>
+        <div class="conv-info">
+          <div class="conv-top-row">
+            <span class="conv-name">Emeka Nwosu (Bidder)</span>
+            <span class="conv-time">45m ago</span>
+          </div>
+          <div class="conv-errand-badge" style="background:#fce7f3; color:#9d174d;">⚡ Sell Fast: 38" TV</div>
+          <div class="conv-preview">Counter-offer proposed: ₦7,500</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CENTER COLUMN: ACTIVE CHAT THREAD -->
+    <section class="chat-feed-col">
+      <!-- Chat Header -->
+      <div class="chat-feed-header">
+        <div class="chat-user-header">
+          <div class="conv-avatar" id="activeChatAvatar">TO</div>
+          <div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <h3 style="font-size:15px; font-weight:800; color:#0f172a; margin:0;" id="activeChatName">Tunde Okon</h3>
+              <span style="font-size:11px; background:#f4fbe6; color:#526f00; font-weight:700; padding:1px 6px; border-radius:4px;">★ 4.9 Runner</span>
+            </div>
+            <div style="font-size:12px; color:#64748b;" id="activeChatSub">Yamaha 125cc Motorbike · Online</div>
+          </div>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:8px;">
+          <a href="track-errand.html?id=URG-8492-LG&title=Deliver%20Fashion%20Boutique%20Package" target="_blank" class="btn btn-secondary btn-sm" style="background:#f4fbe6; border:1px solid #d6f0a3; color:#3b5000; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:700; text-decoration:none; display:flex; align-items:center; gap:5px;">
+            <span>📍</span> Live GPS Tracking
+          </a>
+          <a href="tel:08085559182" class="btn btn-secondary btn-sm" style="background:#ffffff; border:1px solid #cbd5e1; color:#0f172a; padding:6px 12px; border-radius:8px; font-size:12px; font-weight:700; text-decoration:none;">
+            📞 Call
+          </a>
+        </div>
+      </div>
+
+      <!-- Messages Stream -->
+      <div class="chat-messages-scroll" id="chatMessagesStream">
+        
+        <!-- System Welcome & Terms Card -->
+        <div class="chat-action-card" style="align-self:center; width:100%; max-width:540px; text-align:center;">
+          <div style="font-size:11.5px; font-weight:800; text-transform:uppercase; color:#526f00; letter-spacing:0.5px; margin-bottom:4px;">
+            🔒 Secure Errand Coordination
+          </div>
+          <div style="font-size:13.5px; font-weight:800; color:#0f172a; margin-bottom:4px;" id="streamErrandTitle">
+            Deliver Fashion Boutique Package to Victoria Island
+          </div>
+          <div style="font-size:12px; color:#475569; line-height:1.45;">
+            Agreed Fee: <strong style="color:#047857;">₦3,500 Cash on Delivery</strong>. Please inspect package and receipts before making payment upon handover.
+          </div>
+        </div>
+
+        <!-- Incoming Message -->
+        <div class="msg-group incoming">
+          <div class="msg-bubble">
+            Hello! I'm outside Block 4, Admiralty Way at the gate. Ready to pick up the clothing package.
+          </div>
+          <span class="msg-meta">Tunde Okon · 2:40 PM</span>
+        </div>
+
+        <!-- Outgoing Message -->
+        <div class="msg-group outgoing">
+          <div class="msg-bubble">
+            Great! The security guard has the package with invoice #ADE-912. Please make sure the seal isn't broken.
+          </div>
+          <span class="msg-meta">You · 2:42 PM · ✓✓</span>
+        </div>
+
+        <!-- Incoming Photo Proof Message -->
+        <div class="msg-group incoming">
+          <div class="msg-bubble">
+            Package received safely from security. Seal intact. Heading straight to Victoria Island now via link bridge!
+            <br>
+            <img src="assets/logo.png" alt="Package proof" class="chat-img-attachment" style="background:#ffffff; padding:10px;" onclick="showToast('Viewing verified item photo proof')">
+          </div>
+          <span class="msg-meta">Tunde Okon · 2:45 PM</span>
+        </div>
+
+        <!-- Outgoing Confirmation -->
+        <div class="msg-group outgoing">
+          <div class="msg-bubble">
+            Thank you Tunde! The recipient is waiting at Adeola Odeku. They have ₦3,500 cash ready for handover.
+          </div>
+          <span class="msg-meta">You · 2:46 PM · ✓✓</span>
+        </div>
+
+      </div>
+
+      <!-- Input Bar & Quick Actions -->
+      <div class="chat-input-bar">
+        <div class="quick-actions-bar">
+          <button type="button" class="quick-chip-btn" onclick="openCounterOfferModal()">
+            <span>💰</span> Propose Counter-Offer
+          </button>
+          <button type="button" class="quick-chip-btn" onclick="sendQuickPhoto()">
+            <span>📸</span> Send Receipt / Photo
+          </button>
+          <button type="button" class="quick-chip-btn" onclick="sendQuickLocation()">
+            <span>📍</span> Share Gate / Landmark
+          </button>
+          <button type="button" class="quick-chip-btn" onclick="sendDirectPaymentTerms()">
+            <span>🤝</span> Confirm Handover Terms
+          </button>
+        </div>
+
+        <form class="input-compose-row" onsubmit="handleSendMessage(event)">
+          <input type="text" id="chatTextInput" class="chat-text-input" placeholder="Type a message or negotiation note..." autocomplete="off">
+          <button type="submit" class="chat-send-btn">
+            <span>Send</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <!-- RIGHT COLUMN: ERRAND DETAILS DRAWER -->
+    <aside class="chat-detail-sidebar">
+      <div>
+        <div style="font-size:11px; font-weight:800; text-transform:uppercase; color:#94a3b8; letter-spacing:0.5px; margin-bottom:4px;">Errand Specifications</div>
+        <h4 style="font-size:15px; font-weight:800; color:#0f172a; margin:0 0 10px;" id="sidebarErrandTitle">
+          Deliver Fashion Boutique Package
+        </h4>
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; font-size:12.5px; display:flex; flex-direction:column; gap:6px;">
+          <div><strong>Origin:</strong> Block 4, Admiralty Way, Lekki 1</div>
+          <div><strong>Destination:</strong> Adeola Odeku St, Victoria Island</div>
+          <div><strong>Agreed Payout:</strong> <span style="color:#047857; font-weight:800;">₦3,500</span></div>
+        </div>
+      </div>
+
+      <!-- Runner Safety Info -->
+      <div style="background:#f4fbe6; border:1px solid #d6f0a3; border-radius:10px; padding:14px; font-size:12.5px; color:#3b5000;">
+        <div style="font-weight:800; margin-bottom:4px;">🛡️ Runner Verification</div>
+        <div>• Government ID Verified (NIN)</div>
+        <div>• Live Facial Liveness Confirmed</div>
+        <div>• Yamaha 125cc (Plate: KJA-482-XY)</div>
+      </div>
+
+      <!-- Direct Handover Terms -->
+      <div style="border-top:1px solid #f1f5f9; padding-top:14px;">
+        <h5 style="font-size:13px; font-weight:800; color:#0f172a; margin:0 0 6px;">Handover Checklist</h5>
+        <ul style="font-size:12px; color:#475569; margin:0 0 16px; padding-left:16px; line-height:1.5;">
+          <li>Inspect merchandise packaging</li>
+          <li>Confirm item matches requester instructions</li>
+          <li>Pay cash or transfer upon physical handover</li>
+        </ul>
+
+        <a href="requester-dashboard.html" class="btn btn-primary btn-block" style="background:#93c700; color:#ffffff; border:none; padding:10px; border-radius:8px; font-weight:800; font-size:13px; text-decoration:none; text-align:center;">
+          Confirm Handover on Dashboard ➔
+        </a>
+      </div>
+    </aside>
+
+  </div>
+
+  <!-- ================= COUNTER-OFFER MODAL ================= -->
+  <div class="c-modal-backdrop" id="counterModalBackdrop" onclick="closeCounterModal(event)">
+    <div class="c-modal-dialog" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h3 style="font-size:17px; font-weight:800; color:#0f172a; margin:0;">Propose Counter-Offer</h3>
+        <button type="button" onclick="closeCounterModal()" style="font-size:22px; color:#94a3b8; background:none; border:none; cursor:pointer;">&times;</button>
+      </div>
+
+      <p style="font-size:13px; color:#64748b; margin:0 0 16px;">
+        Negotiate errand price with the runner. If accepted, the errand terms will be updated automatically.
+      </p>
+
+      <form onsubmit="submitCounterOffer(event)" style="display:flex; flex-direction:column; gap:14px;">
+        <div>
+          <label style="font-size:12px; font-weight:700; color:#1e293b; display:block; margin-bottom:6px;">Your Proposed Counter Price (₦) <span class="req">*</span></label>
+          <input type="number" id="counterPriceInput" class="instant-input" value="3000" min="500" step="100" required>
+        </div>
+
+        <div>
+          <label style="font-size:12px; font-weight:700; color:#1e293b; display:block; margin-bottom:6px;">Negotiation Note to Runner</label>
+          <textarea id="counterNoteInput" class="instant-textarea" placeholder="e.g. Can we agree on ₦3,000 if pickup is delayed by 15 mins?..." rows="2"></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" style="background:#93c700; color:#ffffff; border:none; padding:12px; border-radius:8px; font-weight:800; font-size:14px; cursor:pointer;">
+          Send Counter-Offer to Runner ➔
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-box" id="chatToast">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Action completed successfully</span>
+  </div>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    const convData = {
+      1: {
+        name: "Tunde Okon",
+        avatar: "TO",
+        sub: "Yamaha 125cc Motorbike · Online",
+        errandTitle: "Deliver Fashion Boutique Package to Victoria Island",
+        origin: "Block 4, Admiralty Way, Lekki 1",
+        dest: "Adeola Odeku St, Victoria Island",
+        price: "₦3,500"
+      },
+      2: {
+        name: "Tunde Okon",
+        avatar: "TO",
+        sub: "At Alaba Market · Online",
+        errandTitle: "Confirm price of 32 inche tv in Alaba market",
+        origin: "Alaba International Market",
+        dest: "Surulere, Lagos",
+        price: "₦4,500"
+      },
+      3: {
+        name: "Emeka Nwosu",
+        avatar: "EN",
+        sub: "Computer Village Specialist · Online",
+        errandTitle: "Sell my flate screen 38 inches tv",
+        origin: "Otigba Street, Ikeja",
+        dest: "Magodo Phase 2",
+        price: "₦8,000"
+      }
+    };
+
+    function showToast(message, isSuccess = true) {
+      const toast = document.getElementById('chatToast');
+      const toastMsg = document.getElementById('toastMsg');
+      const toastIcon = document.getElementById('toastIcon');
+      toastMsg.textContent = message;
+      toastIcon.textContent = isSuccess ? '✓' : 'ℹ️';
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    function switchConversation(id, element) {
+      document.querySelectorAll('.conv-item').forEach(el => el.classList.remove('active'));
+      if (element) element.classList.add('active');
+
+      const data = convData[id];
+      if (data) {
+        document.getElementById('activeChatName').textContent = data.name;
+        document.getElementById('activeChatAvatar').textContent = data.avatar;
+        document.getElementById('activeChatSub').textContent = data.sub;
+        document.getElementById('streamErrandTitle').textContent = data.errandTitle;
+        document.getElementById('sidebarErrandTitle').textContent = data.errandTitle;
+        showToast(`Switched conversation to: ${data.name}`);
+      }
+    }
+
+    function handleSendMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatTextInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      appendMessage(text, 'outgoing');
+      input.value = '';
+
+      // Auto reply simulation after 1.5 seconds
+      setTimeout(() => {
+        const replies = [
+          "Noted! On it right away.",
+          "Confirmed, I'll update you as soon as I arrive.",
+          "Received! Thank you for the update.",
+          "Understood, heading over to the drop-off now."
+        ];
+        const randomReply = replies[Math.floor(Math.random() * replies.length)];
+        appendMessage(randomReply, 'incoming');
+      }, 1500);
+    }
+
+    function appendMessage(text, type) {
+      const stream = document.getElementById('chatMessagesStream');
+      const group = document.createElement('div');
+      group.className = 'msg-group ' + type;
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      group.innerHTML = `
+        <div class="msg-bubble">${text}</div>
+        <span class="msg-meta">${type === 'outgoing' ? 'You' : 'Runner'} · ${timeStr} ${type === 'outgoing' ? '· ✓✓' : ''}</span>
+      `;
+      stream.appendChild(group);
+      stream.scrollTop = stream.scrollHeight;
+    }
+
+    function sendQuickPhoto() {
+      appendMessage("📸 [Photo Attachment]: Verified physical condition & store invoice captured.", 'outgoing');
+      showToast('Photo proof sent to runner stream!');
+    }
+
+    function sendQuickLocation() {
+      appendMessage("📍 [Landmark]: Salvation Bus Stop, by the white pharmacy building opposite total station.", 'outgoing');
+      showToast('Landmark sent to runner!');
+    }
+
+    function sendDirectPaymentTerms() {
+      const stream = document.getElementById('chatMessagesStream');
+      const card = document.createElement('div');
+      card.className = 'chat-action-card';
+      card.style.alignSelf = 'center';
+      card.style.width = '100%';
+      card.style.maxWidth = '500px';
+      card.innerHTML = `
+        <div style="font-weight:800; color:#047857; margin-bottom:4px;">🤝 Agreed Direct Handover Terms</div>
+        <div style="font-size:13px; color:#1e293b;">
+          Agreed Payout: <strong>₦3,500</strong>. Recipient will verify package and pay directly upon physical handover.
+        </div>
+      `;
+      stream.appendChild(card);
+      stream.scrollTop = stream.scrollHeight;
+      showToast('Handover payment terms confirmed in chat!');
+    }
+
+    // Counter-Offer Modal
+    function openCounterOfferModal() {
+      document.getElementById('counterModalBackdrop').classList.add('active');
+    }
+    function closeCounterModal(e) {
+      if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+      document.getElementById('counterModalBackdrop').classList.remove('active');
+    }
+
+    function submitCounterOffer(e) {
+      e.preventDefault();
+      const price = document.getElementById('counterPriceInput').value;
+      const note = document.getElementById('counterNoteInput').value.trim() || 'Proposed counter-offer.';
+      closeCounterModal();
+
+      const stream = document.getElementById('chatMessagesStream');
+      const card = document.createElement('div');
+      card.className = 'counter-offer-box';
+      card.style.alignSelf = 'center';
+      card.style.width = '100%';
+      card.style.maxWidth = '500px';
+      card.innerHTML = `
+        <div style="font-weight:800; color:#92400e; margin-bottom:4px;">💰 Proposed Counter-Offer: ₦${Number(price).toLocaleString()}</div>
+        <div style="font-size:13px; color:#451a03; margin-bottom:8px;">"${note}"</div>
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+          <button class="btn btn-secondary btn-sm" onclick="this.parentElement.innerHTML='<span style=\\'color:#ef4444; font-weight:700;\\'>Declined</span>'" style="background:#ffffff; border:1px solid #cbd5e1; padding:4px 10px; border-radius:6px; font-size:11.5px; cursor:pointer;">Decline</button>
+          <button class="btn btn-primary btn-sm" onclick="this.parentElement.innerHTML='<span style=\\'color:#047857; font-weight:800;\\'>✓ Agreed at ₦${Number(price).toLocaleString()}</span>'; showToast('Counter-offer accepted! Terms updated.')" style="background:#93c700; color:#ffffff; border:none; padding:4px 14px; border-radius:6px; font-weight:800; font-size:11.5px; cursor:pointer;">Accept Counter</button>
+        </div>
+      `;
+      stream.appendChild(card);
+      stream.scrollTop = stream.scrollHeight;
+      showToast(`Counter-offer of ₦${Number(price).toLocaleString()} proposed in chat!`);
+    }
+  </script>
+</body>
+</html>

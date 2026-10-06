@@ -909,6 +909,7 @@
               <span class="r-budget-val">₦4,500</span>
             </div>
             <div class="r-actions-row">
+              <button class="btn btn-secondary btn-sm" onclick="openBoostModal('card-1', 'Confirm price of 32 inche tv in Alaba market')" style="background:#fffbeb; border:1.5px solid #fde68a; color:#b45309; padding:6px 12px; border-radius:8px; font-weight:800; font-size:12px; cursor:pointer;">⚡ Boost</button>
               <button class="btn btn-secondary btn-sm" onclick="openCancelModal('card-1', 'Confirm price of 32 inche tv')" style="background:#ffffff; border:1px solid #e2e8f0; color:#ef4444; padding:6px 12px; border-radius:8px; font-weight:600; font-size:12px; cursor:pointer;">Cancel</button>
               <button class="btn btn-primary btn-sm" onclick="openOffersModal(1)" style="background:#93c700; color:#ffffff; border:none; padding:7px 16px; border-radius:8px; font-weight:800; font-size:13px; cursor:pointer; display:flex; align-items:center; gap:6px;">
                 <span>Review 3 Offers</span>
@@ -976,9 +977,14 @@
                   <div class="runner-rating-text">★ 4.9 · 52 Delivered · Yamaha Bike</div>
                 </div>
               </div>
-              <a href="https://wa.me/2348085559182?text=Hello%20Tunde,%20checking%20on%20my%20Urgent.ng%20package" target="_blank" class="btn btn-secondary btn-sm" style="background:#ffffff; border:1px solid #d6f0a3; color:#3b5000; padding:5px 10px; border-radius:6px; font-size:11.5px; font-weight:700; text-decoration:none;">
-                📞 Contact
-              </a>
+              <div style="display:flex; gap:6px;">
+                <a href="chat.html" class="btn btn-secondary btn-sm" style="background:#f4fbe6; border:1px solid #d6f0a3; color:#3b5000; padding:5px 10px; border-radius:6px; font-size:11.5px; font-weight:700; text-decoration:none;">
+                  💬 Chat
+                </a>
+                <a href="https://wa.me/2348085559182?text=Hello%20Tunde,%20checking%20on%20my%20Urgent.ng%20package" target="_blank" class="btn btn-secondary btn-sm" style="background:#ffffff; border:1px solid #cbd5e1; color:#334155; padding:5px 8px; border-radius:6px; font-size:11.5px; font-weight:700; text-decoration:none;">
+                  📞
+                </a>
+              </div>
             </div>
           </div>
 
@@ -1038,6 +1044,7 @@
               <span class="r-budget-val">₦8,000</span>
             </div>
             <div class="r-actions-row">
+              <button class="btn btn-secondary btn-sm" onclick="openBoostModal('card-3', 'Sell my flate screen 38 inches tv')" style="background:#fffbeb; border:1.5px solid #fde68a; color:#b45309; padding:6px 12px; border-radius:8px; font-weight:800; font-size:12px; cursor:pointer;">⚡ Boost</button>
               <button class="btn btn-secondary btn-sm" onclick="openCancelModal('card-3', 'Sell flat screen 38 inches tv')" style="background:#ffffff; border:1px solid #e2e8f0; color:#ef4444; padding:6px 12px; border-radius:8px; font-weight:600; font-size:12px; cursor:pointer;">Cancel</button>
               <button class="btn btn-primary btn-sm" onclick="openOffersModal(3)" style="background:#93c700; color:#ffffff; border:none; padding:7px 16px; border-radius:8px; font-weight:800; font-size:13px; cursor:pointer;">
                 Review 1 Offer
@@ -1408,6 +1415,101 @@
     </div>
   </div>
 
+  <!-- ================= BOOST ERRAND MODAL (MONETIZATION) ================= -->
+  <div class="r-modal-backdrop" id="boostModalBackdrop" onclick="closeBoostModal(event)">
+    <div class="r-modal-dialog" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:22px;">⚡</span>
+          <h3 style="font-size:18px; font-weight:800; color:#0f172a; margin:0;">Boost Errand Priority</h3>
+        </div>
+        <button type="button" onclick="closeBoostModal()" style="font-size:22px; color:#94a3b8; line-height:1; background:none; border:none; cursor:pointer;">&times;</button>
+      </div>
+
+      <p style="font-size:13px; color:#475569; margin:0 0 16px;">
+        Pin <strong id="boostErrandTitle">your errand</strong> to the top of the live discovery feed to get up to <strong>4x faster responses</strong> from nearby runners.
+      </p>
+
+      <form onsubmit="handleBoostSubmit(event)" style="display:flex; flex-direction:column; gap:12px;">
+        <!-- Tier 1 -->
+        <label style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border:1.5px solid #e2e8f0; border-radius:10px; cursor:pointer; background:#ffffff;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <input type="radio" name="boostTier" value="500" checked>
+            <div>
+              <strong style="font-size:13.5px; color:#0f172a;">⚡ Standard Boost</strong>
+              <div style="font-size:11.5px; color:#64748b;">Pinned to top of live feed for 6 hours</div>
+            </div>
+          </div>
+          <span style="font-size:14.5px; font-weight:800; color:#047857;">₦500</span>
+        </label>
+
+        <!-- Tier 2 -->
+        <label style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border:1.5px solid #93c700; border-radius:10px; cursor:pointer; background:#f4fbe6;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <input type="radio" name="boostTier" value="1000">
+            <div>
+              <strong style="font-size:13.5px; color:#3b5000;">🚀 Express Priority (Popular)</strong>
+              <div style="font-size:11.5px; color:#526f00;">Pinned 24 hours + Push notifications to 50 nearest runners</div>
+            </div>
+          </div>
+          <span style="font-size:14.5px; font-weight:800; color:#3b5000;">₦1,000</span>
+        </label>
+
+        <!-- Tier 3 -->
+        <label style="display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border:1.5px solid #e2e8f0; border-radius:10px; cursor:pointer; background:#ffffff;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <input type="radio" name="boostTier" value="2000">
+            <div>
+              <strong style="font-size:13.5px; color:#0f172a;">💎 VIP Urgent Broadcast</strong>
+              <div style="font-size:11.5px; color:#64748b;">Glowing highlight border + Instant WhatsApp runner alert</div>
+            </div>
+          </div>
+          <span style="font-size:14.5px; font-weight:800; color:#047857;">₦2,000</span>
+        </label>
+
+        <div style="margin-top:10px; display:flex; gap:10px;">
+          <button type="button" class="btn btn-secondary" onclick="closeBoostModal()" style="flex:1; background:#f1f5f9; border:none; padding:11px; border-radius:8px; font-weight:700; cursor:pointer;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:2; background:#93c700; color:#ffffff; border:none; padding:11px; border-radius:8px; font-weight:800; font-size:14px; cursor:pointer;">
+            ⚡ Pay & Activate Boost
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= COUNTER-OFFER MODAL (REQUESTER DASHBOARD) ================= -->
+  <div class="r-modal-backdrop" id="reqCounterModalBackdrop" onclick="closeOfferCounterModal(event)">
+    <div class="r-modal-dialog" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <h3 style="font-size:18px; font-weight:800; color:#0f172a; margin:0;">💰 Propose Counter-Offer</h3>
+        <button type="button" onclick="closeOfferCounterModal()" style="font-size:22px; color:#94a3b8; background:none; border:none; cursor:pointer;">&times;</button>
+      </div>
+
+      <p style="font-size:13px; color:#475569; margin:0 0 16px;">
+        Propose a counter-offer to <strong id="counterBidderName">Runner</strong>. Current bid: <strong id="counterCurrentBid">₦4,200</strong>.
+      </p>
+
+      <form onsubmit="handleOfferCounterSubmit(event)" style="display:flex; flex-direction:column; gap:14px;">
+        <div>
+          <label style="font-size:12px; font-weight:700; color:#1e293b; display:block; margin-bottom:6px;">Your Proposed Price (₦) <span class="req">*</span></label>
+          <input type="number" id="reqCounterPriceInput" class="instant-input" value="3800" min="500" step="100" required>
+        </div>
+
+        <div>
+          <label style="font-size:12px; font-weight:700; color:#1e293b; display:block; margin-bottom:6px;">Message to Runner</label>
+          <textarea id="reqCounterNoteInput" class="instant-textarea" placeholder="e.g. Can you do ₦3,800? Item is already packaged and ready." rows="2"></textarea>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <button type="button" class="btn btn-secondary" onclick="closeOfferCounterModal()" style="flex:1; background:#f1f5f9; border:none; padding:11px; border-radius:8px; font-weight:700; cursor:pointer;">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="flex:2; background:#93c700; color:#ffffff; border:none; padding:11px; border-radius:8px; font-weight:800; font-size:14px; cursor:pointer;">
+            Submit Counter-Offer ➔
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div class="toast-box" id="dashToast">
     <span id="toastIcon">✓</span>
@@ -1607,9 +1709,11 @@
             </div>
             <div style="text-align:right; display:flex; flex-direction:column; gap:8px; align-items:flex-end;">
               <div style="font-size:18px; font-weight:800; color:#0f172a;">₦${o.amount.toLocaleString()}</div>
-              <div style="display:flex; gap:6px;">
-                <button class="btn btn-secondary btn-sm" onclick="declineBid(${o.id})" style="background:#ffffff; border:1px solid #e2e8f0; color:#64748b; padding:5px 10px; border-radius:6px; font-size:11.5px; cursor:pointer;">Decline</button>
-                <button class="btn btn-primary btn-sm" onclick="acceptBid(${o.id}, '${o.name}', ${o.amount})" style="background:#93c700; color:#ffffff; border:none; padding:6px 14px; border-radius:6px; font-weight:800; font-size:12px; cursor:pointer;">Accept Bid</button>
+              <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">
+                <button class="btn btn-secondary btn-sm" onclick="declineBid(${o.id})" style="background:#ffffff; border:1px solid #e2e8f0; color:#64748b; padding:5px 8px; border-radius:6px; font-size:11px; cursor:pointer;">Decline</button>
+                <button class="btn btn-secondary btn-sm" onclick="openOfferCounterModal(${o.id}, '${o.name}', ${o.amount})" style="background:#fffbeb; border:1px solid #fde68a; color:#92400e; padding:5px 9px; border-radius:6px; font-size:11px; font-weight:700; cursor:pointer;">Counter</button>
+                <a href="chat.html" class="btn btn-secondary btn-sm" style="background:#f4fbe6; border:1px solid #d6f0a3; color:#3b5000; padding:5px 9px; border-radius:6px; font-size:11px; font-weight:700; text-decoration:none;">💬 Chat</a>
+                <button class="btn btn-primary btn-sm" onclick="acceptBid(${o.id}, '${o.name}', ${o.amount})" style="background:#93c700; color:#ffffff; border:none; padding:5px 12px; border-radius:6px; font-weight:800; font-size:11.5px; cursor:pointer;">Accept</button>
               </div>
             </div>
           </div>
@@ -1755,16 +1859,92 @@
         card.setAttribute('data-status', 'active');
         card.style.opacity = '1';
         const badge = card.querySelector('.r-status-badge');
-        if (badge) {
-          badge.className = 'r-status-badge status-offers';
-          badge.innerHTML = `<span class="kpi-pulse-dot" style="background:#22c55e;"></span> Live (Awaiting Bids)`;
-        }
         const actions = card.querySelector('.r-actions-row');
         if (actions) {
           actions.innerHTML = `<button class="btn btn-secondary btn-sm" onclick="openCancelModal('${cardId}', 'Errand')" style="background:#ffffff; border:1px solid #e2e8f0; color:#ef4444; padding:6px 12px; border-radius:8px; font-weight:600; font-size:12px; cursor:pointer;">Cancel</button><button class="btn btn-primary btn-sm" onclick="showToast('Awaiting new bids from runners')" style="background:#93c700; color:#ffffff; border:none; padding:7px 16px; border-radius:8px; font-weight:800; font-size:13px; cursor:pointer;">Awaiting Bids</button>`;
         }
         showToast('Errand re-published! Nearby runners alerted.');
       }
+    }
+
+    // Boost Modal Handlers
+    let activeCardToBoost = null;
+    let activeBidForCounter = null;
+
+    function openBoostModal(cardId, title) {
+      activeCardToBoost = cardId;
+      const titleEl = document.getElementById('boostErrandTitle');
+      if (titleEl) titleEl.textContent = title ? `"${title}"` : 'Your Errand';
+      document.getElementById('boostModalBackdrop').classList.add('active');
+    }
+
+    function closeBoostModal(e) {
+      if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+      document.getElementById('boostModalBackdrop').classList.remove('active');
+    }
+
+    function handleBoostSubmit(e) {
+      e.preventDefault();
+      const form = e.target;
+      const tier = form.elements['boostTier'] ? form.elements['boostTier'].value : '1000';
+      const tierName = tier === '500' ? 'Highlight (₦500)' : tier === '2000' ? 'VIP Broadcast (₦2,000)' : 'Express Priority (₦1,000)';
+
+      if (activeCardToBoost) {
+        const card = document.getElementById(activeCardToBoost);
+        if (card) {
+          card.style.border = '2px solid #93c700';
+          card.style.boxShadow = '0 8px 24px -4px rgba(147, 199, 0, 0.25)';
+          const badgeRow = card.querySelector('.r-badge-row');
+          if (badgeRow && !card.querySelector('.boost-badge')) {
+            const b = document.createElement('span');
+            b.className = 'boost-badge';
+            b.style.cssText = 'background:linear-gradient(135deg, #fef08a, #fde047); color:#854d0e; font-size:10.5px; font-weight:800; padding:2px 8px; border-radius:20px; text-transform:uppercase; letter-spacing:0.4px; box-shadow:0 1px 3px rgba(0,0,0,0.1);';
+            b.innerHTML = '⚡ BOOSTED PRIORITY';
+            badgeRow.prepend(b);
+          }
+        }
+      }
+      closeBoostModal();
+      showToast(`Boost applied! ${tierName} activated. Errand pinned to top of discovery feed! 🚀`);
+    }
+
+    // Counter-Offer Modal Handlers
+    function openOfferCounterModal(bidId, runnerName, currentBid) {
+      activeBidForCounter = { bidId, runnerName, currentBid };
+      const nameEl = document.getElementById('counterBidderName');
+      const bidEl = document.getElementById('counterCurrentBid');
+      const priceInput = document.getElementById('reqCounterPriceInput');
+      if (nameEl) nameEl.textContent = runnerName;
+      if (bidEl) bidEl.textContent = '₦' + Number(currentBid).toLocaleString();
+      if (priceInput) priceInput.value = Math.max(500, currentBid - 500);
+      document.getElementById('reqCounterModalBackdrop').classList.add('active');
+    }
+
+    function closeOfferCounterModal(e) {
+      if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+      document.getElementById('reqCounterModalBackdrop').classList.remove('active');
+    }
+
+    function handleOfferCounterSubmit(e) {
+      e.preventDefault();
+      const price = document.getElementById('reqCounterPriceInput').value;
+      const runnerName = activeBidForCounter ? activeBidForCounter.runnerName : 'Runner';
+      const bidId = activeBidForCounter ? activeBidForCounter.bidId : null;
+
+      if (bidId) {
+        const row = document.getElementById(`bid-row-${bidId}`);
+        if (row) {
+          const counterBtn = row.querySelector("button[onclick*='openOfferCounterModal']");
+          if (counterBtn) {
+            counterBtn.disabled = true;
+            counterBtn.textContent = 'Counter Sent (₦' + Number(price).toLocaleString() + ')';
+            counterBtn.style.opacity = '0.7';
+            counterBtn.style.cursor = 'default';
+          }
+        }
+      }
+      closeOfferCounterModal();
+      showToast(`Counter-offer of ₦${Number(price).toLocaleString()} proposed to ${runnerName}! 💬`);
     }
   </script>
 </body>

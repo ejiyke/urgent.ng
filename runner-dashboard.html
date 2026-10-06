@@ -704,9 +704,9 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               Browse Live Feed (42)
             </a>
-            <a href="javascript:void(0)" onclick="openPayoutModal()" class="dropdown-link">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" radius="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-              Withdraw Wallet Balance
+            <a href="chat.html" class="dropdown-link" style="color:#0f172a; font-weight:700;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              Errand Chat & Messages
             </a>
             <a href="runner-verification.html" class="dropdown-link" style="color:#047857; font-weight:700;">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
@@ -881,11 +881,14 @@
                 </div>
               </div>
               <div style="display:flex; gap:6px;">
+                <a href="chat.html" class="btn btn-secondary btn-sm" style="background:#f4fbe6; border:1px solid #d6f0a3; color:#3b5000; padding:4px 8px; border-radius:6px; font-size:11px; text-decoration:none; font-weight:700;">
+                  💬 Chat
+                </a>
                 <a href="tel:08023456789" class="btn btn-secondary btn-sm" style="background:#ffffff; border:1px solid #e2e8f0; color:#334155; padding:4px 8px; border-radius:6px; font-size:11px; text-decoration:none; font-weight:700;">
                   📞 Call
                 </a>
                 <a href="https://wa.me/2348023456789?text=Hello%20Emmanuella,%20I'm%20approaching%20Adeola%20Odeku%20with%20your%20package" target="_blank" class="btn btn-secondary btn-sm" style="background:#ecfdf5; border:1px solid #a7f3d0; color:#047857; padding:4px 8px; border-radius:6px; font-size:11px; text-decoration:none; font-weight:700;">
-                  💬 WhatsApp
+                  WhatsApp
                 </a>
               </div>
             </div>
@@ -951,8 +954,11 @@
                 </div>
               </div>
               <div style="display:flex; gap:6px;">
+                <a href="chat.html" class="btn btn-secondary btn-sm" style="background:#f4fbe6; border:1px solid #d6f0a3; color:#3b5000; padding:4px 8px; border-radius:6px; font-size:11px; text-decoration:none; font-weight:700;">
+                  💬 Chat
+                </a>
                 <a href="https://wa.me/2348023456789?text=Hello%20Emmanuella,%20I'm%20entering%20Alaba%20Market%20now" target="_blank" class="btn btn-secondary btn-sm" style="background:#ecfdf5; border:1px solid #a7f3d0; color:#047857; padding:4px 8px; border-radius:6px; font-size:11px; text-decoration:none; font-weight:700;">
-                  💬 WhatsApp Client
+                  💬 WhatsApp
                 </a>
               </div>
             </div>
@@ -980,17 +986,42 @@
 
       <!-- TAB 2: MY BIDS & OFFERS -->
       <div id="runnerBidsView" style="display:none; flex-direction:column; gap:16px;">
-        <div class="runner-task-card">
+        <!-- Card with active counter-offer from Requester -->
+        <div class="runner-task-card" id="runner-counter-card" style="border:1.5px solid #fde68a; background:#fffdf5;">
           <div class="t-card-top">
             <div class="t-badge-row">
               <span class="t-cat-pill sell-fast">⚡ Sell Fast</span>
-              <span class="t-status-badge status-bid-pending">🟡 Pending Client Decision</span>
+              <span class="t-status-badge" style="background:#fef3c7; color:#b45309; border:1px solid #fde68a; font-weight:700;">
+                💰 Counter-Offer Received!
+              </span>
             </div>
-            <span style="font-size:12px; color:#64748b;">Submitted 30m ago</span>
+            <span style="font-size:12px; color:#92400e; font-weight:700;">Action Required</span>
           </div>
           <h3 class="t-card-title">Sell my flate screen 38 inches tv</h3>
-          <p style="font-size:13px; color:#475569; margin:0 0 12px;">Computer Village Ikeja ➔ Magodo Phase 2. Your Offer: <strong>₦7,500</strong></p>
-          <div style="font-size:12px; color:#64748b;">The requester is reviewing bids. You will receive an instant notification if accepted.</div>
+          <p style="font-size:13px; color:#475569; margin:0 0 10px;">Computer Village Ikeja ➔ Magodo Phase 2. Your Original Bid: <span style="text-decoration:line-through; color:#94a3b8;">₦7,500</span></p>
+
+          <div style="background:#ffffff; border:1px solid #fed7aa; border-radius:10px; padding:12px 14px; margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <div>
+              <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:#9a3412;">Client Proposed Counter-Offer</div>
+              <div style="font-size:12.5px; color:#475569; margin-top:2px;">"Can you do ₦7,000? TV is packed and ready for immediate pickup."</div>
+            </div>
+            <div style="text-align:right;">
+              <span style="font-size:10.5px; color:#94a3b8; display:block;">Counter Price</span>
+              <strong style="font-size:19px; color:#0f172a; font-weight:800;">₦7,000</strong>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end; gap:8px; align-items:center; flex-wrap:wrap;">
+            <a href="chat.html" class="btn btn-secondary btn-sm" style="background:#ffffff; border:1px solid #e2e8f0; color:#334155; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:700; text-decoration:none;">
+              💬 Negotiate in Chat
+            </a>
+            <button class="btn btn-secondary btn-sm" onclick="declineCounterOffer('runner-counter-card')" style="background:#ffffff; border:1px solid #fca5a5; color:#dc2626; padding:7px 12px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">
+              ✕ Decline
+            </button>
+            <button class="btn btn-primary btn-sm" onclick="acceptCounterOffer('runner-counter-card', 7000)" style="background:#93c700; color:#ffffff; border:none; padding:7px 16px; border-radius:8px; font-weight:800; font-size:12.5px; cursor:pointer;">
+              ✓ Accept ₦7,000 & Start
+            </button>
+          </div>
         </div>
 
         <div class="runner-task-card">
@@ -1315,6 +1346,49 @@
       document.getElementById('walletBalanceDisplay').textContent = '₦' + walletBal.toLocaleString();
       closePayoutModal();
       showToast(`Withdrawal of ₦${amount.toLocaleString()} to ${bank} (${acc}) initiated! Funds typically reflect in 2-5 minutes. 💸`);
+    }
+
+    // Counter-Offer Action Handlers
+    function acceptCounterOffer(cardId, price) {
+      const card = document.getElementById(cardId);
+      if (card) {
+        card.style.background = '#f0fdf4';
+        card.style.borderColor = '#86efac';
+        const badge = card.querySelector('.t-status-badge');
+        if (badge) {
+          badge.style.background = '#dcfce7';
+          badge.style.color = '#15803d';
+          badge.style.borderColor = '#bbf7d0';
+          badge.textContent = '🟢 Counter Accepted · Errand Activated!';
+        }
+        const actions = card.querySelector('div[style*="justify-content:flex-end"]');
+        if (actions) {
+          actions.innerHTML = `
+            <a href="chat.html" class="btn btn-secondary btn-sm" style="background:#ffffff; border:1px solid #cbd5e1; color:#334155; padding:7px 14px; border-radius:8px; font-size:12px; font-weight:700; text-decoration:none;">💬 Open Chat</a>
+            <button class="btn btn-primary btn-sm" onclick="switchRunnerTab('active'); showToast('Errand moved to Active Tasks! Proceed to pickup.')" style="background:#93c700; color:#ffffff; border:none; padding:7px 16px; border-radius:8px; font-weight:800; font-size:12px; cursor:pointer;">➔ Go to Active Queue</button>
+          `;
+        }
+      }
+      showToast(`Counter-offer of ₦${price.toLocaleString()} accepted! Errand added to your active list. 🎉`);
+    }
+
+    function declineCounterOffer(cardId) {
+      const card = document.getElementById(cardId);
+      if (card) {
+        card.style.opacity = '0.5';
+        const badge = card.querySelector('.t-status-badge');
+        if (badge) {
+          badge.style.background = '#f1f5f9';
+          badge.style.color = '#64748b';
+          badge.style.borderColor = '#e2e8f0';
+          badge.textContent = '✕ Counter-Offer Declined';
+        }
+        const actions = card.querySelector('div[style*="justify-content:flex-end"]');
+        if (actions) {
+          actions.innerHTML = `<span style="font-size:12px; color:#64748b; font-weight:600;">You declined this offer. Requester notified.</span>`;
+        }
+      }
+      showToast('Counter-offer declined.');
     }
   </script>
 </body>
