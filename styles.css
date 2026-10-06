@@ -4398,3 +4398,46 @@ a.btn-primary:active {
   max-width: 740px !important;
   width: 100% !important;
 }
+
+/* ============================================================
+   HYPERFRAMES TACTILE SPRINGS & MICRO-INTERACTIONS
+   ============================================================ */
+.btn,
+.btn-hero-primary,
+.btn-hero-secondary,
+.budget-pill,
+.category-card,
+.errand-card {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.btn:active,
+.btn-hero-primary:active,
+.btn-hero-secondary:active,
+.budget-pill:active {
+  transform: scale(0.96) !important;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 24px -4px rgba(27, 35, 48, 0.09);
+}
+
+.category-card:active {
+  transform: translateY(-1px) scale(0.985);
+}
+
+.errand-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 30px -6px rgba(27, 35, 48, 0.12);
+}
+
+.hero-floating-badge {
+  transition: box-shadow 0.3s ease;
+}
+
+.hero-floating-badge:hover {
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
+}
+

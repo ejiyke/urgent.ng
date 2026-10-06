@@ -593,3 +593,99 @@ function handleInstantCategoryChange(cat) {
     titleInput.placeholder = placeholders[cat];
   }
 }
+
+// ============================================================
+// HYPERFRAMES ANIMATION ENGINE (Rules: spring-pop-entrance, sine-wave-loop, waterfall-entry)
+// ============================================================
+function initUrgentHyperFrames() {
+  if (typeof gsap === "undefined") return;
+
+  window.__timelines = window.__timelines || [];
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  // 1. Hero Entrance Timeline
+  const heroTl = gsap.timeline({
+    defaults: { ease: "power3.out" },
+    delay: 0.1
+  });
+  window.__timelines.push(heroTl);
+
+  const heroTitle = document.querySelector(".hero-title");
+  const heroDesc = document.querySelector(".hero-desc");
+  const heroActions = document.querySelectorAll(".hero-actions .btn");
+  const heroBadge = document.querySelector(".hero-desktop-badge");
+  const mobileBadge = document.querySelector(".hero-mobile-badge");
+
+  if (heroTitle) {
+    heroTl.fromTo(heroTitle, { y: 35, opacity: 0 }, { y: 0, opacity: 1, duration: 0.75 }, 0);
+  }
+  if (heroDesc) {
+    heroTl.fromTo(heroDesc, { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65 }, 0.2);
+  }
+  if (heroActions && heroActions.length > 0) {
+    heroTl.fromTo(
+      heroActions,
+      { scale: 0.9, opacity: 0, y: 15 },
+      { scale: 1, opacity: 1, y: 0, stagger: 0.1, duration: 0.5 },
+      0.35
+    );
+  }
+  if (heroBadge) {
+    heroTl.fromTo(
+      heroBadge,
+      { scale: 0.75, opacity: 0, y: 25 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.65, ease: "back.out(1.4)" },
+      0.4
+    );
+    // Ambient floating idle (sine-wave-loop)
+    gsap.to(heroBadge, {
+      y: "-=8",
+      duration: 3.0,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      delay: 1.2
+    });
+  }
+  if (mobileBadge) {
+    heroTl.fromTo(
+      mobileBadge,
+      { scale: 0.8, opacity: 0, y: 15 },
+      { scale: 1, opacity: 1, y: 0, duration: 0.6 },
+      0.45
+    );
+  }
+
+  // 2. Scroll-Triggered Section Reveals
+  if ("IntersectionObserver" in window) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          obs.unobserve(entry.target);
+          const t = entry.target;
+          if (t.classList.contains("instant-request-card")) {
+            gsap.fromTo(t, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: "power3.out" });
+            const pills = t.querySelectorAll(".budget-pill");
+            if (pills.length) {
+              gsap.fromTo(pills, { scale: 0.85, opacity: 0 }, { scale: 1, opacity: 1, stagger: 0.05, duration: 0.4, delay: 0.2, ease: "power3.out" });
+            }
+          } else if (t.classList.contains("categories-grid")) {
+            const cards = t.querySelectorAll(".category-card");
+            gsap.fromTo(cards, { y: 35, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.06, duration: 0.55, ease: "power3.out" });
+          } else if (t.classList.contains("errands-grid") || t.classList.contains("active-errands-grid")) {
+            const cards = t.querySelectorAll(".errand-card");
+            gsap.fromTo(cards, { y: 30, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.08, duration: 0.55, ease: "power3.out" });
+          } else if (t.classList.contains("steps-grid")) {
+            const steps = t.querySelectorAll(".step-card");
+            gsap.fromTo(steps, { y: 35, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.1, duration: 0.6, ease: "power3.out" });
+          }
+        }
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+
+    document.querySelectorAll(".instant-request-card, .categories-grid, .errands-grid, .active-errands-grid, .steps-grid").forEach(el => observer.observe(el));
+  }
+}
+
+document.addEventListener("DOMContentLoaded", initUrgentHyperFrames);
+
