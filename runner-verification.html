@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Runner ID & KYC Verification — Urgent.ng | Safe Errand Marketplace</title>
+  <meta name="description" content="Complete your Nigerian Government ID verification, facial selfie liveness, and guarantor checks to become an accredited Urgent.ng runner.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=2.5">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    body {
+      background-color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: var(--font-family-primary, 'Archivo', sans-serif);
+      color: #0f172a;
+    }
+
+    /* Verification Header */
+    .kyc-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+    .kyc-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+
+    .kyc-main {
+      padding: 36px 0 64px;
+      flex: 1;
+    }
+    .kyc-container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    /* Stepper Bar */
+    .kyc-stepper-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      position: relative;
+    }
+    .kyc-stepper-line {
+      position: absolute;
+      top: 18px;
+      left: 30px;
+      right: 30px;
+      height: 3px;
+      background: #e2e8f0;
+      z-index: 1;
+    }
+    .kyc-stepper-progress {
+      position: absolute;
+      top: 18px;
+      left: 30px;
+      height: 3px;
+      background: #93c700;
+      z-index: 2;
+      width: 25%;
+      transition: width 0.3s ease;
+    }
+    .kyc-step-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      position: relative;
+      z-index: 3;
+    }
+    .kyc-node-circle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid #cbd5e1;
+      color: #64748b;
+      font-size: 13px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .kyc-node-circle.active {
+      border-color: #93c700;
+      background: #93c700;
+      color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(147, 199, 0, 0.2);
+    }
+    .kyc-node-circle.completed {
+      border-color: #93c700;
+      background: #93c700;
+      color: #ffffff;
+    }
+    .kyc-node-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #64748b;
+    }
+    .kyc-node-label.active {
+      color: #0f172a;
+    }
+
+    /* Form Container Card */
+    .kyc-form-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 36px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+    .kyc-section-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 6px 0;
+      letter-spacing: -0.4px;
+    }
+    .kyc-section-sub {
+      font-size: 13.5px;
+      color: #64748b;
+      margin: 0 0 24px 0;
+    }
+
+    /* Upload Dropzones */
+    .upload-dropzone {
+      border: 2px dashed #cbd5e1;
+      border-radius: 12px;
+      padding: 24px 20px;
+      text-align: center;
+      background: #f8fafc;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .upload-dropzone:hover {
+      border-color: #93c700;
+      background: #f4fbe6;
+    }
+    .upload-icon-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+    .upload-preview-img {
+      max-height: 140px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* Selfie Viewfinder Simulation */
+    .selfie-camera-box {
+      width: 200px;
+      height: 240px;
+      border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+      border: 3px dashed #93c700;
+      margin: 0 auto 20px;
+      background: #f1f5f9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .selfie-preview-circle {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+    .selfie-guide-text {
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+      padding: 0 16px;
+    }
+
+    /* Status Banner (Under Review & Approved) */
+    .status-dashboard-box {
+      border-radius: 14px;
+      padding: 28px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .status-under-review {
+      background: #fffbeb;
+      border: 1.5px solid #fde68a;
+      color: #92400e;
+    }
+    .status-verified {
+      background: #ecfdf5;
+      border: 1.5px solid #a7f3d0;
+      color: #065f46;
+    }
+
+    /* Toast Notification */
+    .toast-box {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      font-size: 13.5px;
+      font-weight: 600;
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast-box.show { display: flex; }
+  </style>
+</head>
+<body>
+
+  <!-- ================= TOP HEADER ================= -->
+  <header class="kyc-header">
+    <div class="container kyc-header-inner">
+      <div style="display:flex; align-items:center; gap:24px;">
+        <a href="index.html" class="brand-logo" style="text-decoration:none; display:flex; align-items:center;">
+          <img src="assets/logo.png" alt="Urgent.ng - Get it fast" class="brand-logo-img" style="height:42px; max-width:170px; object-fit:contain;">
+        </a>
+        <span style="font-size:13px; font-weight:700; color:#64748b;" class="hide-mobile">
+          / Runner Trust & Safety KYC
+        </span>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:12px;">
+        <a href="runner-dashboard.html" class="btn btn-secondary btn-sm" style="background:#ffffff; border:1px solid #cbd5e1; color:#334155; padding:8px 14px; border-radius:8px; font-weight:700; text-decoration:none; font-size:13px;">
+          ← Back to Dashboard
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN CONTAINER ================= -->
+  <main class="kyc-main">
+    <div class="container kyc-container">
+      
+      <!-- Stepper Nodes -->
+      <div class="kyc-stepper-bar" id="kycStepper">
+        <div class="kyc-stepper-line"></div>
+        <div class="kyc-stepper-progress" id="stepperProgress"></div>
+
+        <div class="kyc-step-node" onclick="goToStep(1)">
+          <div class="kyc-node-circle active" id="circleStep1">1</div>
+          <span class="kyc-node-label active" id="labelStep1">Personal</span>
+        </div>
+
+        <div class="kyc-step-node" onclick="goToStep(2)">
+          <div class="kyc-node-circle" id="circleStep2">2</div>
+          <span class="kyc-node-label" id="labelStep2">Govt ID</span>
+        </div>
+
+        <div class="kyc-step-node" onclick="goToStep(3)">
+          <div class="kyc-node-circle" id="circleStep3">3</div>
+          <span class="kyc-node-label" id="labelStep3">Selfie</span>
+        </div>
+
+        <div class="kyc-step-node" onclick="goToStep(4)">
+          <div class="kyc-node-circle" id="circleStep4">4</div>
+          <span class="kyc-node-label" id="labelStep4">Guarantor</span>
+        </div>
+
+        <div class="kyc-step-node" onclick="goToStep(5)">
+          <div class="kyc-node-circle" id="circleStep5">5</div>
+          <span class="kyc-node-label" id="labelStep5">Review</span>
+        </div>
+      </div>
+
+      <!-- MAIN KYC FORM CONTAINER -->
+      <div class="kyc-form-card">
+        
+        <!-- ================= STEP 1: PERSONAL & RESIDENCE ================= -->
+        <div id="stepSection1">
+          <h2 class="kyc-section-title">Step 1: Legal Identity & Address</h2>
+          <p class="kyc-section-sub">Please enter your legal name as it appears on official Nigerian Government records.</p>
+
+          <form onsubmit="handleStepSubmit(event, 1)" style="display:flex; flex-direction:column; gap:16px;">
+            <div class="instant-grid-2">
+              <div class="instant-form-group">
+                <label class="instant-label">First & Middle Legal Names <span class="req">*</span></label>
+                <input type="text" id="kycFirstName" class="instant-input" value="Tunde Babatunde" required>
+              </div>
+              <div class="instant-form-group">
+                <label class="instant-label">Last Name (Surname) <span class="req">*</span></label>
+                <input type="text" id="kycLastName" class="instant-input" value="Okon" required>
+              </div>
+            </div>
+
+            <div class="instant-grid-2">
+              <div class="instant-form-group">
+                <label class="instant-label">Date of Birth <span class="req">*</span></label>
+                <input type="date" id="kycDob" class="instant-input" value="1996-08-14" required>
+              </div>
+              <div class="instant-form-group">
+                <label class="instant-label">State of Origin <span class="req">*</span></label>
+                <select id="kycStateOrigin" class="instant-select" required>
+                  <option value="Lagos">Lagos State</option>
+                  <option value="Ogun">Ogun State</option>
+                  <option value="Oyo">Oyo State</option>
+                  <option value="Osun">Osun State</option>
+                  <option value="Akwa Ibom" selected>Akwa Ibom State</option>
+                  <option value="Edo">Edo State</option>
+                  <option value="Delta">Delta State</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="instant-form-group">
+              <label class="instant-label">Current Residential Address in Lagos <span class="req">*</span></label>
+              <input type="text" id="kycAddress" class="instant-input" value="14 Opebi Road, Salvation Bus Stop" required placeholder="House number, Street name, Landmark">
+            </div>
+
+            <div class="instant-grid-2">
+              <div class="instant-form-group">
+                <label class="instant-label">Local Government Area (LGA) <span class="req">*</span></label>
+                <select id="kycLga" class="instant-select" required>
+                  <option value="Ikeja" selected>Ikeja</option>
+                  <option value="Eti-Osa (Lekki / VI)">Eti-Osa (Lekki / VI / Ikoyi)</option>
+                  <option value="Surulere">Surulere</option>
+                  <option value="Mainland (Yaba)">Lagos Mainland (Yaba)</option>
+                  <option value="Kosofe (Mile 12)">Kosofe (Mile 12 / Ketu)</option>
+                  <option value="Ojo (Alaba)">Ojo (Alaba Market area)</option>
+                </select>
+              </div>
+              <div class="instant-form-group">
+                <label class="instant-label">WhatsApp Contact Number <span class="req">*</span></label>
+                <input type="tel" id="kycPhone" class="instant-input" value="0808 555 9182" required>
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; margin-top:10px;">
+              <button type="submit" class="btn btn-primary" style="background:#93c700; color:#ffffff; border:none; padding:12px 28px; border-radius:8px; font-weight:800; font-size:14px; cursor:pointer;">
+                Continue to Government ID ➔
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ================= STEP 2: GOVERNMENT ID UPLOAD ================= -->
+        <div id="stepSection2" style="display:none;">
+          <h2 class="kyc-section-title">Step 2: Government ID Verification</h2>
+          <p class="kyc-section-sub">Upload a valid government-issued document to verify your identity.</p>
+
+          <form onsubmit="handleStepSubmit(event, 2)" style="display:flex; flex-direction:column; gap:16px;">
+            <div class="instant-grid-2">
+              <div class="instant-form-group">
+                <label class="instant-label">Select Document Type <span class="req">*</span></label>
+                <select id="kycDocType" class="instant-select" onchange="updateDocLabels(this.value)" required>
+                  <option value="NIN" selected>National Identity Number (NIN Slip / Card)</option>
+                  <option value="PVC">INEC Permanent Voter's Card (PVC)</option>
+                  <option value="DRIVERS_LICENSE">FRSC Driver's License</option>
+                  <option value="PASSPORT">Nigerian International Passport</option>
+                </select>
+              </div>
+
+              <div class="instant-form-group">
+                <label class="instant-label" id="idNumberLabel">NIN Number (11 Digits) <span class="req">*</span></label>
+                <input type="text" id="kycIdNumber" class="instant-input" value="73910294819" maxlength="11" required>
+              </div>
+            </div>
+
+            <!-- Front ID Upload -->
+            <div>
+              <label class="instant-label" style="display:block; margin-bottom:6px;">Upload Front of Document <span class="req">*</span></label>
+              <div class="upload-dropzone" onclick="document.getElementById('idFrontInput').click()">
+                <div class="upload-icon-circle">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                </div>
+                <strong style="font-size:13.5px; color:#0f172a; display:block;" id="frontUploadText">Click to upload Front of ID card</strong>
+                <span style="font-size:12px; color:#64748b;">Clear PNG, JPG or PDF (Max 5MB)</span>
+                <img id="frontPreview" class="upload-preview-img" src="assets/logo.png" alt="ID preview">
+              </div>
+              <input type="file" id="idFrontInput" style="display:none;" accept="image/*" onchange="handleFilePreview(this, 'frontPreview', 'frontUploadText')">
+            </div>
+
+            <!-- Back ID Upload -->
+            <div>
+              <label class="instant-label" style="display:block; margin-bottom:6px;">Upload Back of Document</label>
+              <div class="upload-dropzone" onclick="document.getElementById('idBackInput').click()">
+                <div class="upload-icon-circle">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                </div>
+                <strong style="font-size:13.5px; color:#0f172a; display:block;" id="backUploadText">Click to upload Back of ID card</strong>
+                <span style="font-size:12px; color:#64748b;">(Optional for NIN slip)</span>
+                <img id="backPreview" class="upload-preview-img" src="assets/logo.png" alt="ID preview">
+              </div>
+              <input type="file" id="idBackInput" style="display:none;" accept="image/*" onchange="handleFilePreview(this, 'backPreview', 'backUploadText')">
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin-top:10px;">
+              <button type="button" class="btn btn-secondary" onclick="goToStep(1)" style="background:#f1f5f9; border:none; padding:12px 20px; border-radius:8px; font-weight:700; cursor:pointer;">
+                ← Back
+              </button>
+              <button type="submit" class="btn btn-primary" style="background:#93c700; color:#ffffff; border:none; padding:12px 28px; border-radius:8px; font-weight:800; font-size:14px; cursor:pointer;">
+                Continue to Selfie Liveness ➔
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ================= STEP 3: SELFIE LIVENESS CHECK ================= -->
+        <div id="stepSection3" style="display:none;">
+          <h2 class="kyc-section-title">Step 3: Live Selfie Facial Match</h2>
+          <p class="kyc-section-sub">Take a clear, neutral headshot to match with the photo on your government document.</p>
+
+          <form onsubmit="handleStepSubmit(event, 3)" style="display:flex; flex-direction:column; gap:16px;">
+            <div class="selfie-camera-box">
+              <div id="selfiePlaceholder" style="text-align:center;">
+                <span style="font-size:42px; display:block; margin-bottom:8px;">👤</span>
+                <span class="selfie-guide-text">Position face inside oval frame</span>
+              </div>
+              <img id="selfiePreviewImg" class="selfie-preview-circle" src="" alt="Selfie preview">
+            </div>
+
+            <div style="text-align:center;">
+              <input type="file" id="selfieCameraInput" accept="image/*" capture="user" style="display:none;" onchange="handleSelfieCaptured(this)">
+              <button type="button" class="btn btn-secondary" onclick="triggerSelfieCapture()" style="background:#ffffff; border:1.5px solid #93c700; color:#3b5000; padding:10px 22px; border-radius:8px; font-weight:800; font-size:13px; cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
+                <span>📸</span> <span id="captureBtnText">Take Live Photo / Upload Selfie</span>
+              </button>
+            </div>
+
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:14px; font-size:12.5px; color:#475569; margin-top:10px;">
+              <strong>Selfie Guidelines:</strong>
+              <ul style="margin:6px 0 0 18px; padding:0;">
+                <li>Ensure well-lit environment (avoid strong backlighting)</li>
+                <li>Remove sunglasses, face caps, and face coverings</li>
+                <li>Keep neutral facial expression looking directly forward</li>
+              </ul>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin-top:16px;">
+              <button type="button" class="btn btn-secondary" onclick="goToStep(2)" style="background:#f1f5f9; border:none; padding:12px 20px; border-radius:8px; font-weight:700; cursor:pointer;">
+                ← Back
+              </button>
+              <button type="submit" class="btn btn-primary" style="background:#93c700; color:#ffffff; border:none; padding:12px 28px; border-radius:8px; font-weight:800; font-size:14px; cursor:pointer;">
+                Continue to Guarantor ➔
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ================= STEP 4: GUARANTOR INFO ================= -->
+        <div id="stepSection4" style="display:none;">
+          <h2 class="kyc-section-title">Step 4: Guarantor / Next-of-Kin</h2>
+          <p class="kyc-section-sub">Provide contact details for a responsible adult or family guarantor.</p>
+
+          <form onsubmit="handleStepSubmit(event, 4)" style="display:flex; flex-direction:column; gap:16px;">
+            <div class="instant-grid-2">
+              <div class="instant-form-group">
+                <label class="instant-label">Guarantor Full Legal Name <span class="req">*</span></label>
+                <input type="text" id="guarantorName" class="instant-input" value="Pastor Samuel Okon" required>
+              </div>
+              <div class="instant-form-group">
+                <label class="instant-label">Relationship to You <span class="req">*</span></label>
+                <select id="guarantorRel" class="instant-select" required>
+                  <option value="Parent" selected>Parent (Father / Mother)</option>
+                  <option value="Sibling">Elder Sibling (Brother / Sister)</option>
+                  <option value="Spouse">Spouse</option>
+                  <option value="Employer">Current Employer / Business Partner</option>
+                  <option value="Community Leader">Community / Religious Leader</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="instant-grid-2">
+              <div class="instant-form-group">
+                <label class="instant-label">Guarantor Phone Number <span class="req">*</span></label>
+                <input type="tel" id="guarantorPhone" class="instant-input" value="0803 419 8219" required>
+              </div>
+              <div class="instant-form-group">
+                <label class="instant-label">Guarantor Occupation <span class="req">*</span></label>
+                <input type="text" id="guarantorJob" class="instant-input" value="Civil Servant / Clergy" required>
+              </div>
+            </div>
+
+            <div class="instant-form-group">
+              <label class="instant-label">Guarantor Residential Address in Lagos <span class="req">*</span></label>
+              <input type="text" id="guarantorAddress" class="instant-input" value="8 Allen Avenue, Ikeja, Lagos" required>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; margin-top:10px;">
+              <button type="button" class="btn btn-secondary" onclick="goToStep(3)" style="background:#f1f5f9; border:none; padding:12px 20px; border-radius:8px; font-weight:700; cursor:pointer;">
+                ← Back
+              </button>
+              <button type="submit" class="btn btn-primary" style="background:#93c700; color:#ffffff; border:none; padding:12px 28px; border-radius:8px; font-weight:800; font-size:14px; cursor:pointer;">
+                Review Application ➔
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ================= STEP 5: REVIEW & FINAL SUBMISSION ================= -->
+        <div id="stepSection5" style="display:none;">
+          <h2 class="kyc-section-title">Step 5: Review & Submit Accreditation</h2>
+          <p class="kyc-section-sub">Confirm the accuracy of your details before submitting to the Urgent.ng Verification Desk.</p>
+
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:20px; margin-bottom:20px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; font-size:13px;">
+              <div>
+                <span style="color:#64748b; font-size:11px; text-transform:uppercase; font-weight:700;">Legal Name</span>
+                <div style="font-weight:800; color:#0f172a;" id="revLegalName">Tunde Babatunde Okon</div>
+              </div>
+              <div>
+                <span style="color:#64748b; font-size:11px; text-transform:uppercase; font-weight:700;">Government ID</span>
+                <div style="font-weight:800; color:#0f172a;" id="revDocInfo">NIN (73910294819)</div>
+              </div>
+              <div>
+                <span style="color:#64748b; font-size:11px; text-transform:uppercase; font-weight:700;">Residence & LGA</span>
+                <div style="font-weight:700; color:#0f172a;" id="revAddress">14 Opebi Road, Ikeja LGA</div>
+              </div>
+              <div>
+                <span style="color:#64748b; font-size:11px; text-transform:uppercase; font-weight:700;">Guarantor</span>
+                <div style="font-weight:700; color:#0f172a;" id="revGuarantor">Pastor Samuel Okon (Parent)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Legal Declaration Checkbox -->
+          <label style="display:flex; align-items:flex-start; gap:10px; font-size:13px; color:#334155; margin-bottom:24px; cursor:pointer;">
+            <input type="checkbox" id="legalCheckbox" checked style="margin-top:3px;">
+            <span>
+              I hereby declare that all uploaded government credentials, identity numbers, and photographs are genuine and belong to me. I agree to the Urgent.ng Runner Code of Conduct.
+            </span>
+          </label>
+
+          <div style="display:flex; justify-content:space-between;">
+            <button type="button" class="btn btn-secondary" onclick="goToStep(4)" style="background:#f1f5f9; border:none; padding:12px 20px; border-radius:8px; font-weight:700; cursor:pointer;">
+              ← Back
+            </button>
+            <button type="button" class="btn btn-primary" onclick="submitFinalKyc()" style="background:#93c700; color:#ffffff; border:none; padding:12px 32px; border-radius:8px; font-weight:800; font-size:14px; cursor:pointer;">
+              🚀 Submit Accreditation Application
+            </button>
+          </div>
+        </div>
+
+        <!-- ================= VERIFICATION STATUS VIEW (ONCE SUBMITTED) ================= -->
+        <div id="kycStatusView" style="display:none;">
+          <div class="status-dashboard-box status-under-review" id="statusBoxContainer">
+            <div style="font-size:36px; margin-bottom:8px;" id="statusIcon">⏳</div>
+            <h2 style="font-size:22px; font-weight:800; margin:0 0 8px;" id="statusHeadline">Application Under Verification</h2>
+            <p style="font-size:13.5px; margin:0 auto 16px; max-width:520px; line-height:1.5;" id="statusDescription">
+              Your government ID, live selfie, and guarantor credentials have been safely received by the trust & safety team. Normal review turnaround is <strong>2 to 4 hours</strong>.
+            </p>
+
+            <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.8); border:1px solid #fde68a; padding:6px 16px; border-radius:999px; font-size:12.5px; font-weight:700;">
+              <span>Reference Number:</span>
+              <strong id="kycRefCode">KYC-2026-OKON-892</strong>
+            </div>
+          </div>
+
+          <!-- Demo Quick Approval Action for Testing -->
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:24px; text-align:center;">
+            <div style="font-size:12px; font-weight:700; color:#64748b; text-transform:uppercase; margin-bottom:8px;">
+              ⚡ Developer / Demo Action
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="toggleDemoKycApproval()" id="demoApprovalBtn" style="background:#ffffff; border:1px solid #93c700; color:#3b5000; font-weight:800; padding:8px 16px; border-radius:8px; cursor:pointer;">
+              Simulate Instant KYC Approval (Test Verified Badge)
+            </button>
+          </div>
+
+          <div style="display:flex; justify-content:center; gap:12px;">
+            <a href="runner-dashboard.html" class="btn btn-primary" style="background:#93c700; color:#ffffff; border:none; padding:12px 28px; border-radius:8px; font-weight:800; font-size:14px; text-decoration:none;">
+              Return to Runner Dashboard ➔
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Toast Notification -->
+  <div class="toast-box" id="kycToast">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Action completed successfully</span>
+  </div>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    let currentStep = 1;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Check if already submitted in localStorage
+      const savedKyc = localStorage.getItem('urgent_runner_kyc');
+      if (savedKyc) {
+        try {
+          const kycData = JSON.parse(savedKyc);
+          if (kycData.status === 'under_review' || kycData.status === 'verified') {
+            showStatusView(kycData.status);
+          }
+        } catch(e){}
+      }
+    });
+
+    function showToast(message, isSuccess = true) {
+      const toast = document.getElementById('kycToast');
+      const toastMsg = document.getElementById('toastMsg');
+      const toastIcon = document.getElementById('toastIcon');
+      toastMsg.textContent = message;
+      toastIcon.textContent = isSuccess ? '✓' : 'ℹ️';
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    function goToStep(stepNumber) {
+      currentStep = stepNumber;
+      
+      // Update step sections
+      for (let i = 1; i <= 5; i++) {
+        const sec = document.getElementById('stepSection' + i);
+        if (sec) sec.style.display = (i === stepNumber) ? 'block' : 'none';
+
+        const circle = document.getElementById('circleStep' + i);
+        const label = document.getElementById('labelStep' + i);
+        if (circle && label) {
+          if (i < stepNumber) {
+            circle.className = 'kyc-node-circle completed';
+            circle.textContent = '✓';
+            label.className = 'kyc-node-label active';
+          } else if (i === stepNumber) {
+            circle.className = 'kyc-node-circle active';
+            circle.textContent = i;
+            label.className = 'kyc-node-label active';
+          } else {
+            circle.className = 'kyc-node-circle';
+            circle.textContent = i;
+            label.className = 'kyc-node-label';
+          }
+        }
+      }
+
+      // Update progress bar width
+      const bar = document.getElementById('stepperProgress');
+      if (bar) {
+        bar.style.width = ((stepNumber - 1) * 25) + '%';
+      }
+
+      // Populate review values if reaching step 5
+      if (stepNumber === 5) {
+        const first = document.getElementById('kycFirstName').value;
+        const last = document.getElementById('kycLastName').value;
+        const doc = document.getElementById('kycDocType').value;
+        const idNum = document.getElementById('kycIdNumber').value;
+        const address = document.getElementById('kycAddress').value;
+        const lga = document.getElementById('kycLga').value;
+        const gName = document.getElementById('guarantorName').value;
+        const gRel = document.getElementById('guarantorRel').value;
+
+        document.getElementById('revLegalName').textContent = first + ' ' + last;
+        document.getElementById('revDocInfo').textContent = doc + ' (' + idNum + ')';
+        document.getElementById('revAddress').textContent = address + ', ' + lga;
+        document.getElementById('revGuarantor').textContent = gName + ' (' + gRel + ')';
+      }
+    }
+
+    function handleStepSubmit(e, current) {
+      e.preventDefault();
+      goToStep(current + 1);
+    }
+
+    function updateDocLabels(docType) {
+      const label = document.getElementById('idNumberLabel');
+      const input = document.getElementById('kycIdNumber');
+      if (docType === 'NIN') {
+        label.innerHTML = 'NIN Number (11 Digits) <span class="req">*</span>';
+        input.placeholder = '11-digit NIN';
+        input.maxLength = 11;
+      } else if (docType === 'PVC') {
+        label.innerHTML = 'Voter Identification Number (VIN) <span class="req">*</span>';
+        input.placeholder = '19-character VIN';
+        input.maxLength = 19;
+      } else if (docType === 'DRIVERS_LICENSE') {
+        label.innerHTML = 'Driver License Number <span class="req">*</span>';
+        input.placeholder = 'FRSC License Number';
+        input.maxLength = 15;
+      } else {
+        label.innerHTML = 'Passport Number <span class="req">*</span>';
+        input.placeholder = 'e.g. A01234567';
+        input.maxLength = 10;
+      }
+    }
+
+    function handleFilePreview(input, previewId, textId) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.getElementById(previewId);
+          if (img) {
+            img.src = e.target.result;
+            img.style.display = 'block';
+          }
+          const text = document.getElementById(textId);
+          if (text) text.textContent = '✓ Document Selected: ' + input.files[0].name;
+        };
+        reader.readAsDataURL(input.files[0]);
+        showToast('Document uploaded successfully!');
+      }
+    }
+
+    function triggerSelfieCapture() {
+      // In web, trigger the file input (on mobile cameras it opens the front camera)
+      document.getElementById('selfieCameraInput').click();
+    }
+
+    function handleSelfieCaptured(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const preview = document.getElementById('selfiePreviewImg');
+          const placeholder = document.getElementById('selfiePlaceholder');
+          if (preview) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+          }
+          if (placeholder) placeholder.style.display = 'none';
+          document.getElementById('captureBtnText').textContent = 'Retake Photo';
+          showToast('Facial selfie captured! Liveness confirmed ✓');
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    function submitFinalKyc() {
+      const checkbox = document.getElementById('legalCheckbox');
+      if (!checkbox.checked) {
+        alert('Please accept the legal declaration before submitting.');
+        return;
+      }
+
+      const kycData = {
+        name: document.getElementById('revLegalName').textContent,
+        doc: document.getElementById('revDocInfo').textContent,
+        status: 'under_review',
+        submittedAt: new Date().toISOString()
+      };
+
+      localStorage.setItem('urgent_runner_kyc', JSON.stringify(kycData));
+      showStatusView('under_review');
+      showToast('Accreditation submitted! Verification team alerted 🚀');
+    }
+
+    function showStatusView(status) {
+      document.getElementById('stepSection1').style.display = 'none';
+      document.getElementById('stepSection2').style.display = 'none';
+      document.getElementById('stepSection3').style.display = 'none';
+      document.getElementById('stepSection4').style.display = 'none';
+      document.getElementById('stepSection5').style.display = 'none';
+      document.getElementById('kycStepper').style.display = 'none';
+      document.getElementById('kycStatusView').style.display = 'block';
+
+      const box = document.getElementById('statusBoxContainer');
+      const icon = document.getElementById('statusIcon');
+      const headline = document.getElementById('statusHeadline');
+      const desc = document.getElementById('statusDescription');
+      const btn = document.getElementById('demoApprovalBtn');
+
+      if (status === 'verified') {
+        box.className = 'status-dashboard-box status-verified';
+        icon.textContent = '🎉';
+        headline.textContent = 'You are a Verified Runner!';
+        desc.innerHTML = 'Congratulations! Your Government ID (NIN) and Selfie Biometrics have been verified by the Urgent.ng Trust Desk. You now have the <strong>Verified Runner ★</strong> badge!';
+        btn.textContent = 'Revert to Under Review (Demo Toggle)';
+      } else {
+        box.className = 'status-dashboard-box status-under-review';
+        icon.textContent = '⏳';
+        headline.textContent = 'Application Under Verification';
+        desc.innerHTML = 'Your government ID, live selfie, and guarantor credentials have been safely received by the trust & safety team. Normal review turnaround is <strong>2 to 4 hours</strong>.';
+        btn.textContent = 'Simulate Instant KYC Approval (Test Verified Badge)';
+      }
+    }
+
+    function toggleDemoKycApproval() {
+      const current = localStorage.getItem('urgent_runner_kyc');
+      let status = 'under_review';
+      if (current) {
+        try {
+          const parsed = JSON.parse(current);
+          status = parsed.status === 'verified' ? 'under_review' : 'verified';
+        } catch(e){}
+      } else {
+        status = 'verified';
+      }
+
+      localStorage.setItem('urgent_runner_kyc', JSON.stringify({ status: status }));
+      showStatusView(status);
+      showToast(status === 'verified' ? 'Status updated to Verified Runner ★!' : 'Status updated to Under Review.');
+    }
+  </script>
+</body>
+</html>

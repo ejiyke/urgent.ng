@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Errand Tracking — Urgent.ng | Safe On-Demand Delivery</title>
+  <meta name="description" content="Public real-time tracking for Urgent.ng errands. View runner verification, live ETA, progress milestones, and safety emergency contacts.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=2.5">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    body {
+      background-color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: var(--font-family-primary, 'Archivo', sans-serif);
+      color: #0f172a;
+    }
+
+    /* Public Header */
+    .track-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+    .track-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+    .track-security-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      color: #065f46;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* Hero Tracking Card */
+    .track-main {
+      padding: 32px 0 64px;
+      flex: 1;
+    }
+    .track-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 28px;
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .track-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Map & Status Box */
+    .map-card-panel {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      margin-bottom: 24px;
+    }
+    .map-header-bar {
+      padding: 20px 24px;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .tracking-code-pill {
+      font-size: 12px;
+      font-weight: 800;
+      color: #3b5000;
+      background: #f4fbe6;
+      border: 1px solid #d6f0a3;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Simulated Interactive Map Display */
+    .live-map-viewport {
+      position: relative;
+      height: 380px;
+      background: #e2e8f0;
+      background-image: 
+        linear-gradient(rgba(241, 245, 249, 0.85), rgba(241, 245, 249, 0.85)),
+        repeating-linear-gradient(0deg, #cbd5e1 0, #cbd5e1 1px, transparent 1px, transparent 40px),
+        repeating-linear-gradient(9deg, #cbd5e1 0, #cbd5e1 1px, transparent 1px, transparent 40px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Map Visual Paths */
+    .map-road-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .runner-live-marker {
+      position: absolute;
+      left: 55%;
+      top: 48%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 10;
+      cursor: pointer;
+    }
+    .runner-marker-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #93c700;
+      color: #ffffff;
+      border: 3px solid #ffffff;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      position: relative;
+    }
+    .runner-radar-ring {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 2px solid #93c700;
+      animation: radarPing 2.2s infinite ease-out;
+      pointer-events: none;
+    }
+    @keyframes radarPing {
+      0% { transform: scale(0.6); opacity: 1; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+    .runner-marker-label {
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-top: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      white-space: nowrap;
+    }
+
+    /* Origin & Destination Pins */
+    .map-pin {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #ffffff;
+      padding: 6px 12px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      border: 1px solid #e2e8f0;
+      font-size: 12px;
+      font-weight: 700;
+      z-index: 5;
+    }
+    .map-pin-pickup {
+      left: 20%;
+      top: 65%;
+    }
+    .map-pin-dropoff {
+      right: 18%;
+      top: 25%;
+    }
+    .map-pin-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Live ETA Floating Banner */
+    .live-eta-banner {
+      padding: 18px 24px;
+      background: #ffffff;
+      border-top: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .eta-val-box {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .eta-big {
+      font-size: 32px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1;
+    }
+    .eta-sub {
+      font-size: 13px;
+      color: #64748b;
+      font-weight: 600;
+    }
+    .live-gps-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #059669;
+      font-weight: 700;
+      background: #ecfdf5;
+      padding: 4px 10px;
+      border-radius: 9999px;
+    }
+
+    /* Progress Stepper */
+    .timeline-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      margin-bottom: 24px;
+    }
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+      margin-top: 16px;
+      padding-left: 8px;
+    }
+    .timeline-line-bar {
+      position: absolute;
+      top: 12px;
+      bottom: 24px;
+      left: 20px;
+      width: 2px;
+      background: #e2e8f0;
+    }
+    .timeline-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      position: relative;
+      z-index: 2;
+    }
+    .t-icon-circle {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border: 2px solid #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .t-icon-circle.done {
+      background: #93c700;
+      color: #ffffff;
+    }
+    .t-icon-circle.live {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+    }
+    .t-step-content {
+      flex: 1;
+    }
+    .t-step-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+    .t-step-desc {
+      font-size: 12.5px;
+      color: #64748b;
+    }
+    .t-step-time {
+      font-size: 12px;
+      font-weight: 600;
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+
+    /* Right Sidebar (Runner Verification & Safety Desk) */
+    .runner-safety-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+      margin-bottom: 20px;
+    }
+    .runner-profile-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    .runner-big-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: #93c700;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid #f4fbe6;
+    }
+    .badge-check-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 16px 0;
+      background: #f8fafc;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #f1f5f9;
+    }
+    .badge-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: #334155;
+      font-weight: 600;
+    }
+    .badge-item svg {
+      color: #16a34a;
+      flex-shrink: 0;
+    }
+
+    /* Safety Concern Trigger */
+    .emergency-alert-card {
+      background: #fff1f2;
+      border: 1.5px solid #fecdd3;
+      border-radius: 14px;
+      padding: 20px;
+      text-align: center;
+    }
+    .emergency-btn {
+      width: 100%;
+      height: 44px;
+      background: #e11d48;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 13.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(225, 29, 72, 0.25);
+      transition: background 0.2s;
+    }
+    .emergency-btn:hover {
+      background: #be123c;
+    }
+
+    /* Share Actions */
+    .share-link-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 6px 10px;
+      margin-top: 12px;
+    }
+    .share-link-input {
+      background: transparent;
+      border: none;
+      font-size: 12px;
+      color: #334155;
+      flex: 1;
+      outline: none;
+    }
+
+    /* Modals */
+    .t-modal-backdrop {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+    .t-modal-backdrop.active {
+      display: flex;
+    }
+    .t-modal-dialog {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 26px;
+      animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* Toast Notification */
+    .toast-box {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      font-size: 13.5px;
+      font-weight: 600;
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+    .toast-box.show { display: flex; }
+  </style>
+</head>
+<body>
+
+  <!-- ================= PUBLIC HEADER ================= -->
+  <header class="track-header">
+    <div class="container track-header-inner">
+      <div style="display:flex; align-items:center; gap:20px;">
+        <a href="index.html" class="brand-logo" style="text-decoration:none; display:flex; align-items:center;">
+          <img src="assets/logo.png" alt="Urgent.ng - Get it fast" class="brand-logo-img" style="height:40px; max-width:160px; object-fit:contain;">
+        </a>
+        <span class="track-security-badge hide-mobile">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          Live Tracking Enabled
+        </span>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button class="btn btn-secondary btn-sm" onclick="copyTrackingShareLink()" style="display:inline-flex; align-items:center; gap:6px; background:#ffffff; border:1px solid #cbd5e1; color:#334155; padding:8px 14px; border-radius:8px; font-weight:700; font-size:12.5px; cursor:pointer;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+          <span>Share Tracking Link</span>
+        </button>
+
+        <a href="login.html" class="btn btn-primary btn-sm" style="background:#a6d445; color:#10151f; border:none; padding:8px 16px; border-radius:8px; font-weight:800; font-size:13px; text-decoration:none;">
+          Log In
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= MAIN TRACKING VIEW ================= -->
+  <main class="track-main">
+    <div class="container">
+      <div class="track-grid">
+        
+        <!-- LEFT COLUMN: MAP & TIMELINE -->
+        <div>
+          <!-- Live Interactive Map Card -->
+          <div class="map-card-panel">
+            <div class="map-header-bar">
+              <div>
+                <span class="tracking-code-pill" id="trackCodeDisplay">ORDER #URG-8492-LG</span>
+                <h1 style="font-size:20px; font-weight:800; color:#0f172a; margin:6px 0 0;" id="errandTitleDisplay">
+                  Deliver Fashion Boutique Package to Victoria Island
+                </h1>
+              </div>
+              <span class="live-gps-tag">
+                <span style="width:7px; height:7px; background:#10b981; border-radius:50%; display:inline-block;"></span>
+                Live GPS Active
+              </span>
+            </div>
+
+            <!-- Visual Simulated GPS Map -->
+            <div class="live-map-viewport" id="mapViewport">
+              <!-- SVG Route Polyline -->
+              <svg class="map-road-overlay" viewBox="0 0 800 380" preserveAspectRatio="none">
+                <!-- Outer road casing -->
+                <path d="M 160 250 Q 320 280, 440 185 T 660 95" fill="none" stroke="#94a3b8" stroke-width="8" stroke-linecap="round"></path>
+                <!-- Inner road center line -->
+                <path d="M 160 250 Q 320 280, 440 185 T 660 95" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"></path>
+                <!-- Traveled path (Active Green) -->
+                <path d="M 160 250 Q 320 280, 440 185" fill="none" stroke="#93c700" stroke-width="5" stroke-linecap="round"></path>
+              </svg>
+
+              <!-- Pickup Pin (Lekki Phase 1) -->
+              <div class="map-pin map-pin-pickup">
+                <span class="map-pin-dot" style="background:#22c55e;"></span>
+                <div>
+                  <div style="font-size:10px; color:#64748b; text-transform:uppercase;">Origin</div>
+                  <div>Lekki Phase 1</div>
+                </div>
+              </div>
+
+              <!-- Moving Runner Live Marker (Ozumba Mbadiwe) -->
+              <div class="runner-live-marker" id="liveRunnerMarker" style="left:55%; top:48%;">
+                <div class="runner-radar-ring"></div>
+                <div class="runner-marker-icon">
+                  🏍️
+                </div>
+                <div class="runner-marker-label">
+                  Tunde Okon (3.2 km away)
+                </div>
+              </div>
+
+              <!-- Dropoff Pin (Victoria Island) -->
+              <div class="map-pin map-pin-dropoff">
+                <span class="map-pin-dot" style="background:#ef4444;"></span>
+                <div>
+                  <div style="font-size:10px; color:#64748b; text-transform:uppercase;">Destination</div>
+                  <div>Victoria Island</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Live ETA Bar -->
+            <div class="live-eta-banner">
+              <div class="eta-val-box">
+                <span class="eta-big" id="etaTimeDisplay">14 mins</span>
+                <span class="eta-sub">Estimated Arrival (~3:42 PM)</span>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:13px; font-weight:700; color:#0f172a;">3.2 km to drop-off</div>
+                <div style="font-size:11.5px; color:#64748b;">Current speed: 38 km/h · Motorbike</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Errand Timeline & Handover Status -->
+          <div class="timeline-card">
+            <h3 style="font-size:17px; font-weight:800; color:#0f172a; margin:0 0 4px;">Delivery Status Timeline</h3>
+            <p style="font-size:12.5px; color:#64748b; margin:0;">Real-time checkpoint updates logged by the runner</p>
+
+            <div class="timeline-list">
+              <div class="timeline-line-bar"></div>
+
+              <!-- Step 1: Posted -->
+              <div class="timeline-step">
+                <div class="t-icon-circle done">✓</div>
+                <div class="t-step-content">
+                  <div class="t-step-title">Errand Posted by Client</div>
+                  <div class="t-step-desc">Adeleke Boutique placed request for instant pickup in Lekki Phase 1.</div>
+                </div>
+                <span class="t-step-time">2:15 PM</span>
+              </div>
+
+              <!-- Step 2: Assigned -->
+              <div class="timeline-step">
+                <div class="t-icon-circle done">✓</div>
+                <div class="t-step-content">
+                  <div class="t-step-title">Runner Accepted & Dispatched</div>
+                  <div class="t-step-desc">Tunde Okon accepted errand terms (₦3,500 handover payment).</div>
+                </div>
+                <span class="t-step-time">2:28 PM</span>
+              </div>
+
+              <!-- Step 3: Picked Up -->
+              <div class="timeline-step">
+                <div class="t-icon-circle done">✓</div>
+                <div class="t-step-content">
+                  <div class="t-step-title">Package Picked Up from Sender</div>
+                  <div class="t-step-desc">Sender verified items handed over at Block 4, Admiralty Way.</div>
+                </div>
+                <span class="t-step-time">2:45 PM</span>
+              </div>
+
+              <!-- Step 4: In Transit (Current) -->
+              <div class="timeline-step">
+                <div class="t-icon-circle live">⚡</div>
+                <div class="t-step-content">
+                  <div class="t-step-title" style="color:#2563eb;">On the Way to Destination</div>
+                  <div class="t-step-desc">Runner is crossing Lekki-Ikoyi Link bridge heading to Adeola Odeku St.</div>
+                </div>
+                <span class="t-step-time" style="color:#2563eb; font-weight:700;">Active Now</span>
+              </div>
+
+              <!-- Step 5: Completed -->
+              <div class="timeline-step" style="opacity:0.6;">
+                <div class="t-icon-circle">5</div>
+                <div class="t-step-content">
+                  <div class="t-step-title">Delivery Handover & Payment</div>
+                  <div class="t-step-desc">Recipient inspects package and makes direct cash/transfer payment.</div>
+                </div>
+                <span class="t-step-time">Pending</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: RUNNER IDENTITY, SECURITY & ACTIONS -->
+        <div>
+          <!-- Verified Runner Card -->
+          <div class="runner-safety-card">
+            <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; color:#64748b; margin-bottom:12px;">
+              Assigned Verified Runner
+            </div>
+
+            <div class="runner-profile-top">
+              <div class="runner-big-avatar">TO</div>
+              <div>
+                <h3 style="font-size:17px; font-weight:800; margin:0 0 2px; color:#0f172a;">Tunde Okon</h3>
+                <div style="font-size:12.5px; color:#526f00; font-weight:700;">★ 4.9 Rating · 52 Completed Errands</div>
+              </div>
+            </div>
+
+            <!-- KYC Verification Checklist -->
+            <div class="badge-check-row">
+              <div class="badge-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Government ID (NIN) Verified</span>
+              </div>
+              <div class="badge-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Live Facial Liveness Verified</span>
+              </div>
+              <div class="badge-item">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>Guarantor & Contact Confirmed</span>
+              </div>
+            </div>
+
+            <!-- Transport & Plate -->
+            <div style="background:#f1f5f9; border-radius:8px; padding:10px 12px; font-size:12.5px; margin-bottom:18px;">
+              <div style="color:#64748b; font-size:11px; font-weight:700; text-transform:uppercase;">Transport Mode</div>
+              <strong style="color:#0f172a;">Yamaha 125cc Dispatch Bike</strong>
+              <div style="color:#475569; font-size:11.5px; margin-top:2px;">Plate Number: <strong>KJA-482-XY (Lagos)</strong></div>
+            </div>
+
+            <!-- Direct Contact Button -->
+            <a href="https://wa.me/2348085559182?text=Hello%20Tunde,%20I'm%20tracking%20the%20package%20delivery%20on%20Urgent.ng" target="_blank" class="btn btn-primary btn-block" style="background:#a6d445; color:#10151f; border:none; padding:10px; border-radius:8px; font-weight:800; font-size:13px; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:8px;">
+              <span>💬</span> WhatsApp Runner Directly
+            </a>
+          </div>
+
+          <!-- Receiver Inspection & Direct Payment Notice -->
+          <div class="runner-safety-card" style="background:#f4fbe6; border-color:#d6f0a3;">
+            <div style="display:flex; align-items:flex-start; gap:10px;">
+              <span style="font-size:20px;">🛡️</span>
+              <div>
+                <h4 style="font-size:14px; font-weight:800; color:#3b5000; margin:0 0 4px;">Payment on Handover</h4>
+                <p style="font-size:12.5px; color:#526f00; margin:0; line-height:1.45;">
+                  Always physically inspect the package before releasing the agreed fee (<strong>₦3,500</strong>) to the runner. Urgent.ng runners never charge hidden fees.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Share With Trusted Contacts -->
+          <div class="runner-safety-card">
+            <h4 style="font-size:14px; font-weight:800; color:#0f172a; margin:0 0 6px;">Share Live Tracking</h4>
+            <p style="font-size:12px; color:#64748b; margin:0;">Send this live tracking link to the package recipient or trusted contacts.</p>
+
+            <div class="share-link-box">
+              <input type="text" id="publicShareUrl" class="share-link-input" readonly value="https://urgent.ng/track-errand.html?id=URG-8492-LG">
+              <button onclick="copyTrackingShareLink()" style="background:#93c700; color:#ffffff; border:none; padding:5px 10px; border-radius:6px; font-size:11px; font-weight:800; cursor:pointer;">Copy</button>
+            </div>
+          </div>
+
+          <!-- Report Safety Concern Button -->
+          <div class="emergency-alert-card">
+            <button class="emergency-btn" onclick="openSafetyModal()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              Report Safety Concern
+            </button>
+            <div style="font-size:11.5px; color:#9f1239; margin-top:8px;">
+              24/7 Rapid Response Desk · Instant Escalation
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= REPORT SAFETY CONCERN MODAL ================= -->
+  <div class="t-modal-backdrop" id="safetyModalBackdrop" onclick="closeSafetyModal(event)">
+    <div class="t-modal-dialog" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:20px;">🚨</span>
+          <h3 style="font-size:17px; font-weight:800; color:#9f1239; margin:0;">Report Safety Concern</h3>
+        </div>
+        <button type="button" onclick="closeSafetyModal()" style="font-size:22px; color:#94a3b8; background:none; border:none; cursor:pointer;">&times;</button>
+      </div>
+
+      <p style="font-size:13px; color:#475569; margin:0 0 16px;">
+        Urgent.ng takes trust and safety seriously. If you suspect an unauthorized route detour, delivery compromise, or emergency, let our safety desk know immediately.
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:18px; font-size:13px;">
+        <label style="display:flex; align-items:center; gap:8px; background:#f8fafc; padding:10px; border-radius:8px; border:1px solid #e2e8f0; cursor:pointer;">
+          <input type="radio" name="safetyReason" value="detour" checked> Runner stopped or took abnormal detour
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; background:#f8fafc; padding:10px; border-radius:8px; border:1px solid #e2e8f0; cursor:pointer;">
+          <input type="radio" name="safetyReason" value="unreachable"> Runner phone is switched off / unreachable
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; background:#f8fafc; padding:10px; border-radius:8px; border:1px solid #e2e8f0; cursor:pointer;">
+          <input type="radio" name="safetyReason" value="emergency"> Immediate security concern / Police emergency
+        </label>
+      </div>
+
+      <textarea id="safetyNoteInput" class="instant-textarea" placeholder="Add any specific details or observations (optional)..." rows="2" style="margin-bottom:16px;"></textarea>
+
+      <div style="display:flex; gap:10px;">
+        <a href="tel:+234800874368" class="btn btn-secondary" style="flex:1; background:#ffffff; border:1px solid #cbd5e1; color:#0f172a; padding:10px; border-radius:8px; font-weight:700; font-size:13px; text-decoration:none; text-align:center;">
+          📞 Call 0800-URGENT
+        </a>
+        <button class="btn btn-primary" onclick="submitSafetyReport()" style="flex:1.2; background:#e11d48; color:#ffffff; border:none; padding:10px; border-radius:8px; font-weight:800; font-size:13px; cursor:pointer;">
+          Send Alert to Safety Desk
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-box" id="trackToast">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Action completed successfully</span>
+  </div>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    // Set dynamic URL in input
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlInput = document.getElementById('publicShareUrl');
+      if (urlInput) {
+        urlInput.value = window.location.href;
+      }
+
+      // Check query params
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      const title = params.get('title');
+      if (id) {
+        document.getElementById('trackCodeDisplay').textContent = 'ORDER #' + id.toUpperCase();
+      }
+      if (title) {
+        document.getElementById('errandTitleDisplay').textContent = decodeURIComponent(title);
+      }
+
+      // Simulate subtle GPS ping motion
+      simulateGpsMotion();
+    });
+
+    function simulateGpsMotion() {
+      const marker = document.getElementById('liveRunnerMarker');
+      let step = 0;
+      setInterval(() => {
+        step++;
+        // subtle smooth progress along route
+        const progressX = 55 + Math.sin(step * 0.4) * 2;
+        const progressY = 48 + Math.cos(step * 0.4) * 1.5;
+        if (marker) {
+          marker.style.left = progressX + '%';
+          marker.style.top = progressY + '%';
+        }
+      }, 3000);
+    }
+
+    function showToast(message, isSuccess = true) {
+      const toast = document.getElementById('trackToast');
+      const toastMsg = document.getElementById('toastMsg');
+      const toastIcon = document.getElementById('toastIcon');
+      toastMsg.textContent = message;
+      toastIcon.textContent = isSuccess ? '✓' : '🚨';
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    function copyTrackingShareLink() {
+      const url = window.location.href;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+          showToast('Live tracking link copied to clipboard! Share on WhatsApp or SMS 📲');
+        }).catch(() => {
+          fallbackCopy(url);
+        });
+      } else {
+        fallbackCopy(url);
+      }
+    }
+
+    function fallbackCopy(url) {
+      const input = document.getElementById('publicShareUrl');
+      if (input) {
+        input.select();
+        document.execCommand('copy');
+        showToast('Tracking link copied to clipboard! 📲');
+      }
+    }
+
+    function openSafetyModal() {
+      document.getElementById('safetyModalBackdrop').classList.add('active');
+    }
+
+    function closeSafetyModal(e) {
+      if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+      document.getElementById('safetyModalBackdrop').classList.remove('active');
+    }
+
+    function submitSafetyReport() {
+      closeSafetyModal();
+      showToast('Safety incident logged! Our 24/7 Safety Desk is reviewing runner GPS and will contact you.', false);
+    }
+  </script>
+</body>
+</html>
