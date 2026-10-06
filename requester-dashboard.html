@@ -1,0 +1,1768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Requester Dashboard — Urgent.ng | On-Demand Errand Marketplace</title>
+  <meta name="description" content="Manage your posted errands, review runner bids, track live deliveries, and release payments safely on Urgent.ng.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=2.5">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" type="image/x-icon" href="favicon.ico">
+  <style>
+    body {
+      background-color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: var(--font-family-primary, 'Archivo', sans-serif);
+      color: #0f172a;
+    }
+
+    /* Top Navigation */
+    .dash-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+    .dash-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 70px;
+    }
+    .dash-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+    .dash-nav-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748b;
+      text-decoration: none;
+      padding: 6px 0;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s ease;
+    }
+    .dash-nav-link:hover {
+      color: #0f172a;
+    }
+    .dash-nav-link.active {
+      color: #93c700;
+      font-weight: 700;
+      border-bottom-color: #93c700;
+    }
+
+    /* User Profile Dropdown */
+    .user-menu-wrapper {
+      position: relative;
+    }
+    .user-profile-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 5px 12px 5px 5px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .user-profile-btn:hover {
+      background: #e2e8f0;
+    }
+    .user-avatar-circle {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #93c700;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ffffff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .user-profile-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.2;
+    }
+    .user-profile-badge {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      border-radius: 9999px;
+      background: #ecfdf5;
+      color: #065f46;
+      letter-spacing: 0.4px;
+      display: inline-block;
+    }
+    .user-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 260px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      padding: 8px;
+      display: none;
+      z-index: 150;
+      animation: modalFadeIn 0.2s ease;
+    }
+    .user-dropdown-menu.show {
+      display: block;
+    }
+    .dropdown-header {
+      padding: 8px 12px 12px;
+      border-bottom: 1px solid #f1f5f9;
+      margin-bottom: 6px;
+    }
+    .dropdown-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #334155;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.15s ease;
+    }
+    .dropdown-link:hover {
+      background: #f8fafc;
+      color: #0f172a;
+    }
+    .dropdown-link.role-switch-link {
+      background: #f4fbe6;
+      color: #3b5000;
+      font-weight: 700;
+      border: 1px solid #d6f0a3;
+      margin-top: 4px;
+    }
+    .dropdown-link.role-switch-link:hover {
+      background: #e8f7cb;
+    }
+
+    /* Dashboard Hero Banner */
+    .dash-hero {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 28px 0;
+    }
+    .dash-hero-title {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: #0f172a;
+      margin: 0 0 6px 0;
+    }
+    .dash-hero-sub {
+      font-size: 14px;
+      color: #64748b;
+      margin: 0;
+    }
+
+    /* KPI Summary Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-top: 24px;
+    }
+    .kpi-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
+    }
+    .kpi-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .kpi-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #64748b;
+    }
+    .kpi-icon-pill {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+    .kpi-value {
+      font-size: 28px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .kpi-caption {
+      font-size: 12px;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .kpi-pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      display: inline-block;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+      70% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    }
+
+    /* Content Area */
+    .dash-main {
+      padding: 28px 0 60px;
+      flex: 1;
+    }
+    .dash-controls-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .filter-tabs-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f1f5f9;
+      padding: 4px;
+      border-radius: 10px;
+      overflow-x: auto;
+    }
+    .tab-pill-btn {
+      padding: 7px 16px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      font-family: inherit;
+    }
+    .tab-pill-btn:hover {
+      color: #0f172a;
+    }
+    .tab-pill-btn.active {
+      background: #ffffff;
+      color: #0f172a;
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .dash-search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      max-width: 380px;
+      position: relative;
+    }
+    .dash-search-input {
+      width: 100%;
+      height: 40px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0 14px 0 38px;
+      font-size: 13.5px;
+      color: #0f172a;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .dash-search-input:focus {
+      border-color: #93c700;
+      background: #ffffff;
+    }
+    .dash-search-icon {
+      position: absolute;
+      left: 12px;
+      color: #94a3b8;
+      pointer-events: none;
+    }
+
+    /* Errand List Cards */
+    .errand-feed-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .r-errand-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .r-errand-card:hover {
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+      border-color: #cbd5e1;
+    }
+    .r-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .r-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .r-cat-pill {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: #f1f5f9;
+      color: #334155;
+      letter-spacing: 0.5px;
+    }
+    .r-cat-pill.price-conf {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .r-cat-pill.sell-fast {
+      background: #fce7f3;
+      color: #9d174d;
+    }
+    .r-status-badge {
+      font-size: 11.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .status-offers {
+      background: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+    .status-progress {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+    .status-completed {
+      background: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+    .status-expired {
+      background: #f8fafc;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+    }
+    .r-card-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      line-height: 1.35;
+      margin: 0 0 12px 0;
+    }
+    .r-route-box {
+      background: #f8fafc;
+      border: 1px solid #f1f5f9;
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .r-route-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #334155;
+    }
+    .r-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-green { background: #22c55e; }
+    .dot-red { background: #ef4444; }
+
+    /* Runner Info Chip */
+    .runner-assigned-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f4fbe6;
+      border: 1px solid #d6f0a3;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+    }
+    .runner-details {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .runner-avatar-sm {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #93c700;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .runner-name-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+    .runner-rating-text {
+      font-size: 11.5px;
+      color: #526f00;
+      font-weight: 600;
+    }
+
+    /* Progress Stepper */
+    .progress-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding: 10px 12px;
+      background: #f8fafc;
+      border-radius: 8px;
+      position: relative;
+    }
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+      z-index: 2;
+    }
+    .step-circle {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      color: #64748b;
+      font-size: 10px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .step-circle.done {
+      background: #93c700;
+      color: #ffffff;
+    }
+    .step-circle.active {
+      background: #2563eb;
+      color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+    .step-name {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #64748b;
+    }
+    .step-name.current {
+      color: #0f172a;
+    }
+
+    /* Card Footer */
+    .r-card-footer {
+      border-top: 1px solid #f1f5f9;
+      padding-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .r-budget-col {
+      display: flex;
+      flex-direction: column;
+    }
+    .r-budget-sub {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #94a3b8;
+    }
+    .r-budget-val {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .r-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Modals */
+    .r-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 16px;
+    }
+    .r-modal-backdrop.active {
+      display: flex;
+    }
+    .r-modal-dialog {
+      background: #ffffff;
+      border-radius: 16px;
+      width: 100%;
+      max-width: 580px;
+      max-height: 92vh;
+      overflow-y: auto;
+      padding: 28px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      animation: modalFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .bid-offer-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      transition: all 0.2s ease;
+    }
+    .bid-offer-card:hover {
+      background: #ffffff;
+      border-color: #93c700;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    /* Rating Star Picker */
+    .star-rating-box {
+      display: flex;
+      gap: 8px;
+      font-size: 28px;
+      cursor: pointer;
+      color: #cbd5e1;
+      justify-content: center;
+      margin: 16px 0;
+    }
+    .star-rating-box span.active {
+      color: #e28a2a;
+    }
+    .tip-pills-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+    .tip-pill {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .tip-pill.active {
+      background: #93c700;
+      color: #ffffff;
+      border-color: #93c700;
+    }
+
+    /* Toast Notification */
+    .toast-box {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 14px 20px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      font-size: 13.5px;
+      font-weight: 600;
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      animation: modalFadeIn 0.25s ease;
+    }
+    .toast-box.show {
+      display: flex;
+    }
+
+    /* Responsiveness */
+    @media (max-width: 900px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .errand-feed-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (max-width: 600px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+      .dash-controls-card {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .dash-search-box {
+        max-width: 100%;
+      }
+      .r-card-footer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .r-actions-row {
+        width: 100%;
+        justify-content: flex-end;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= TOP NAVIGATION ================= -->
+  <header class="dash-header">
+    <div class="container dash-header-inner">
+      <div style="display:flex; align-items:center; gap:36px;">
+        <a href="index.html" class="brand-logo" style="text-decoration:none; display:flex; align-items:center;">
+          <img src="assets/logo.png" alt="Urgent.ng - Get it fast" class="brand-logo-img" style="height:42px; max-width:170px; object-fit:contain;">
+        </a>
+
+        <nav class="dash-nav-links hide-mobile">
+          <a href="requester-dashboard.html" class="dash-nav-link active">My Errands</a>
+          <a href="discovery.html" class="dash-nav-link">Live Errand Feed</a>
+          <a href="index.html#how-it-works" class="dash-nav-link">How It Works</a>
+        </nav>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:16px;">
+        <!-- Post Errand CTA Button -->
+        <button class="btn btn-primary btn-sm" onclick="openPostModal()" style="display:inline-flex; align-items:center; gap:6px; background:#a6d445; color:#10151f; border:none; padding:8px 16px; border-radius:8px; font-weight:800; font-size:13px; cursor:pointer; box-shadow: 0 2px 8px rgba(166, 212, 69, 0.35);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          <span>Post Errand</span>
+        </button>
+
+        <!-- User Profile Dropdown Button -->
+        <div class="user-menu-wrapper">
+          <div class="user-profile-btn" onclick="toggleUserDropdown(event)">
+            <div class="user-avatar-circle" id="userAvatarText">EA</div>
+            <div class="hide-mobile" style="text-align:left;">
+              <div class="user-profile-name" id="userProfileName">Adeleke Boutique</div>
+              <span class="user-profile-badge">Requester</span>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+
+          <!-- Dropdown Popup -->
+          <div class="user-dropdown-menu" id="userDropdownMenu">
+            <div class="dropdown-header">
+              <div style="font-size:13.5px; font-weight:800; color:#0f172a;" id="menuUserName">Adeleke Boutique</div>
+              <div style="font-size:11.5px; color:#64748b;">emmanuella.adeleke@boutique.ng</div>
+            </div>
+            
+            <a href="requester-dashboard.html" class="dropdown-link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              My Errand Orders
+            </a>
+            <a href="discovery.html" class="dropdown-link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              Live Feed Market
+            </a>
+
+            <!-- Switch to Runner Profile Link -->
+            <a href="runner-dashboard.html" class="dropdown-link role-switch-link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+              <span>Switch to Runner Mode ➔</span>
+            </a>
+
+            <div style="border-top:1px solid #f1f5f9; margin-top:6px; padding-top:6px;">
+              <a href="login.html" class="dropdown-link" style="color:#ef4444;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                Sign Out
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= DASHBOARD HERO ================= -->
+  <section class="dash-hero">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+        <div>
+          <h1 class="dash-hero-title">Welcome back, Adeleke Boutique 👋</h1>
+          <p class="dash-hero-sub">Manage your errands, review incoming runner bids, and release payments safely upon handover.</p>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <a href="discovery.html" class="btn btn-secondary btn-sm" style="display:inline-flex; align-items:center; gap:6px; background:#ffffff; border:1px solid #e2e8f0; color:#334155; padding:8px 16px; border-radius:8px; font-weight:700; text-decoration:none;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 12 8"></polygon></svg>
+            Explore Errands
+          </a>
+          <button class="btn btn-primary btn-sm" onclick="openPostModal()" style="display:inline-flex; align-items:center; gap:6px; background:#93c700; color:#ffffff; border:none; padding:8px 18px; border-radius:8px; font-weight:800; cursor:pointer;">
+            + Post New Errand
+          </button>
+        </div>
+      </div>
+
+      <!-- KPI Metrics Row -->
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Active Errands</span>
+            <div class="kpi-icon-pill" style="background:#ecfdf5; color:#047857;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            </div>
+          </div>
+          <div class="kpi-value" id="kpiActiveCount">3</div>
+          <div class="kpi-caption">
+            <span class="kpi-pulse-dot"></span>
+            <span>2 In Progress · 1 Awaiting Bids</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Offers Received</span>
+            <div class="kpi-icon-pill" style="background:#fffbeb; color:#b45309;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            </div>
+          </div>
+          <div class="kpi-value" id="kpiOffersCount">4</div>
+          <div class="kpi-caption" style="color:#b45309; font-weight:600;">
+            ⚡ 3 new bids pending review
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Completed Errands</span>
+            <div class="kpi-icon-pill" style="background:#eff6ff; color:#1d4ed8;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+          </div>
+          <div class="kpi-value">18</div>
+          <div class="kpi-caption">
+            <span>100% Verified deliveries</span>
+          </div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-header">
+            <span class="kpi-label">Total Budget Spent</span>
+            <div class="kpi-icon-pill" style="background:#f4fbe6; color:#526f00;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            </div>
+          </div>
+          <div class="kpi-value">₦72,500</div>
+          <div class="kpi-caption">
+            <span>Direct handover payments</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MAIN CONTENT ================= -->
+  <main class="dash-main">
+    <div class="container">
+      <!-- Filter and Controls Card -->
+      <div class="dash-controls-card">
+        <div class="filter-tabs-group" id="filterTabs">
+          <button class="tab-pill-btn active" onclick="filterErrands('all', this)">All Errands (6)</button>
+          <button class="tab-pill-btn" onclick="filterErrands('active', this)">Active (3)</button>
+          <button class="tab-pill-btn" onclick="filterErrands('completed', this)">Completed (2)</button>
+          <button class="tab-pill-btn" onclick="filterErrands('expired', this)">Cancelled / Expired (1)</button>
+        </div>
+
+        <div class="dash-search-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="dash-search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" id="errandSearchInput" class="dash-search-input" placeholder="Search by title, location or runner..." oninput="handleSearchErrands()">
+        </div>
+      </div>
+
+      <!-- Errand Cards Grid -->
+      <div class="errand-feed-grid" id="errandFeedGrid">
+        
+        <!-- CARD 1: Confirm price of 32 inch tv in Alaba market (Offers Received) -->
+        <div class="r-errand-card" data-status="active" data-cat="PRICE CONFIRMATION" id="card-1">
+          <div>
+            <div class="r-card-top">
+              <div class="r-badge-row">
+                <span class="r-cat-pill price-conf">🏷️ Price Confirmation</span>
+                <span class="r-status-badge status-offers">
+                  <span class="kpi-pulse-dot" style="background:#f59e0b;"></span>
+                  3 Offers Received
+                </span>
+              </div>
+              <span style="font-size:12px; color:#64748b; font-weight:600;">Posted 18m ago</span>
+            </div>
+
+            <h3 class="r-card-title">Confirm price of 32 inche tv in Alaba market</h3>
+
+            <div class="r-route-box">
+              <div class="r-route-item">
+                <span class="r-dot dot-green"></span>
+                <strong>Location:</strong>
+                <span>Alaba International Market, Electronics Section</span>
+              </div>
+              <div class="r-route-item">
+                <span class="r-dot dot-red"></span>
+                <strong>Reporting to:</strong>
+                <span>Surulere, Lagos (Photos & Verification via Chat)</span>
+              </div>
+            </div>
+
+            <p style="font-size:13px; color:#475569; margin:0 0 14px 0; line-height:1.5;">
+              Walk into 2-3 authorized electronics distributors in Alaba and confirm the wholesale cash price for original 32-inch LED TVs (Hisense / LG / TLC). Take receipt/price sheet photos.
+            </p>
+          </div>
+
+          <div class="r-card-footer">
+            <div class="r-budget-col">
+              <span class="r-budget-sub">Estimated Budget</span>
+              <span class="r-budget-val">₦4,500</span>
+            </div>
+            <div class="r-actions-row">
+              <button class="btn btn-secondary btn-sm" onclick="openCancelModal('card-1', 'Confirm price of 32 inche tv')" style="background:#ffffff; border:1px solid #e2e8f0; color:#ef4444; padding:6px 12px; border-radius:8px; font-weight:600; font-size:12px; cursor:pointer;">Cancel</button>
+              <button class="btn btn-primary btn-sm" onclick="openOffersModal(1)" style="background:#93c700; color:#ffffff; border:none; padding:7px 16px; border-radius:8px; font-weight:800; font-size:13px; cursor:pointer; display:flex; align-items:center; gap:6px;">
+                <span>Review 3 Offers</span>
+                <span style="background:#ffffff; color:#526f00; font-size:11px; font-weight:800; padding:1px 6px; border-radius:999px;">3</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: Deliver Package to Victoria Island (In Progress / Picked Up) -->
+        <div class="r-errand-card" data-status="active" data-cat="DELIVERY" id="card-2">
+          <div>
+            <div class="r-card-top">
+              <div class="r-badge-row">
+                <span class="r-cat-pill">📦 Delivery</span>
+                <span class="r-status-badge status-progress">
+                  <span class="kpi-pulse-dot" style="background:#2563eb;"></span>
+                  In Progress (Picked Up)
+                </span>
+              </div>
+              <span style="font-size:12px; color:#64748b; font-weight:600;">ETA: ~18 mins</span>
+            </div>
+
+            <h3 class="r-card-title">Deliver Fashion Boutique Package to Victoria Island</h3>
+
+            <!-- Progress Stepper -->
+            <div class="progress-stepper">
+              <div class="step-item">
+                <div class="step-circle done">✓</div>
+                <span class="step-name current">Posted</span>
+              </div>
+              <div class="step-item">
+                <div class="step-circle done">✓</div>
+                <span class="step-name current">Assigned</span>
+              </div>
+              <div class="step-item">
+                <div class="step-circle done">✓</div>
+                <span class="step-name current">Picked Up</span>
+              </div>
+              <div class="step-item">
+                <div class="step-circle active">4</div>
+                <span class="step-name current">Delivered</span>
+              </div>
+            </div>
+
+            <div class="r-route-box">
+              <div class="r-route-item">
+                <span class="r-dot dot-green"></span>
+                <strong>Pickup:</strong>
+                <span>Block 4, Admiralty Way, Lekki Phase 1</span>
+              </div>
+              <div class="r-route-item">
+                <span class="r-dot dot-red"></span>
+                <strong>Delivery:</strong>
+                <span>Adeola Odeku Street, Victoria Island</span>
+              </div>
+            </div>
+
+            <!-- Runner Assigned Card -->
+            <div class="runner-assigned-box">
+              <div class="runner-details">
+                <div class="runner-avatar-sm">TO</div>
+                <div>
+                  <div class="runner-name-text">Tunde Okon (Assigned Runner)</div>
+                  <div class="runner-rating-text">★ 4.9 · 52 Delivered · Yamaha Bike</div>
+                </div>
+              </div>
+              <a href="https://wa.me/2348085559182?text=Hello%20Tunde,%20checking%20on%20my%20Urgent.ng%20package" target="_blank" class="btn btn-secondary btn-sm" style="background:#ffffff; border:1px solid #d6f0a3; color:#3b5000; padding:5px 10px; border-radius:6px; font-size:11.5px; font-weight:700; text-decoration:none;">
+                📞 Contact
+              </a>
+            </div>
+          </div>
+
+          <div class="r-card-footer">
+            <div class="r-budget-col">
+              <span class="r-budget-sub">Agreed Payout</span>
+              <span class="r-budget-val">₦3,500</span>
+            </div>
+            <div class="r-actions-row">
+              <button class="btn btn-primary btn-sm" onclick="openCompletionModal('card-2', 'Deliver Fashion Boutique Package', 'Tunde Okon', 3500)" style="background:#a6d445; color:#10151f; border:none; padding:8px 16px; border-radius:8px; font-weight:800; font-size:13px; cursor:pointer;">
+                Confirm Handover & Pay
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3: Sell my flate screen 38 inches tv (Sell Fast) -->
+        <div class="r-errand-card" data-status="active" data-cat="SELL FAST" id="card-3">
+          <div>
+            <div class="r-card-top">
+              <div class="r-badge-row">
+                <span class="r-cat-pill sell-fast">⚡ Sell Fast</span>
+                <span class="r-status-badge status-offers">
+                  <span class="kpi-pulse-dot" style="background:#f59e0b;"></span>
+                  1 Offer Received
+                </span>
+              </div>
+              <span style="font-size:12px; color:#64748b; font-weight:600;">Posted 42m ago</span>
+            </div>
+
+            <h3 class="r-card-title">Sell my flate screen 38 inches tv</h3>
+
+            <div class="r-route-box">
+              <div class="r-route-item">
+                <span class="r-dot dot-green"></span>
+                <strong>Pickup / Item Location:</strong>
+                <span>Otigba Street, Computer Village, Ikeja</span>
+              </div>
+              <div class="r-route-item">
+                <span class="r-dot dot-red"></span>
+                <strong>Buyer Handover:</strong>
+                <span>Magodo Phase 2, Lagos</span>
+              </div>
+            </div>
+
+            <p style="font-size:13px; color:#475569; margin:0 0 14px 0; line-height:1.5;">
+              I need a verified runner to pick up my working 38-inch TV, verify physical condition, and deliver to confirmed buyer in Magodo. Collect ₦65,000 cash transfer from buyer upon handover.
+            </p>
+          </div>
+
+          <div class="r-card-footer">
+            <div class="r-budget-col">
+              <span class="r-budget-sub">Runner Commission</span>
+              <span class="r-budget-val">₦8,000</span>
+            </div>
+            <div class="r-actions-row">
+              <button class="btn btn-secondary btn-sm" onclick="openCancelModal('card-3', 'Sell flat screen 38 inches tv')" style="background:#ffffff; border:1px solid #e2e8f0; color:#ef4444; padding:6px 12px; border-radius:8px; font-weight:600; font-size:12px; cursor:pointer;">Cancel</button>
+              <button class="btn btn-primary btn-sm" onclick="openOffersModal(3)" style="background:#93c700; color:#ffffff; border:none; padding:7px 16px; border-radius:8px; font-weight:800; font-size:13px; cursor:pointer;">
+                Review 1 Offer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4: Completed Errand (Document Delivery) -->
+        <div class="r-errand-card" data-status="completed" data-cat="DOCUMENT" id="card-4">
+          <div>
+            <div class="r-card-top">
+              <div class="r-badge-row">
+                <span class="r-cat-pill">📄 Document</span>
+                <span class="r-status-badge status-completed">
+                  ✓ Delivered & Completed
+                </span>
+              </div>
+              <span style="font-size:12px; color:#64748b; font-weight:600;">Yesterday, 3:15 PM</span>
+            </div>
+
+            <h3 class="r-card-title">Urgent Document Delivery to Ikoyi High Court</h3>
+
+            <div class="r-route-box">
+              <div class="r-route-item">
+                <span class="r-dot dot-green"></span>
+                <strong>Pickup:</strong>
+                <span>Awolowo Road, Ikoyi</span>
+              </div>
+              <div class="r-route-item">
+                <span class="r-dot dot-red"></span>
+                <strong>Delivered:</strong>
+                <span>Federal High Court Registry, Ikoyi</span>
+              </div>
+            </div>
+
+            <div class="runner-assigned-box" style="background:#f8fafc; border-color:#e2e8f0;">
+              <div class="runner-details">
+                <div class="runner-avatar-sm" style="background:#2563eb;">BN</div>
+                <div>
+                  <div class="runner-name-text">Blessing Nnamdi · Delivered safely</div>
+                  <div class="runner-rating-text" style="color:#e28a2a;">You rated: ★★★★★ ("Very prompt!")</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="r-card-footer">
+            <div class="r-budget-col">
+              <span class="r-budget-sub">Paid Upon Handover</span>
+              <span class="r-budget-val" style="color:#047857;">₦3,000</span>
+            </div>
+            <div class="r-actions-row">
+              <button class="btn btn-secondary btn-sm" onclick="repostErrand('Urgent Document Delivery to Ikoyi High Court', 'DOCUMENT', 'Awolowo Road, Ikoyi', 'Federal High Court Registry', 3000)" style="background:#ffffff; border:1px solid #e2e8f0; color:#334155; padding:6px 14px; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">
+                ↺ Re-post Errand
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 5: Completed Errand (Market Shopping) -->
+        <div class="r-errand-card" data-status="completed" data-cat="SHOPPING" id="card-5">
+          <div>
+            <div class="r-card-top">
+              <div class="r-badge-row">
+                <span class="r-cat-pill">🛒 Market Shopping</span>
+                <span class="r-status-badge status-completed">
+                  ✓ Delivered & Completed
+                </span>
+              </div>
+              <span style="font-size:12px; color:#64748b; font-weight:600;">Oct 3, 11:30 AM</span>
+            </div>
+
+            <h3 class="r-card-title">Fresh Produce & Foodstuff from Mile 12 Market</h3>
+
+            <div class="r-route-box">
+              <div class="r-route-item">
+                <span class="r-dot dot-green"></span>
+                <strong>Purchased:</strong>
+                <span>Mile 12 International Market, Kosofe</span>
+              </div>
+              <div class="r-route-item">
+                <span class="r-dot dot-red"></span>
+                <strong>Delivered:</strong>
+                <span>Opebi, Ikeja</span>
+              </div>
+            </div>
+
+            <div class="runner-assigned-box" style="background:#f8fafc; border-color:#e2e8f0;">
+              <div class="runner-details">
+                <div class="runner-avatar-sm" style="background:#10b981;">BB</div>
+                <div>
+                  <div class="runner-name-text">Babatunde Bello · Runner</div>
+                  <div class="runner-rating-text" style="color:#e28a2a;">You rated: ★★★★★ + ₦500 Tip</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="r-card-footer">
+            <div class="r-budget-col">
+              <span class="r-budget-sub">Paid Upon Handover</span>
+              <span class="r-budget-val" style="color:#047857;">₦7,500</span>
+            </div>
+            <div class="r-actions-row">
+              <button class="btn btn-secondary btn-sm" onclick="repostErrand('Fresh Produce from Mile 12 Market', 'SHOPPING', 'Mile 12 Market', 'Opebi, Ikeja', 7500)" style="background:#ffffff; border:1px solid #e2e8f0; color:#334155; padding:6px 14px; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">
+                ↺ Re-post Errand
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 6: Cancelled / Expired Errand -->
+        <div class="r-errand-card" data-status="expired" data-cat="DELIVERY" id="card-6">
+          <div>
+            <div class="r-card-top">
+              <div class="r-badge-row">
+                <span class="r-cat-pill">📦 Delivery</span>
+                <span class="r-status-badge status-expired">
+                  Expired (Time Limit Reached)
+                </span>
+              </div>
+              <span style="font-size:12px; color:#94a3b8; font-weight:600;">2 days ago</span>
+            </div>
+
+            <h3 class="r-card-title" style="color:#64748b;">Pickup Birthday Cake from Ikeja GRA</h3>
+
+            <div class="r-route-box">
+              <div class="r-route-item">
+                <span class="r-dot dot-green"></span>
+                <strong>Pickup:</strong>
+                <span>Isaac John St, Ikeja GRA</span>
+              </div>
+              <div class="r-route-item">
+                <span class="r-dot dot-red"></span>
+                <strong>Drop-off:</strong>
+                <span>Allen Avenue, Ikeja</span>
+              </div>
+            </div>
+
+            <p style="font-size:13px; color:#94a3b8; margin:0 0 14px 0;">
+              Cake box was needed within 45 mins. Window closed before a runner was assigned.
+            </p>
+          </div>
+
+          <div class="r-card-footer">
+            <div class="r-budget-col">
+              <span class="r-budget-sub">Budget Set</span>
+              <span class="r-budget-val" style="color:#94a3b8;">₦2,500</span>
+            </div>
+            <div class="r-actions-row">
+              <button class="btn btn-primary btn-sm" onclick="reactivateExpiredCard('card-6')" style="background:#93c700; color:#ffffff; border:none; padding:6px 16px; border-radius:8px; font-weight:800; font-size:12px; cursor:pointer;">
+                ⚡ 1-Tap Repost
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ================= POST ERRAND MODAL (FIGMA NODE 36:975) ================= -->
+  <div class="r-modal-backdrop" id="postModalBackdrop" onclick="closePostModal(event)">
+    <div class="r-modal-dialog" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-size:18px; font-weight:800; color:#0f172a; margin:0;">Post an Errand</h3>
+        <button type="button" onclick="closePostModal()" style="font-size:22px; color:#94a3b8; line-height:1; background:none; border:none; cursor:pointer;">&times;</button>
+      </div>
+
+      <form id="requesterPostForm" onsubmit="handleRequesterPostSubmit(event)" style="display:flex; flex-direction:column; gap:16px;">
+        <!-- Row 1: Estimated Budget -->
+        <div class="instant-budget-top">
+          <div class="instant-label-row">
+            <label class="instant-label" for="newErrandBudget">Your Estimated Budget (₦) <span class="req">*</span></label>
+            <span class="instant-optional-hint" style="color:var(--cn-green-700); font-weight:700;">⚡ Pay directly on delivery</span>
+          </div>
+          <div class="instant-budget-top-grid">
+            <div class="budget-presets-pills">
+              <button type="button" class="budget-pill" onclick="selectModalBudget(2000, this)">₦2,000</button>
+              <button type="button" class="budget-pill active" onclick="selectModalBudget(3500, this)">₦3,500</button>
+              <button type="button" class="budget-pill" onclick="selectModalBudget(5000, this)">₦5,000</button>
+              <button type="button" class="budget-pill" onclick="selectModalBudget(8000, this)">₦8,000</button>
+            </div>
+            <div class="budget-custom-input">
+              <span>₦</span>
+              <input type="number" id="newErrandBudget" value="3500" min="500" step="100" placeholder="Custom amount" oninput="document.querySelectorAll('#postModalBackdrop .budget-pill').forEach(b => b.classList.remove('active'))" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 2: What needs to be done? -->
+        <div class="instant-form-group">
+          <label class="instant-label" for="newErrandTitle">What needs to be done? <span class="req">*</span></label>
+          <div class="instant-input-wrapper">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <input type="text" id="newErrandTitle" class="instant-input" placeholder="e.g. Deliver Package to Victoria Island" required>
+          </div>
+        </div>
+
+        <!-- Row 3: Pickup & Drop-off -->
+        <div class="instant-grid-2">
+          <div class="instant-form-group">
+            <label class="instant-label" for="newErrandPickup">Pickup Location <span class="req">*</span></label>
+            <div class="instant-input-wrapper">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <input type="text" id="newErrandPickup" class="instant-input" placeholder="e.g. Lekki Phase 1" required>
+            </div>
+          </div>
+
+          <div class="instant-form-group">
+            <label class="instant-label" for="newErrandDest">Drop-off Location <span class="req">*</span></label>
+            <div class="instant-input-wrapper">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>
+              <input type="text" id="newErrandDest" class="instant-input" placeholder="e.g. Victoria Island" required>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 4: Category & Urgency -->
+        <div class="instant-grid-2">
+          <div class="instant-form-group">
+            <label class="instant-label" for="newErrandCategory">Errand Category <span class="req">*</span></label>
+            <div class="instant-input-wrapper">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+              <select id="newErrandCategory" class="instant-select" required>
+                <option value="PRICE CONFIRMATION" selected>🏷️ Price confirmation</option>
+                <option value="SELL FAST">⚡ Sell fast</option>
+                <option value="DELIVERY">📦 Package Delivery</option>
+                <option value="SHOPPING">🛒 Market Shopping</option>
+                <option value="DOCUMENT">📄 Document Pickup</option>
+                <option value="FOOD">🍲 Food / Groceries</option>
+                <option value="PHYSICAL">🔧 Physical / Inspection</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="instant-form-group">
+            <label class="instant-label" for="newErrandUrgency">When do you need it?</label>
+            <div class="instant-input-wrapper">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="input-icon"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              <select id="newErrandUrgency" class="instant-select">
+                <option value="Needed within 1 hr" selected>⚡ Express (Needed within 1 hr)</option>
+                <option value="Complete before 3:00 PM">🕒 Fast (Before 3:00 PM)</option>
+                <option value="ASAP / Immediate">⚡ ASAP / Immediate</option>
+                <option value="Before 5:00 PM today">🌅 Flexible (Before 5:00 PM today)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 5: Description & Notes -->
+        <div class="instant-form-group">
+          <label class="instant-label" for="newErrandDesc">Specific Instructions / Notes</label>
+          <textarea id="newErrandDesc" class="instant-textarea" placeholder="Add specific package description, building details, recipient phone numbers, or special care requirements..." rows="3"></textarea>
+        </div>
+
+        <div style="background:#f4fbe6; border:1px solid #d6f0a3; border-radius:10px; padding:12px; font-size:12.5px; color:#3b5000; display:flex; align-items:flex-start; gap:8px;">
+          <span style="font-size:16px;">💡</span>
+          <div>
+            <strong>Pay directly on delivery:</strong> You pay the runner cash or bank transfer once they physically complete the errand. Urgent.ng charges 0% commission to post.
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block" style="background:#a6d445; color:#10151f; border:none; padding:12px; border-radius:10px; font-weight:800; font-size:15px; cursor:pointer;">
+          🚀 Publish Errand Now
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= REVIEW OFFERS MODAL ================= -->
+  <div class="r-modal-backdrop" id="offersModalBackdrop" onclick="closeOffersModal(event)">
+    <div class="r-modal-dialog" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <div>
+          <h3 style="font-size:18px; font-weight:800; color:#0f172a; margin:0;" id="offersModalTitle">Review Runner Bids</h3>
+          <p style="font-size:12.5px; color:#64748b; margin:2px 0 0;">Compare bids and accept a trusted runner to begin.</p>
+        </div>
+        <button type="button" onclick="closeOffersModal()" style="font-size:22px; color:#94a3b8; line-height:1; background:none; border:none; cursor:pointer;">&times;</button>
+      </div>
+
+      <div id="offersListContainer">
+        <!-- Rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= CONFIRM HANDOVER & RATING MODAL ================= -->
+  <div class="r-modal-backdrop" id="completionModalBackdrop" onclick="closeCompletionModal(event)">
+    <div class="r-modal-dialog" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-size:18px; font-weight:800; color:#0f172a; margin:0;">Confirm Delivery Handover</h3>
+        <button type="button" onclick="closeCompletionModal()" style="font-size:22px; color:#94a3b8; line-height:1; background:none; border:none; cursor:pointer;">&times;</button>
+      </div>
+
+      <div style="text-align:center; padding:10px 0;">
+        <div style="width:52px; height:52px; border-radius:50%; background:#ecfdf5; color:#059669; font-size:26px; display:flex; align-items:center; justify-content:center; margin:0 auto 12px;">
+          ✓
+        </div>
+        <h4 style="font-size:16px; font-weight:800; margin:0 0 6px;" id="compErrandTitle">Deliver Fashion Boutique Package</h4>
+        <p style="font-size:13px; color:#64748b; margin:0 0 16px;">
+          Did <strong id="compRunnerName">Tunde Okon</strong> complete this errand satisfactorily?
+        </p>
+
+        <!-- Payout reminder -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px; margin-bottom:20px; font-size:13px;">
+          Handover Amount to Pay: <strong style="color:#0f172a; font-size:16px;" id="compPayoutAmount">₦3,500</strong>
+          <div style="font-size:11.5px; color:#64748b; margin-top:4px;">Please transfer or pay cash directly to the runner now.</div>
+        </div>
+
+        <!-- 5 Star Rating -->
+        <label style="font-size:13px; font-weight:700; color:#1e293b; display:block;">Rate Runner's Service</label>
+        <div class="star-rating-box" id="starRatingBox">
+          <span onclick="setRating(1)" class="active">★</span>
+          <span onclick="setRating(2)" class="active">★</span>
+          <span onclick="setRating(3)" class="active">★</span>
+          <span onclick="setRating(4)" class="active">★</span>
+          <span onclick="setRating(5)" class="active">★</span>
+        </div>
+
+        <!-- Optional Tip -->
+        <label style="font-size:12px; font-weight:700; color:#64748b; display:block; margin-bottom:8px;">Add Optional Runner Tip</label>
+        <div class="tip-pills-row">
+          <button type="button" class="tip-pill active" onclick="setTip(0, this)">No Tip</button>
+          <button type="button" class="tip-pill" onclick="setTip(200, this)">+₦200</button>
+          <button type="button" class="tip-pill" onclick="setTip(500, this)">+₦500</button>
+          <button type="button" class="tip-pill" onclick="setTip(1000, this)">+₦1,000</button>
+        </div>
+
+        <textarea id="reviewCommentInput" class="instant-textarea" placeholder="Leave a brief review for the runner (optional)..." rows="2" style="margin-bottom:18px;"></textarea>
+
+        <button type="button" class="btn btn-primary btn-block" onclick="submitErrandCompletion()" style="background:#93c700; color:#ffffff; border:none; padding:12px; border-radius:10px; font-weight:800; font-size:14px; cursor:pointer;">
+          Confirm Handover & Release Payment
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= CANCEL ERRAND MODAL ================= -->
+  <div class="r-modal-backdrop" id="cancelModalBackdrop" onclick="closeCancelModal(event)">
+    <div class="r-modal-dialog" onclick="event.stopPropagation()">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="font-size:18px; font-weight:800; color:#0f172a; margin:0;">Cancel Errand</h3>
+        <button type="button" onclick="closeCancelModal()" style="font-size:22px; color:#94a3b8; line-height:1; background:none; border:none; cursor:pointer;">&times;</button>
+      </div>
+
+      <p style="font-size:13.5px; color:#475569; margin:0 0 16px;">
+        Are you sure you want to cancel <strong id="cancelErrandTitle">this errand</strong>? Bidders will be notified.
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:20px; font-size:13px;">
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+          <input type="radio" name="cancelReason" value="found_alternative" checked> Found alternative solution
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+          <input type="radio" name="cancelReason" value="no_longer_needed"> Task no longer needed
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
+          <input type="radio" name="cancelReason" value="change_of_mind"> Change of mind on price / urgency
+        </label>
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:flex-end;">
+        <button type="button" class="btn btn-secondary" onclick="closeCancelModal()" style="background:#f1f5f9; border:none; padding:8px 16px; border-radius:8px; font-weight:600; cursor:pointer;">Keep Errand</button>
+        <button type="button" class="btn btn-primary" onclick="confirmCancelErrand()" style="background:#ef4444; color:#ffffff; border:none; padding:8px 18px; border-radius:8px; font-weight:700; cursor:pointer;">Yes, Cancel Errand</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-box" id="dashToast">
+    <span id="toastIcon">✓</span>
+    <span id="toastMsg">Action completed successfully</span>
+  </div>
+
+  <!-- ================= SCRIPTS ================= -->
+  <script>
+    let currentRating = 5;
+    let currentTip = 0;
+    let activeCardToComplete = null;
+    let activeCardToCancel = null;
+
+    // Load User info from localStorage if available
+    window.addEventListener('DOMContentLoaded', () => {
+      const stored = localStorage.getItem('urgent_user');
+      if (stored) {
+        try {
+          const user = JSON.parse(stored);
+          if (user.name) {
+            document.getElementById('userProfileName').textContent = user.name;
+            document.getElementById('menuUserName').textContent = user.name;
+            const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            document.getElementById('userAvatarText').textContent = initials;
+          }
+        } catch(e){}
+      }
+    });
+
+    // Profile Dropdown Toggle
+    function toggleUserDropdown(e) {
+      e.stopPropagation();
+      const menu = document.getElementById('userDropdownMenu');
+      menu.classList.toggle('show');
+    }
+
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('userDropdownMenu');
+      if (menu && menu.classList.contains('show') && !e.target.closest('.user-menu-wrapper')) {
+        menu.classList.remove('show');
+      }
+    });
+
+    // Toast Trigger
+    function showToast(message, isSuccess = true) {
+      const toast = document.getElementById('dashToast');
+      const toastMsg = document.getElementById('toastMsg');
+      const toastIcon = document.getElementById('toastIcon');
+      toastMsg.textContent = message;
+      toastIcon.textContent = isSuccess ? '✓' : 'ℹ️';
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    // Tab Filter
+    function filterErrands(status, btn) {
+      document.querySelectorAll('#filterTabs .tab-pill-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.r-errand-card');
+      cards.forEach(card => {
+        const cardStatus = card.getAttribute('data-status');
+        if (status === 'all' || cardStatus === status) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Search filter
+    function handleSearchErrands() {
+      const query = document.getElementById('errandSearchInput').value.toLowerCase().trim();
+      const cards = document.querySelectorAll('.r-errand-card');
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (!query || text.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Modal budget presets
+    function selectModalBudget(amount, btn) {
+      document.querySelectorAll('#postModalBackdrop .budget-pill').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+      const input = document.getElementById('newErrandBudget');
+      if (input) input.value = amount;
+    }
+
+    // Open/Close Post Errand Modal
+    function openPostModal() {
+      document.getElementById('postModalBackdrop').classList.add('active');
+    }
+    function closePostModal(e) {
+      if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+      document.getElementById('postModalBackdrop').classList.remove('active');
+    }
+
+    // Post Errand Handler
+    function handleRequesterPostSubmit(e) {
+      e.preventDefault();
+      const title = document.getElementById('newErrandTitle').value.trim();
+      const budget = document.getElementById('newErrandBudget').value;
+      const pickup = document.getElementById('newErrandPickup').value.trim();
+      const dest = document.getElementById('newErrandDest').value.trim();
+      const category = document.getElementById('newErrandCategory').value;
+      const desc = document.getElementById('newErrandDesc').value.trim() || 'No additional instructions.';
+
+      const grid = document.getElementById('errandFeedGrid');
+      const newCard = document.createElement('div');
+      newCard.className = 'r-errand-card';
+      newCard.setAttribute('data-status', 'active');
+      newCard.setAttribute('data-cat', category);
+      newCard.id = 'card-new-' + Date.now();
+
+      const catDisplay = category === 'PRICE CONFIRMATION' ? '🏷️ Price Confirmation' :
+                         category === 'SELL FAST' ? '⚡ Sell Fast' : '📦 ' + category;
+
+      newCard.innerHTML = `
+        <div>
+          <div class="r-card-top">
+            <div class="r-badge-row">
+              <span class="r-cat-pill price-conf">${catDisplay}</span>
+              <span class="r-status-badge status-offers">
+                <span class="kpi-pulse-dot" style="background:#22c55e;"></span>
+                Live (Awaiting Bids)
+              </span>
+            </div>
+            <span style="font-size:12px; color:#64748b; font-weight:600;">Just now</span>
+          </div>
+          <h3 class="r-card-title">${title}</h3>
+          <div class="r-route-box">
+            <div class="r-route-item"><span class="r-dot dot-green"></span><strong>Pickup:</strong><span>${pickup}</span></div>
+            <div class="r-route-item"><span class="r-dot dot-red"></span><strong>Drop-off:</strong><span>${dest}</span></div>
+          </div>
+          <p style="font-size:13px; color:#475569; margin:0 0 14px 0; line-height:1.5;">${desc}</p>
+        </div>
+        <div class="r-card-footer">
+          <div class="r-budget-col">
+            <span class="r-budget-sub">Budget Set</span>
+            <span class="r-budget-val">₦${Number(budget).toLocaleString()}</span>
+          </div>
+          <div class="r-actions-row">
+            <button class="btn btn-secondary btn-sm" onclick="openCancelModal('${newCard.id}', '${title}')" style="background:#ffffff; border:1px solid #e2e8f0; color:#ef4444; padding:6px 12px; border-radius:8px; font-weight:600; font-size:12px; cursor:pointer;">Cancel</button>
+            <button class="btn btn-primary btn-sm" onclick="showToast('Errand is live! Runners nearby are being notified.')" style="background:#93c700; color:#ffffff; border:none; padding:7px 16px; border-radius:8px; font-weight:800; font-size:13px; cursor:pointer;">
+              Awaiting Bids
+            </button>
+          </div>
+        </div>
+      `;
+
+      grid.prepend(newCard);
+      closePostModal();
+      document.getElementById('requesterPostForm').reset();
+
+      // Update KPI
+      const activeCount = document.getElementById('kpiActiveCount');
+      if (activeCount) activeCount.textContent = Number(activeCount.textContent || 0) + 1;
+
+      showToast(`Errand "${title}" published successfully! 🚀`);
+    }
+
+    // Offers Modal
+    const sampleOffers = {
+      1: [
+        { id: 101, name: 'Tunde Okon', rating: 4.9, count: 52, vehicle: 'Yamaha Bike', eta: '15 mins', amount: 4200, note: 'Currently at Trade Fair bus stop, 5 mins away from Alaba gate. Will check prices & take clear photos.' },
+        { id: 102, name: 'Chidi Eze', rating: 4.8, count: 39, vehicle: 'Keke Napep', eta: '20 mins', amount: 4500, note: 'I have shop contacts inside Alaba electrical mart for best direct pricing.' },
+        { id: 103, name: 'Ibrahim Musa', rating: 4.7, count: 28, vehicle: 'Bicycle', eta: '25 mins', amount: 4000, note: 'Ready to run immediately and verify.' }
+      ],
+      3: [
+        { id: 301, name: 'Emeka Nwosu', rating: 4.9, count: 64, vehicle: 'Suzuki Minivan', eta: '30 mins', amount: 7500, note: 'Experienced in electronics delivery. Will test screen before pickup and safely deliver to Magodo.' }
+      ]
+    };
+
+    function openOffersModal(errandIndex) {
+      const container = document.getElementById('offersListContainer');
+      const offers = sampleOffers[errandIndex] || [];
+      
+      if (offers.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color:#64748b; padding:20px;">No new bids on this errand yet.</p>';
+      } else {
+        container.innerHTML = offers.map(o => `
+          <div class="bid-offer-card" id="bid-row-${o.id}">
+            <div style="flex:1;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+                <strong style="font-size:14.5px; color:#0f172a;">${o.name}</strong>
+                <span style="font-size:11.5px; color:#526f00; font-weight:700; background:#f4fbe6; padding:1px 6px; border-radius:4px;">★ ${o.rating} (${o.count})</span>
+                <span style="font-size:11px; color:#64748b;">· ${o.vehicle}</span>
+              </div>
+              <div style="font-size:12.5px; color:#475569; margin-bottom:6px; line-height:1.4;">"${o.note}"</div>
+              <div style="font-size:11.5px; color:#64748b;">⚡ Arrival ETA: <strong>${o.eta}</strong></div>
+            </div>
+            <div style="text-align:right; display:flex; flex-direction:column; gap:8px; align-items:flex-end;">
+              <div style="font-size:18px; font-weight:800; color:#0f172a;">₦${o.amount.toLocaleString()}</div>
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-secondary btn-sm" onclick="declineBid(${o.id})" style="background:#ffffff; border:1px solid #e2e8f0; color:#64748b; padding:5px 10px; border-radius:6px; font-size:11.5px; cursor:pointer;">Decline</button>
+                <button class="btn btn-primary btn-sm" onclick="acceptBid(${o.id}, '${o.name}', ${o.amount})" style="background:#93c700; color:#ffffff; border:none; padding:6px 14px; border-radius:6px; font-weight:800; font-size:12px; cursor:pointer;">Accept Bid</button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('offersModalBackdrop').classList.add('active');
+    }
+
+    function closeOffersModal(e) {
+      if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+      document.getElementById('offersModalBackdrop').classList.remove('active');
+    }
+
+    function declineBid(bidId) {
+      const row = document.getElementById(`bid-row-${bidId}`);
+      if (row) {
+        row.style.opacity = '0.4';
+        row.innerHTML = `<span style="color:#ef4444; font-size:12px; font-weight:700;">Bid Declined</span>`;
+      }
+      showToast('Bid declined');
+    }
+
+    function acceptBid(bidId, runnerName, amount) {
+      closeOffersModal();
+      showToast(`Offer from ${runnerName} (₦${amount.toLocaleString()}) accepted! Task is now In Progress. 🎉`);
+
+      // Update Card 1 to In Progress
+      const card1 = document.getElementById('card-1');
+      if (card1) {
+        const badge = card1.querySelector('.status-offers');
+        if (badge) {
+          badge.className = 'r-status-badge status-progress';
+          badge.innerHTML = `<span class="kpi-pulse-dot" style="background:#2563eb;"></span> In Progress (${runnerName})`;
+        }
+        const actionBtn = card1.querySelector('.r-actions-row .btn-primary');
+        if (actionBtn) {
+          actionBtn.textContent = 'Track Runner';
+          actionBtn.onclick = () => showToast(`Tracking ${runnerName} - heading to Alaba Market`);
+        }
+      }
+    }
+
+    // Completion Handover Modal
+    function openCompletionModal(cardId, title, runnerName, payout) {
+      activeCardToComplete = cardId;
+      document.getElementById('compErrandTitle').textContent = title;
+      document.getElementById('compRunnerName').textContent = runnerName;
+      document.getElementById('compPayoutAmount').textContent = '₦' + Number(payout).toLocaleString();
+      setRating(5);
+      setTip(0, document.querySelector('.tip-pills-row .tip-pill'));
+      document.getElementById('completionModalBackdrop').classList.add('active');
+    }
+    function closeCompletionModal(e) {
+      if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+      document.getElementById('completionModalBackdrop').classList.remove('active');
+    }
+
+    function setRating(rating) {
+      currentRating = rating;
+      const stars = document.querySelectorAll('#starRatingBox span');
+      stars.forEach((star, idx) => {
+        if (idx < rating) {
+          star.classList.add('active');
+        } else {
+          star.classList.remove('active');
+        }
+      });
+    }
+
+    function setTip(amount, btn) {
+      currentTip = amount;
+      document.querySelectorAll('.tip-pills-row .tip-pill').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+    }
+
+    function submitErrandCompletion() {
+      if (activeCardToComplete) {
+        const card = document.getElementById(activeCardToComplete);
+        if (card) {
+          card.setAttribute('data-status', 'completed');
+          const badge = card.querySelector('.r-status-badge');
+          if (badge) {
+            badge.className = 'r-status-badge status-completed';
+            badge.textContent = '✓ Delivered & Completed';
+          }
+          const footerActions = card.querySelector('.r-actions-row');
+          if (footerActions) {
+            footerActions.innerHTML = `<span style="font-size:12px; color:#047857; font-weight:700;">✓ Completed & Rated ★${currentRating}</span>`;
+          }
+        }
+      }
+      closeCompletionModal();
+      showToast(`Delivery confirmed & payment released to runner! Thank you for rating ★${currentRating}. 🎉`);
+    }
+
+    // Cancel Errand Modal
+    function openCancelModal(cardId, title) {
+      activeCardToCancel = cardId;
+      document.getElementById('cancelErrandTitle').textContent = `"${title}"`;
+      document.getElementById('cancelModalBackdrop').classList.add('active');
+    }
+    function closeCancelModal(e) {
+      if (e && e.target !== e.currentTarget && e.target.tagName !== 'BUTTON') return;
+      document.getElementById('cancelModalBackdrop').classList.remove('active');
+    }
+
+    function confirmCancelErrand() {
+      if (activeCardToCancel) {
+        const card = document.getElementById(activeCardToCancel);
+        if (card) {
+          card.setAttribute('data-status', 'expired');
+          card.style.opacity = '0.6';
+          const badge = card.querySelector('.r-status-badge');
+          if (badge) {
+            badge.className = 'r-status-badge status-expired';
+            badge.textContent = 'Cancelled by Requester';
+          }
+          const actions = card.querySelector('.r-actions-row');
+          if (actions) {
+            actions.innerHTML = `<button class="btn btn-secondary btn-sm" onclick="reactivateExpiredCard('${activeCardToCancel}')" style="background:#ffffff; border:1px solid #e2e8f0; color:#334155; padding:6px 12px; border-radius:8px; font-weight:700; font-size:12px; cursor:pointer;">↺ Re-post</button>`;
+          }
+        }
+      }
+      closeCancelModal();
+      showToast('Errand cancelled.');
+    }
+
+    // Re-post Errand Helpers
+    function repostErrand(title, category, pickup, dest, budget) {
+      document.getElementById('newErrandTitle').value = title;
+      document.getElementById('newErrandPickup').value = pickup;
+      document.getElementById('newErrandDest').value = dest;
+      document.getElementById('newErrandBudget').value = budget;
+      const catSelect = document.getElementById('newErrandCategory');
+      if (catSelect) catSelect.value = category;
+      openPostModal();
+    }
+
+    function reactivateExpiredCard(cardId) {
+      const card = document.getElementById(cardId);
+      if (card) {
+        card.setAttribute('data-status', 'active');
+        card.style.opacity = '1';
+        const badge = card.querySelector('.r-status-badge');
+        if (badge) {
+          badge.className = 'r-status-badge status-offers';
+          badge.innerHTML = `<span class="kpi-pulse-dot" style="background:#22c55e;"></span> Live (Awaiting Bids)`;
+        }
+        const actions = card.querySelector('.r-actions-row');
+        if (actions) {
+          actions.innerHTML = `<button class="btn btn-secondary btn-sm" onclick="openCancelModal('${cardId}', 'Errand')" style="background:#ffffff; border:1px solid #e2e8f0; color:#ef4444; padding:6px 12px; border-radius:8px; font-weight:600; font-size:12px; cursor:pointer;">Cancel</button><button class="btn btn-primary btn-sm" onclick="showToast('Awaiting new bids from runners')" style="background:#93c700; color:#ffffff; border:none; padding:7px 16px; border-radius:8px; font-weight:800; font-size:13px; cursor:pointer;">Awaiting Bids</button>`;
+        }
+        showToast('Errand re-published! Nearby runners alerted.');
+      }
+    }
+  </script>
+</body>
+</html>

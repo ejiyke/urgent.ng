@@ -554,15 +554,15 @@
 
       if (activeRole === 'provider') {
         successTitle.textContent = 'Welcome, Service Provider!';
-        successMsg.textContent = 'Signed in successfully. Routing to your discovery feed...';
+        successMsg.textContent = 'Signed in successfully. Routing to your Requester Dashboard...';
       } else {
         successTitle.textContent = 'Welcome, Errand Runner!';
-        successMsg.textContent = 'Signed in successfully. Routing to live neighborhood tasks...';
+        successMsg.textContent = 'Signed in successfully. Routing to your Runner Dashboard...';
       }
 
       overlay.classList.add('active');
       setTimeout(() => {
-        window.location.href = 'discovery.html';
+        window.location.href = activeRole === 'provider' ? 'requester-dashboard.html' : 'runner-dashboard.html';
       }, 1000);
     }
 
@@ -585,15 +585,15 @@
 
       if (isProvider) {
         successTitle.textContent = 'Signed In with Google!';
-        successMsg.textContent = 'Welcome back, Adeleke Boutique! Signed in securely via Google. Routing to your Discovery Feed...';
+        successMsg.textContent = 'Welcome back, Adeleke Boutique! Routing to your Requester Dashboard...';
       } else {
         successTitle.textContent = 'Signed In with Google!';
-        successMsg.textContent = 'Welcome back, Tunde Okon! Signed in securely via Google. Routing to neighborhood errand feed...';
+        successMsg.textContent = 'Welcome back, Tunde Okon! Routing to your Runner Dashboard...';
       }
 
       overlay.classList.add('active');
       setTimeout(() => {
-        window.location.href = 'discovery.html';
+        window.location.href = isProvider ? 'requester-dashboard.html' : 'runner-dashboard.html';
       }, 1000);
     }
 

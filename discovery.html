@@ -753,11 +753,30 @@
           <a href="#posted-errands" id="navPostedErrands" onclick="showPostedErrands(event)" class="nav-tab-link" style="font-size:14px; font-weight:600; color:#64748b; text-decoration:none; cursor:pointer; padding:6px 0; border-bottom:2px solid transparent;">Posted Errands</a>
         </div>
 
-        <!-- Right User Actions (Profile Icon only, Post Errand, No Logout) -->
+        <!-- Right User Actions (Profile Dropdown, Post Errand) -->
         <div style="display:flex; align-items:center; gap:14px;">
-          <!-- Profile Avatar Icon (No name, no role badge) -->
-          <div class="user-avatar" id="navUserAvatar" title="Your Profile" style="width:38px; height:38px; border-radius:50%; background:#93c700; color:#ffffff; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.08); border:2px solid #ffffff;">
-            EA
+          <!-- Profile Avatar Icon with Menu Dropdown -->
+          <div class="user-menu-wrapper" style="position:relative;">
+            <div class="user-avatar" id="navUserAvatar" title="Your Profile" onclick="toggleNavDropdown(event)" style="width:38px; height:38px; border-radius:50%; background:#93c700; color:#ffffff; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.08); border:2px solid #ffffff;">
+              EA
+            </div>
+            <div id="navUserDropdown" style="position:absolute; top:calc(100% + 8px); right:0; width:250px; background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.12); padding:8px; display:none; z-index:500;">
+              <div style="padding:8px 12px 10px; border-bottom:1px solid #f1f5f9; margin-bottom:4px;">
+                <div style="font-size:13.5px; font-weight:800; color:#0f172a;" id="navDropdownName">Emmanuella Adeleke</div>
+                <div style="font-size:11px; color:#64748b;" id="navDropdownRole">Active Account</div>
+              </div>
+              <a href="requester-dashboard.html" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#334155; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                <span style="font-size:15px;">📋</span> Requester Dashboard
+              </a>
+              <a href="runner-dashboard.html" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#334155; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                <span style="font-size:15px;">🏍️</span> Runner Dashboard
+              </a>
+              <div style="border-top:1px solid #f1f5f9; margin-top:4px; padding-top:4px;">
+                <a href="login.html" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#ef4444; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+                  <span style="font-size:15px;">🚪</span> Sign Out
+                </a>
+              </div>
+            </div>
           </div>
 
           <!-- Post Errand Button -->
@@ -1692,6 +1711,8 @@
     function initUserSession() {
       const stored = localStorage.getItem('urgent_user');
       const navAvatar = document.getElementById('navUserAvatar');
+      const dropName = document.getElementById('navDropdownName');
+      const dropRole = document.getElementById('navDropdownRole');
       if (stored) {
         try {
           const user = JSON.parse(stored);
@@ -1701,6 +1722,8 @@
               navAvatar.textContent = initials;
               navAvatar.title = user.name;
             }
+            if (dropName) dropName.textContent = user.name;
+            if (dropRole) dropRole.textContent = user.role === 'runner' ? 'Errand Runner' : 'Requester';
           }
         } catch (e) {
           console.error(e);
@@ -1712,6 +1735,21 @@
         }
       }
     }
+
+    function toggleNavDropdown(e) {
+      e.stopPropagation();
+      const menu = document.getElementById('navUserDropdown');
+      if (menu) {
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+      }
+    }
+
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('navUserDropdown');
+      if (menu && menu.style.display === 'block' && !e.target.closest('.user-menu-wrapper')) {
+        menu.style.display = 'none';
+      }
+    });
 
     function updateNavTabStyles(activeTab) {
       const tabLive = document.getElementById('navLiveErrands');

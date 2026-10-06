@@ -538,25 +538,26 @@ function startModalGoogleAuth() {
     loginTime: new Date().toISOString()
   };
   localStorage.setItem('urgent_user', JSON.stringify(userProfile));
-  showToast(`🎉 Signed in with Google as ${isProvider ? 'Service Provider' : 'Errand Runner'}! Routing to discovery...`);
+  showToast(`🎉 Signed in with Google as ${isProvider ? 'Service Provider' : 'Errand Runner'}! Routing to dashboard...`);
   setTimeout(() => {
-    window.location.href = 'discovery.html';
+    window.location.href = isProvider ? 'requester-dashboard.html' : 'runner-dashboard.html';
   }, 800);
 }
 
 function handleModalLoginSubmit(e) {
   e.preventDefault();
   closeModals();
+  const isProvider = modalActiveRole === 'provider';
   const userProfile = {
     role: modalActiveRole,
-    name: modalActiveRole === 'provider' ? 'Emmanuella Adeleke' : 'Tunde Okon',
-    phone: modalActiveRole === 'provider' ? '0802 345 6789' : '0808 555 9182',
+    name: isProvider ? 'Emmanuella Adeleke' : 'Tunde Okon',
+    phone: isProvider ? '0802 345 6789' : '0808 555 9182',
     loginTime: new Date().toISOString()
   };
   localStorage.setItem('urgent_user', JSON.stringify(userProfile));
-  showToast(`✅ Welcome back! Routing to discovery feed...`);
+  showToast(`✅ Welcome back! Routing to your ${isProvider ? 'Requester' : 'Runner'} dashboard...`);
   setTimeout(() => {
-    window.location.href = 'discovery.html';
+    window.location.href = isProvider ? 'requester-dashboard.html' : 'runner-dashboard.html';
   }, 800);
 }
 
