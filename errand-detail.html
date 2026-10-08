@@ -473,35 +473,44 @@
 </head>
 <body class="detail-page-body">
 
-  <!-- ================= TOP HEADER ================= -->
-  <header class="detail-nav-header">
-    <div class="container">
-      <div class="detail-nav-row" style="display:flex; align-items:center; justify-content:space-between; height:70px;">
-        <!-- Logo -->
-        <a href="index.html" class="logo" style="display:flex; align-items:center; gap:8px; text-decoration:none;">
-          <div class="logo-icon" style="background:#93c700; color:#ffffff; width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-          </div>
-          <span class="logo-text" style="font-size:20px; font-weight:800; color:#0f172a;">urgent<span class="logo-dot" style="color:#93c700;">.ng</span></span>
+  <!-- ================= TOP HEADER (FIGMA NODE 62:3878) ================= -->
+  <header class="figma-auth-header">
+    <div class="figma-header-inner">
+      <!-- Left: Logo -->
+      <a href="index.html" class="figma-logo-link" title="Urgent.ng - Get it fast">
+        <img src="assets/logo.png" alt="Urgent.ng - Get it fast" class="figma-logo-img">
+      </a>
+
+      <!-- Middle Nav Links -->
+      <nav class="figma-nav-center hide-mobile">
+        <a href="requester-dashboard.html" class="figma-nav-link">Dashboard</a>
+        <a href="discovery.html" class="figma-nav-link active">Live Errand Feed</a>
+        <a href="discovery.html#my-bids" class="figma-nav-link">My Bids</a>
+        <a href="discovery.html#posted-errands" class="figma-nav-link">Posted Errands</a>
+      </nav>
+
+      <!-- Right Actions: Chat, Avatar, Post Errand -->
+      <div class="figma-nav-right">
+        <!-- Ant Design Message Icon Button -->
+        <a href="chat.html" class="figma-nav-msg-btn" title="Messages & Chat" aria-label="Messages">
+          <svg width="22" height="22" viewBox="0 0 1024 1024" fill="currentColor">
+            <path d="M464 512a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm200 0a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm-400 0a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm661.2-173.6c-22.6-53.7-55-101.9-96.3-143.3a444.35 444.35 0 0 0-143.3-96.3C630.6 76 572.1 64 512 64h-2c-60.6.3-119.3 12.6-174.5 36.6-53.7 23.4-101.5 56.4-142 98.2-40.4 41.6-72.6 90.3-95.8 144.9-23.7 55.6-35.7 114.6-35.7 175.3 0 73.8 17.5 145.4 51 209.8l-65.4 193.2a24 24 0 0 0 29.8 30.4l201.1-61.1A444.2 444.2 0 0 0 510 928c60.2 0 118.7-12 173.6-35.8 53.7-23.3 101.8-55.7 143.2-97 41.4-41.4 73.8-89.5 97.1-143.2 23.8-54.9 36.1-113.4 36.1-173.6 0-60.1-12.3-118.6-34.8-172.4zM512 856c-63.5 0-124.6-14.8-179.3-43.2l-14.4-7.5-124.9 37.9 40.6-120-8.6-14.8C194.5 650.3 176 587.2 176 521c0-185.3 150.7-336 336-336s336 150.7 336 336-150.7 335-336 335z" />
+          </svg>
         </a>
 
-        <!-- Middle Nav Links -->
-        <div style="display:flex; align-items:center; gap:28px;" class="hide-mobile">
-          <a href="discovery.html" style="font-size:14px; font-weight:700; color:#16a34a; text-decoration:none;">Live Errands</a>
-          <a href="discovery.html#my-bids" style="font-size:14px; font-weight:600; color:#64748b; text-decoration:none;">My Bids</a>
-          <a href="discovery.html#posted-errands" style="font-size:14px; font-weight:600; color:#64748b; text-decoration:none;">Posted Errands</a>
-        </div>
+        <!-- User Profile Avatar Link -->
+        <a href="requester-dashboard.html" id="topNavAvatarLink" class="figma-nav-avatar" title="Go to Dashboard">
+          EA
+        </a>
 
-        <!-- Right User Actions -->
-        <div style="display:flex; align-items:center; gap:14px;">
-          <a href="requester-dashboard.html" id="topNavAvatarLink" class="user-avatar" title="Go to Dashboard" style="width:38px; height:38px; border-radius:50%; background:#93c700; color:#ffffff; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.08); border:2px solid #ffffff; text-decoration:none;">
-            EA
-          </a>
-          <a href="discovery.html" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:6px; background:#a6d445; color: #10151f; border:none; padding:8px 16px; border-radius:8px; font-weight:800; font-size:13px; text-decoration:none; box-shadow: 0 2px 8px rgba(166, 212, 69, 0.35);">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            <span>Post Errand</span>
-          </a>
-        </div>
+        <!-- + Post Errand Button -->
+        <a href="discovery.html" class="figma-btn-post-errand" style="text-decoration:none;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>Post Errand</span>
+        </a>
       </div>
     </div>
   </header>

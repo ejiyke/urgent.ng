@@ -657,24 +657,26 @@
 </head>
 <body>
 
-  <!-- ================= TOP NAVIGATION ================= -->
-  <header class="dash-header">
-    <div class="container dash-header-inner">
-      <div style="display:flex; align-items:center; gap:36px;">
-        <a href="index.html" class="brand-logo" style="text-decoration:none; display:flex; align-items:center;">
-          <img src="assets/logo.png" alt="Urgent.ng - Get it fast" class="brand-logo-img" style="height:42px; max-width:170px; object-fit:contain;">
-        </a>
+  <!-- ================= TOP NAVIGATION (FIGMA NODE 62:3878) ================= -->
+  <header class="figma-auth-header">
+    <div class="figma-header-inner">
+      <!-- Left: Logo -->
+      <a href="index.html" class="figma-logo-link" title="Urgent.ng - Get it fast">
+        <img src="assets/logo.png" alt="Urgent.ng - Get it fast" class="figma-logo-img">
+      </a>
 
-        <nav class="dash-nav-links hide-mobile">
-          <a href="runner-dashboard.html" class="dash-nav-link active">Runner Dashboard</a>
-          <a href="discovery.html" class="dash-nav-link">Browse Live Errands</a>
-          <a href="index.html#earn-section" class="dash-nav-link">Runner Guide</a>
-        </nav>
-      </div>
+      <!-- Center: Nav Links -->
+      <nav class="figma-nav-center hide-mobile">
+        <a href="runner-dashboard.html" class="figma-nav-link active">Dashboard</a>
+        <a href="discovery.html" class="figma-nav-link">Live Errand Feed</a>
+        <a href="#active-bids-section" class="figma-nav-link">My Bids</a>
+        <a href="discovery.html#posted-errands" class="figma-nav-link">Posted Errands</a>
+      </nav>
 
-      <div style="display:flex; align-items:center; gap:16px;">
-        <!-- AVAILABILITY TOGGLE BUTTON (IN NAVBAR) -->
-        <div class="availability-toggle-box online" id="availToggleContainer" title="Toggle your runner status">
+      <!-- Right Actions: Online Toggle, Chat, Avatar, Post Errand -->
+      <div class="figma-nav-right">
+        <!-- Runner Online/Offline Toggle -->
+        <div class="availability-toggle-box online" id="availToggleContainer" title="Toggle your runner status" style="margin-right: 2px;">
           <span class="availability-label-text" id="availLabel">
             <span class="online-pulse-dot" id="availDot"></span>
             <span id="availStatusText">Online</span>
@@ -685,9 +687,16 @@
           </label>
         </div>
 
+        <!-- Ant Design Message Icon Button -->
+        <a href="chat.html" class="figma-nav-msg-btn" title="Messages & Chat" aria-label="Messages">
+          <svg width="22" height="22" viewBox="0 0 1024 1024" fill="currentColor">
+            <path d="M464 512a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm200 0a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm-400 0a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm661.2-173.6c-22.6-53.7-55-101.9-96.3-143.3a444.35 444.35 0 0 0-143.3-96.3C630.6 76 572.1 64 512 64h-2c-60.6.3-119.3 12.6-174.5 36.6-53.7 23.4-101.5 56.4-142 98.2-40.4 41.6-72.6 90.3-95.8 144.9-23.7 55.6-35.7 114.6-35.7 175.3 0 73.8 17.5 145.4 51 209.8l-65.4 193.2a24 24 0 0 0 29.8 30.4l201.1-61.1A444.2 444.2 0 0 0 510 928c60.2 0 118.7-12 173.6-35.8 53.7-23.3 101.8-55.7 143.2-97 41.4-41.4 73.8-89.5 97.1-143.2 23.8-54.9 36.1-113.4 36.1-173.6 0-60.1-12.3-118.6-34.8-172.4zM512 856c-63.5 0-124.6-14.8-179.3-43.2l-14.4-7.5-124.9 37.9 40.6-120-8.6-14.8C194.5 650.3 176 587.2 176 521c0-185.3 150.7-336 336-336s336 150.7 336 336-150.7 335-336 335z" />
+          </svg>
+        </a>
+
         <!-- User Profile Dropdown Button -->
-        <div class="user-menu-wrapper">
-          <div class="user-avatar-circle" id="runnerAvatarText" title="Tunde Okon (Profile)" onclick="toggleUserDropdown(event)">TO</div>
+        <div class="user-menu-wrapper" style="position:relative;">
+          <div class="figma-nav-avatar" id="runnerAvatarText" title="Tunde Okon (Profile)" onclick="toggleUserDropdown(event)">TO</div>
 
           <!-- Dropdown Popup -->
           <div class="user-dropdown-menu" id="userDropdownMenu">
@@ -730,6 +739,15 @@
             </div>
           </div>
         </div>
+
+        <!-- + Post Errand Button -->
+        <a href="discovery.html" class="figma-btn-post-errand" style="text-decoration:none;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>Post Errand</span>
+        </a>
       </div>
     </div>
   </header>

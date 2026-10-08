@@ -34,14 +34,15 @@
        SITE HEADER & NAVIGATION
        ============================================================ -->
   <header class="site-header" id="siteHeader">
-    <div class="container header-inner">
+    <!-- GUEST NAVBAR (When logged out) -->
+    <div class="container header-inner" id="guestHeaderInner">
       <a href="index.html" class="brand-logo" id="brandLogo">
         <img src="assets/logo.png" alt="Urgent.ng - Get it fast" class="brand-logo-img">
       </a>
 
       <nav class="main-nav" id="mainNav">
         <ul class="nav-links">
-                    <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+          <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
           <li><a href="#active-errands" class="nav-link">Active Errands</a></li>
           <li><a href="#earn-section" class="nav-link">Earn as a Runner</a></li>
           <li><a href="#safety-tips" class="nav-link">Safety</a></li>
@@ -74,6 +75,68 @@
             <line x1="3" y1="6" x2="21" y2="6"></line>
             <line x1="3" y1="18" x2="21" y2="18"></line>
           </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- AUTHENTICATED NAVBAR (FIGMA NODE 62:3878 - When user logs in) -->
+    <div class="figma-header-inner" id="authHeaderInner" style="display:none;">
+      <!-- Left: Logo -->
+      <a href="index.html" class="figma-logo-link" title="Urgent.ng - Get it fast">
+        <img src="assets/logo.png" alt="Urgent.ng - Get it fast" class="figma-logo-img">
+      </a>
+
+      <!-- Center: Nav Links -->
+      <nav class="figma-nav-center hide-mobile">
+        <a href="requester-dashboard.html" class="figma-nav-link" id="indexAuthDashLink">Dashboard</a>
+        <a href="discovery.html" class="figma-nav-link">Live Errand Feed</a>
+        <a href="discovery.html#my-bids" class="figma-nav-link">My Bids</a>
+        <a href="discovery.html#posted-errands" class="figma-nav-link">Posted Errands</a>
+      </nav>
+
+      <!-- Right Actions (Message, Profile Avatar, Post Errand) -->
+      <div class="figma-nav-right">
+        <!-- Ant Design Message Icon Button -->
+        <a href="chat.html" class="figma-nav-msg-btn" title="Errand Messages" aria-label="Messages">
+          <svg width="22" height="22" viewBox="0 0 1024 1024" fill="currentColor">
+            <path d="M464 512a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm200 0a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm-400 0a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm661.2-173.6c-22.6-53.7-55-101.9-96.3-143.3a444.35 444.35 0 0 0-143.3-96.3C630.6 76 572.1 64 512 64h-2c-60.6.3-119.3 12.6-174.5 36.6-53.7 23.4-101.5 56.4-142 98.2-40.4 41.6-72.6 90.3-95.8 144.9-23.7 55.6-35.7 114.6-35.7 175.3 0 73.8 17.5 145.4 51 209.8l-65.4 193.2a24 24 0 0 0 29.8 30.4l201.1-61.1A444.2 444.2 0 0 0 510 928c60.2 0 118.7-12 173.6-35.8 53.7-23.3 101.8-55.7 143.2-97 41.4-41.4 73.8-89.5 97.1-143.2 23.8-54.9 36.1-113.4 36.1-173.6 0-60.1-12.3-118.6-34.8-172.4zM512 856c-63.5 0-124.6-14.8-179.3-43.2l-14.4-7.5-124.9 37.9 40.6-120-8.6-14.8C194.5 650.3 176 587.2 176 521c0-185.3 150.7-336 336-336s336 150.7 336 336-150.7 335-336 335z" />
+          </svg>
+        </a>
+
+        <!-- Profile Avatar Icon with Menu Dropdown -->
+        <div class="user-menu-wrapper" style="position:relative;">
+          <div class="figma-nav-avatar" id="indexAuthAvatar" title="Your Profile" onclick="toggleIndexNavDropdown(event)">
+            EA
+          </div>
+          <div id="indexNavUserDropdown" style="position:absolute; top:calc(100% + 8px); right:0; width:250px; background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.12); padding:8px; display:none; z-index:500;">
+            <div style="padding:8px 12px 10px; border-bottom:1px solid #f1f5f9; margin-bottom:4px;">
+              <div style="font-size:13.5px; font-weight:800; color:#0f172a;" id="indexNavName">Emmanuella Adeleke</div>
+              <div style="font-size:11px; color:#64748b;" id="indexNavRole">Unified Account</div>
+            </div>
+            <a href="requester-dashboard.html" onclick="switchProfileMode('requester')" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#334155; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+              <span style="font-size:15px;">📋</span> Requester Dashboard
+            </a>
+            <a href="runner-dashboard.html" onclick="switchProfileMode('runner')" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#334155; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+              <span style="font-size:15px;">🏍️</span> Runner Dashboard
+            </a>
+            <a href="chat.html" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#334155; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+              <span style="font-size:15px;">💬</span> Errand Chat & Offers
+            </a>
+            <div style="border-top:1px solid #f1f5f9; margin-top:4px; padding-top:4px;">
+              <a href="#" onclick="handleIndexSignOut(event)" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#ef4444; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
+                <span style="font-size:15px;">🚪</span> Sign Out
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- + Post Errand Button -->
+        <button class="figma-btn-post-errand" onclick="openPostErrandModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>Post Errand</span>
         </button>
       </div>
     </div>

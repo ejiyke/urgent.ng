@@ -670,3 +670,71 @@ function initUrgentHyperFrames() {
 
 document.addEventListener("DOMContentLoaded", initUrgentHyperFrames);
 
+/* ============================================================
+   AUTHENTICATED NAVBAR SYNC (FIGMA NODE 62:3878)
+   ============================================================ */
+function initNavbarAuthState() {
+  const stored = localStorage.getItem('urgent_user');
+  const guestHeader = document.getElementById('guestHeaderInner');
+  const authHeader = document.getElementById('authHeaderInner');
+  if (guestHeader && authHeader) {
+    if (stored) {
+      try {
+        const user = JSON.parse(stored);
+        guestHeader.style.display = 'none';
+        authHeader.style.display = 'flex';
+        const avatar = document.getElementById('indexAuthAvatar');
+        const nameEl = document.getElementById('indexNavName');
+        const roleEl = document.getElementById('indexNavRole');
+        const dashLink = document.getElementById('indexAuthDashLink');
+        if (user.name) {
+          const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+          if (avatar) avatar.textContent = initials;
+          if (nameEl) nameEl.textContent = user.name;
+        }
+        const active = user.activeMode || 'requester';
+        if (roleEl) roleEl.textContent = `Mode: ${active === 'runner' ? 'Runner' : 'Requester'} · 1 Login`;
+        if (dashLink) dashLink.href = active === 'runner' ? 'runner-dashboard.html' : 'requester-dashboard.html';
+      } catch (e) {
+        guestHeader.style.display = 'flex';
+        authHeader.style.display = 'none';
+      }
+    } else {
+      guestHeader.style.display = 'flex';
+      authHeader.style.display = 'none';
+    }
+  }
+}
+
+function toggleIndexNavDropdown(e) {
+  if (e) e.stopPropagation();
+  const menu = document.getElementById('indexNavUserDropdown');
+  if (menu) menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+}
+
+function handleIndexSignOut(e) {
+  if (e) e.preventDefault();
+  localStorage.removeItem('urgent_user');
+  initNavbarAuthState();
+  if (typeof showToast === 'function') showToast('Signed out successfully 👋');
+}
+
+function switchProfileMode(mode) {
+  try {
+    let u = JSON.parse(localStorage.getItem('urgent_user') || '{}');
+    u.activeMode = mode;
+    if (!u.roles) u.roles = ['requester', 'runner'];
+    localStorage.setItem('urgent_user', JSON.stringify(u));
+  } catch (e) {}
+}
+
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('indexNavUserDropdown');
+  if (menu && menu.style.display === 'block' && !e.target.closest('.user-menu-wrapper')) {
+    menu.style.display = 'none';
+  }
+});
+
+document.addEventListener('DOMContentLoaded', initNavbarAuthState);
+
+
