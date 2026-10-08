@@ -494,9 +494,9 @@
 
         <!-- Right User Actions -->
         <div style="display:flex; align-items:center; gap:14px;">
-          <div class="user-avatar" title="Your Profile" style="width:38px; height:38px; border-radius:50%; background:#93c700; color:#ffffff; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.08); border:2px solid #ffffff;">
+          <a href="requester-dashboard.html" id="topNavAvatarLink" class="user-avatar" title="Go to Dashboard" style="width:38px; height:38px; border-radius:50%; background:#93c700; color:#ffffff; font-weight:800; font-size:14px; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.08); border:2px solid #ffffff; text-decoration:none;">
             EA
-          </div>
+          </a>
           <a href="discovery.html" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:6px; background:#a6d445; color: #10151f; border:none; padding:8px 16px; border-radius:8px; font-weight:800; font-size:13px; text-decoration:none; box-shadow: 0 2px 8px rgba(166, 212, 69, 0.35);">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
             <span>Post Errand</span>
@@ -2436,6 +2436,22 @@
         container.appendChild(sealedCard);
       }
     }
+
+    // Initialize user profile avatar link
+    try {
+      const stored = localStorage.getItem('urgent_user');
+      if (stored) {
+        const u = JSON.parse(stored);
+        const a = document.getElementById('topNavAvatarLink');
+        if (a && u.name) {
+          a.textContent = u.name.split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase();
+          a.title = `${u.name} (Dashboard)`;
+          if (u.activeMode === 'runner') {
+            a.href = 'runner-dashboard.html';
+          }
+        }
+      }
+    } catch(e) {}
 </script>
 </body>
 </html>

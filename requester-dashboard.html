@@ -741,7 +741,10 @@
           <div class="user-dropdown-menu" id="userDropdownMenu">
             <div class="dropdown-header">
               <div style="font-size:13.5px; font-weight:800; color:#0f172a;" id="menuUserName">Adeleke Boutique</div>
-              <div style="font-size:11.5px; color:#64748b;">emmanuella.adeleke@boutique.ng</div>
+              <div style="font-size:11.5px; color:#64748b;" id="menuUserEmail">emmanuella.adeleke@boutique.ng</div>
+              <div style="margin-top:5px; display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:700; color:#15803d; background:#dcfce7; padding:2px 7px; border-radius:4px;">
+                <span style="font-size:8px;">●</span> Active Mode: Requester (Posting)
+              </div>
             </div>
             
             <a href="requester-dashboard.html" class="dropdown-link">
@@ -754,7 +757,7 @@
             </a>
 
             <!-- Switch to Runner Profile Link -->
-            <a href="runner-dashboard.html" class="dropdown-link role-switch-link">
+            <a href="runner-dashboard.html" onclick="switchProfileMode('runner')" class="dropdown-link role-switch-link">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
               <span>Switch to Runner Mode ➔</span>
             </a>
@@ -1535,9 +1538,22 @@
             const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
             document.getElementById('userAvatarText').textContent = initials;
           }
+          if (user.email && document.getElementById('menuUserEmail')) {
+            document.getElementById('menuUserEmail').textContent = user.email;
+          }
         } catch(e){}
       }
     });
+
+    // Profile Mode Switcher (Unified Single Account)
+    function switchProfileMode(mode) {
+      try {
+        let u = JSON.parse(localStorage.getItem('urgent_user') || '{}');
+        u.activeMode = mode;
+        if (!u.roles) u.roles = ['requester', 'runner'];
+        localStorage.setItem('urgent_user', JSON.stringify(u));
+      } catch(e) {}
+    }
 
     // Profile Dropdown Toggle
     function toggleUserDropdown(e) {

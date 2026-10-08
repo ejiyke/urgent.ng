@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login — Urgent.ng | On-Demand Errand Marketplace</title>
-  <meta name="description" content="Sign in to your Urgent.ng account as a Service Provider or Errand Runner.">
+  <meta name="description" content="Sign in to your Urgent.ng account to post errands or bid on tasks with one single login.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
@@ -356,30 +356,16 @@
       <!-- ================= VIEW 1: REGULAR LOGIN & GOOGLE AUTH ================= -->
       <div id="standardLoginView">
         <div class="auth-title-row">
-          <h1 class="auth-title">Welcome to Urgent.ng</h1>
-          <p class="auth-sub">Choose your account type to continue</p>
+          <h1 class="auth-title">Welcome Back</h1>
+          <p class="auth-sub">Sign in to your Urgent.ng account</p>
         </div>
 
-        <!-- Role Selection Cards -->
-        <label class="role-choice-label">Step 1: Select Your Role</label>
-        <div class="role-selector-grid">
-          <button type="button" class="role-card-btn active" id="btnRoleProvider" onclick="setLoginRole('provider')">
-            <div class="role-card-top">
-              <span class="role-icon">💼</span>
-              <div class="role-radio-dot"></div>
-            </div>
-            <div class="role-name">Service Provider</div>
-            <div class="role-desc">Post tasks & hire local runners</div>
-          </button>
-
-          <button type="button" class="role-card-btn" id="btnRoleRunner" onclick="setLoginRole('runner')">
-            <div class="role-card-top">
-              <span class="role-icon">🏃</span>
-              <div class="role-radio-dot"></div>
-            </div>
-            <div class="role-name">Errand Runner</div>
-            <div class="role-desc">Find tasks nearby & earn daily</div>
-          </button>
+        <!-- Single Unified Account Explainer Banner -->
+        <div class="unified-account-banner" style="background:#f4fbe6; border:1.5px solid #d6f0a3; border-radius:12px; padding:12px 16px; margin-bottom:22px; font-size:12.5px; color:#365314; display:flex; align-items:center; gap:10px; line-height:1.45;">
+          <span style="font-size:20px; flex-shrink:0;">💡</span>
+          <div>
+            <strong>One account for everything:</strong> You do not need separate accounts. Post errands or earn as a runner, and switch between profiles anytime with one login.
+          </div>
         </div>
 
         <!-- Google Auth CTA Button -->
@@ -390,7 +376,7 @@
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
           </svg>
-          <span id="googleBtnText">Continue with Google as Service Provider</span>
+          <span id="googleBtnText">Continue with Google</span>
         </button>
 
         <div class="auth-divider">
@@ -437,17 +423,20 @@
 
           <button type="submit" class="btn btn-primary btn-auth-submit" id="submitBtn">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
-            <span id="submitBtnText">Log In as Service Provider</span>
+            <span id="submitBtnText">Sign In to Urgent.ng</span>
           </button>
 
           <div class="demo-credentials-box">
-            <div class="demo-title">⚡ Quick Demo Test Fill</div>
+            <div class="demo-title">⚡ Quick Demo Test Fill (1-Click Login)</div>
             <div class="demo-buttons-row">
-              <button type="button" class="btn-demo-fill" onclick="fillDemoCredentials('provider')">
-                👔 Demo Provider (Adeleke Boutique)
+              <button type="button" class="btn-demo-fill" onclick="fillDemoCredentials('requester')">
+                👤 Demo Requester (Emmanuella Adeleke)
               </button>
               <button type="button" class="btn-demo-fill" onclick="fillDemoCredentials('runner')">
-                🏃 Demo Runner (Tunde - Lekki Bike)
+                🏍️ Demo Runner (Tunde Okon)
+              </button>
+            </div>
+          </div>
               </button>
             </div>
           </div>
@@ -481,36 +470,7 @@
   </main>
 
   <script>
-    let activeRole = 'provider'; // 'provider' or 'runner'
-
-    function setLoginRole(role) {
-      activeRole = role;
-      const btnProvider = document.getElementById('btnRoleProvider');
-      const btnRunner = document.getElementById('btnRoleRunner');
-      const bannerText = document.getElementById('roleBannerText');
-      const submitText = document.getElementById('submitBtnText');
-      const googleBtnText = document.getElementById('googleBtnText');
-      const identInput = document.getElementById('loginIdentifier');
-      const identLabel = document.getElementById('identifierLabel');
-
-      if (role === 'provider') {
-        btnProvider.classList.add('active');
-        btnRunner.classList.remove('active');
-        if (bannerText) bannerText.innerHTML = 'Logging in as: <strong>Service Provider / Requester</strong>';
-        submitText.textContent = 'Log In as Service Provider';
-        googleBtnText.textContent = 'Continue with Google as Service Provider';
-        identLabel.textContent = 'Business Email or Phone Number';
-        identInput.placeholder = 'e.g. contact@adelekeboutique.ng or 0802 345 6789';
-      } else {
-        btnRunner.classList.add('active');
-        btnProvider.classList.remove('active');
-        if (bannerText) bannerText.innerHTML = 'Logging in as: <strong>Errand Runner</strong>';
-        submitText.textContent = 'Log In as Errand Runner';
-        googleBtnText.textContent = 'Continue with Google as Errand Runner';
-        identLabel.textContent = 'Registered Phone Number or Email';
-        identInput.placeholder = 'e.g. 0808 123 4567 or tunde.runner@gmail.com';
-      }
-    }
+    let activeMode = 'requester'; // default entry mode
 
     function togglePasswordVisibility() {
       const pwdInput = document.getElementById('loginPassword');
@@ -524,16 +484,16 @@
       }
     }
 
-    function fillDemoCredentials(role) {
-      setLoginRole(role);
+    function fillDemoCredentials(mode) {
+      activeMode = mode;
       const identInput = document.getElementById('loginIdentifier');
       const pwdInput = document.getElementById('loginPassword');
 
-      if (role === 'provider') {
+      if (mode === 'requester') {
         identInput.value = 'emmanuella.adeleke@boutique.ng';
         pwdInput.value = 'LagosStore2026!';
       } else {
-        identInput.value = '0808 555 9182 (Tunde Okon)';
+        identInput.value = '0808 555 9182';
         pwdInput.value = 'FastBikeRunner99!';
       }
     }
@@ -543,57 +503,56 @@
       const overlay = document.getElementById('successOverlay');
       const successTitle = document.getElementById('successTitle');
       const successMsg = document.getElementById('successMsg');
+      const ident = document.getElementById('loginIdentifier').value.trim();
+
+      const isRunnerIdent = ident.includes('555') || ident.includes('tunde') || activeMode === 'runner';
+      const targetMode = isRunnerIdent ? 'runner' : 'requester';
 
       const userProfile = {
-        role: activeRole,
-        name: activeRole === 'provider' ? 'Emmanuella Adeleke' : 'Tunde Okon',
-        phone: activeRole === 'provider' ? '0802 345 6789' : '0808 555 9182',
+        name: isRunnerIdent ? 'Tunde Okon' : 'Emmanuella Adeleke',
+        phone: isRunnerIdent ? '0808 555 9182' : '0802 345 6789',
+        email: isRunnerIdent ? 'tunde.okon@urgent.ng' : 'emmanuella.adeleke@boutique.ng',
+        activeMode: targetMode,
+        roles: ['requester', 'runner'],
+        isRunnerVerified: true,
         loginTime: new Date().toISOString()
       };
       localStorage.setItem('urgent_user', JSON.stringify(userProfile));
 
-      if (activeRole === 'provider') {
-        successTitle.textContent = 'Welcome, Service Provider!';
-        successMsg.textContent = 'Signed in successfully. Routing to your Requester Dashboard...';
-      } else {
-        successTitle.textContent = 'Welcome, Errand Runner!';
-        successMsg.textContent = 'Signed in successfully. Routing to your Runner Dashboard...';
-      }
+      successTitle.textContent = `Welcome, ${userProfile.name}!`;
+      successMsg.textContent = targetMode === 'runner'
+        ? 'Signed in. Routing to your Runner Dashboard (you can switch to Requester mode anytime)...'
+        : 'Signed in. Routing to your Requester Dashboard (you can switch to Runner mode anytime)...';
 
       overlay.classList.add('active');
       setTimeout(() => {
-        window.location.href = activeRole === 'provider' ? 'requester-dashboard.html' : 'runner-dashboard.html';
+        window.location.href = targetMode === 'runner' ? 'runner-dashboard.html' : 'requester-dashboard.html';
       }, 1000);
     }
 
-    // ================= GOOGLE AUTH WORKFLOW =================
-    // Users signing in with Google do NOT have to provide their phone number
     function startGoogleAuthFlow() {
       const overlay = document.getElementById('successOverlay');
       const successTitle = document.getElementById('successTitle');
       const successMsg = document.getElementById('successMsg');
 
-      const isProvider = activeRole === 'provider';
       const userProfile = {
-        role: activeRole,
-        name: isProvider ? 'Adeleke Boutique' : 'Tunde Okon',
-        email: isProvider ? 'adeleke.business@gmail.com' : 'tunde.okon.runner@gmail.com',
+        name: 'Emmanuella Adeleke',
+        phone: '0802 345 6789',
+        email: 'adeleke.business@gmail.com',
+        activeMode: 'requester',
+        roles: ['requester', 'runner'],
+        isRunnerVerified: true,
         authMethod: 'google',
         loginTime: new Date().toISOString()
       };
       localStorage.setItem('urgent_user', JSON.stringify(userProfile));
 
-      if (isProvider) {
-        successTitle.textContent = 'Signed In with Google!';
-        successMsg.textContent = 'Welcome back, Adeleke Boutique! Routing to your Requester Dashboard...';
-      } else {
-        successTitle.textContent = 'Signed In with Google!';
-        successMsg.textContent = 'Welcome back, Tunde Okon! Routing to your Runner Dashboard...';
-      }
+      successTitle.textContent = 'Signed In with Google!';
+      successMsg.textContent = 'Welcome back! Routing to your Dashboard (one login for both Requester & Runner)...';
 
       overlay.classList.add('active');
       setTimeout(() => {
-        window.location.href = isProvider ? 'requester-dashboard.html' : 'runner-dashboard.html';
+        window.location.href = 'requester-dashboard.html';
       }, 1000);
     }
 

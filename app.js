@@ -485,7 +485,7 @@ function handleInstantRequestSubmit(event) {
 // ============================================================
 // LOGIN MODAL & GOOGLE AUTH LOGIC
 // ============================================================
-let modalActiveRole = 'provider';
+let modalActiveMode = 'requester';
 
 function openLoginModal(e) {
   if (e) e.preventDefault();
@@ -500,77 +500,58 @@ function openLoginModal(e) {
   }
 }
 
-function setModalLoginRole(role) {
-  modalActiveRole = role;
-  const btnP = document.getElementById('modalRoleProvider');
-  const btnR = document.getElementById('modalRoleRunner');
-  const submitBtn = document.getElementById('modalSubmitBtn');
-  const googleBtnText = document.getElementById('modalGoogleBtnText');
-  const label = document.getElementById('modalIdentLabel');
-  const input = document.getElementById('modalLoginIdentifier');
-
-  if (role === 'provider') {
-    btnP.classList.add('active');
-    btnR.classList.remove('active');
-    submitBtn.textContent = 'Sign In as Service Provider';
-    googleBtnText.textContent = 'Continue with Google as Service Provider';
-    label.textContent = 'Business Email or Phone Number';
-    input.placeholder = 'e.g. adeleke@business.ng or 0802 345 6789';
-  } else {
-    btnR.classList.add('active');
-    btnP.classList.remove('active');
-    submitBtn.textContent = 'Sign In as Errand Runner';
-    googleBtnText.textContent = 'Continue with Google as Errand Runner';
-    label.textContent = 'Registered Phone Number or Email';
-    input.placeholder = 'e.g. 0808 123 4567 or tunde.runner@gmail.com';
-  }
-}
-
-// When signing in with Google, users do not need to provide a phone number
 function startModalGoogleAuth() {
   closeModals();
-  const isProvider = modalActiveRole === 'provider';
   const userProfile = {
-    role: modalActiveRole,
-    name: isProvider ? 'Adeleke Boutique' : 'Tunde Okon',
-    email: isProvider ? 'adeleke.business@gmail.com' : 'tunde.runner@gmail.com',
+    name: 'Emmanuella Adeleke',
+    email: 'emmanuella.adeleke@gmail.com',
+    phone: '0802 345 6789',
+    roles: ['requester', 'runner'],
+    activeMode: 'requester',
+    isRunnerVerified: true,
     authMethod: 'google',
     loginTime: new Date().toISOString()
   };
   localStorage.setItem('urgent_user', JSON.stringify(userProfile));
-  showToast(`🎉 Signed in with Google as ${isProvider ? 'Service Provider' : 'Errand Runner'}! Routing to dashboard...`);
+  showToast(`🎉 Signed in with Google! Routing to your dashboard (switch modes anytime)...`);
   setTimeout(() => {
-    window.location.href = isProvider ? 'requester-dashboard.html' : 'runner-dashboard.html';
+    window.location.href = 'requester-dashboard.html';
   }, 800);
 }
 
 function handleModalLoginSubmit(e) {
   e.preventDefault();
   closeModals();
-  const isProvider = modalActiveRole === 'provider';
+  const ident = document.getElementById('modalLoginIdentifier') ? document.getElementById('modalLoginIdentifier').value.trim() : '';
+  const isRunner = modalActiveMode === 'runner' || (ident && (ident.includes('555') || ident.includes('tunde')));
+  const targetMode = isRunner ? 'runner' : 'requester';
+
   const userProfile = {
-    role: modalActiveRole,
-    name: isProvider ? 'Emmanuella Adeleke' : 'Tunde Okon',
-    phone: isProvider ? '0802 345 6789' : '0808 555 9182',
+    name: isRunner ? 'Tunde Okon' : 'Emmanuella Adeleke',
+    phone: isRunner ? '0808 555 9182' : '0802 345 6789',
+    email: isRunner ? 'tunde.runner@urgent.ng' : 'adeleke@boutique.ng',
+    roles: ['requester', 'runner'],
+    activeMode: targetMode,
+    isRunnerVerified: true,
     loginTime: new Date().toISOString()
   };
   localStorage.setItem('urgent_user', JSON.stringify(userProfile));
-  showToast(`✅ Welcome back! Routing to your ${isProvider ? 'Requester' : 'Runner'} dashboard...`);
+  showToast(`✅ Welcome back, ${userProfile.name}! Routing to your ${targetMode === 'runner' ? 'Runner' : 'Requester'} dashboard...`);
   setTimeout(() => {
-    window.location.href = isProvider ? 'requester-dashboard.html' : 'runner-dashboard.html';
+    window.location.href = targetMode === 'runner' ? 'runner-dashboard.html' : 'requester-dashboard.html';
   }, 800);
 }
 
-function quickFillModal(role) {
-  setModalLoginRole(role);
+function quickFillModal(mode) {
+  modalActiveMode = mode;
   const input = document.getElementById('modalLoginIdentifier');
   const pwd = document.getElementById('modalLoginPassword');
-  if (role === 'provider') {
-    input.value = 'adeleke@boutique.ng';
-    pwd.value = 'Password123!';
+  if (mode === 'requester') {
+    if (input) input.value = 'emmanuella.adeleke@boutique.ng';
+    if (pwd) pwd.value = 'Password123!';
   } else {
-    input.value = '0808 555 9182';
-    pwd.value = 'Password123!';
+    if (input) input.value = '0808 555 9182';
+    if (pwd) pwd.value = 'Password123!';
   }
 }
 

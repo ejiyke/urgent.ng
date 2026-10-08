@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Create Account — Urgent.ng | On-Demand Errand Marketplace</title>
-  <meta name="description" content="Sign up for an Urgent.ng account as a Service Provider or Errand Runner.">
+  <meta name="description" content="Create your free Urgent.ng account to post errands or earn by running tasks with one single login.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
@@ -317,33 +317,19 @@
   <main class="auth-main">
     <div class="auth-card">
 
-      <!-- ================= VIEW 1: STANDARD REGISTRATION VIEW ================= -->
+      <!-- ================= VIEW 1: UNIFIED SINGLE REGISTRATION VIEW ================= -->
       <div id="standardSignupView">
         <div class="auth-title-row">
           <h1 class="auth-title">Create Your Account</h1>
-          <p class="auth-sub">Join thousands of verified requesters and runners across Nigeria</p>
+          <p class="auth-sub">One unified account to post errands or earn as a runner</p>
         </div>
 
-        <!-- Step 1: Role Selection -->
-        <label class="role-choice-label">Step 1: Choose Your Account Type</label>
-        <div class="role-selector-grid">
-          <button type="button" class="role-card-btn active" id="btnSignupProvider" onclick="setSignupRole('provider')">
-            <div class="role-card-top">
-              <span class="role-icon">💼</span>
-              <div class="role-radio-dot"></div>
-            </div>
-            <div class="role-name">Service Provider</div>
-            <div class="role-desc">Post errands & dispatch tasks</div>
-          </button>
-
-          <button type="button" class="role-card-btn" id="btnSignupRunner" onclick="setSignupRole('runner')">
-            <div class="role-card-top">
-              <span class="role-icon">🏃</span>
-              <div class="role-radio-dot"></div>
-            </div>
-            <div class="role-name">Errand Runner</div>
-            <div class="role-desc">Deliver & earn daily payouts</div>
-          </button>
+        <!-- Single Unified Account Banner -->
+        <div class="unified-account-banner" style="background:#f4fbe6; border:1.5px solid #d6f0a3; border-radius:12px; padding:12px 16px; margin-bottom:22px; font-size:12.5px; color:#365314; display:flex; align-items:center; gap:10px; line-height:1.45;">
+          <span style="font-size:20px; flex-shrink:0;">💡</span>
+          <div>
+            <strong>One account for both roles:</strong> You do not need separate accounts. After registering, choose whether to post a task or run errands, and switch profiles anytime with one tap.
+          </div>
         </div>
 
         <!-- Google Sign Up CTA -->
@@ -354,7 +340,7 @@
             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
           </svg>
-          <span id="googleSignupText">Sign Up with Google as Service Provider</span>
+          <span id="googleSignupText">Sign Up with Google</span>
         </button>
 
         <div class="auth-divider">
@@ -370,7 +356,7 @@
             </div>
             <div class="auth-form-group">
               <label class="auth-label" for="signupEmail">Email Address <span class="req">*</span></label>
-              <input type="email" id="signupEmail" class="auth-input" placeholder="name@business.ng" required>
+              <input type="email" id="signupEmail" class="auth-input" placeholder="name@domain.ng" required>
             </div>
           </div>
 
@@ -416,18 +402,6 @@
             </select>
           </div>
 
-          <!-- Conditional Field: Transportation Mode for Runners -->
-          <div class="auth-form-group" id="runnerTransportGroup" style="display:none;">
-            <label class="auth-label" for="signupTransport">Primary Mode of Transportation <span class="req">*</span></label>
-            <select id="signupTransport" class="auth-select">
-              <option value="Motorcycle (Okada / Dispatch Bike)">Motorcycle (Dispatch Bike - Fastest)</option>
-              <option value="Public Transit (Bus / Danfo / Keke)">Public Transit (BRT / Danfo / Keke)</option>
-              <option value="Bicycle">Bicycle / Electric Scooter</option>
-              <option value="Car / Minivan">Private Car / Minivan</option>
-              <option value="Walking / On Foot">Walking (Neighborhood Errand Runner)</option>
-            </select>
-          </div>
-
           <div class="form-grid-2">
             <div class="auth-form-group">
               <label class="auth-label" for="signupPassword">Password <span class="req">*</span></label>
@@ -447,7 +421,7 @@
           </div>
 
           <button type="submit" class="btn btn-primary btn-auth-submit" id="signupSubmitBtn">
-            Create Service Provider Account &rarr;
+            Create Account &amp; Choose What to Do Next &rarr;
           </button>
 
           <div class="auth-card-footer">
@@ -483,106 +457,52 @@
           <button type="button" class="btn btn-ghost btn-sm" onclick="cancelGoogleSignupStep()" style="font-size:11px;">Change</button>
         </div>
 
-        <!-- Role Summary Banner -->
-        <div class="role-summary-banner">
-          <div>
-            <span style="color:var(--cn-blue-500); font-size:12px; font-weight:600;">Account Role:</span>
-            <strong id="googleRoleSummaryBadge" style="margin-left:6px; color:var(--cn-blue-800);">💼 Service Provider</strong>
+      <!-- ================= VIEW 2: ONBOARDING INTENT CHOICE ================= -->
+      <div id="onboardingIntentView" style="display:none; animation:fadeIn 200ms ease;">
+        <div class="auth-title-row">
+          <div style="display:inline-flex; align-items:center; justify-content:center; width:56px; height:56px; border-radius:50%; background:#f4fbe6; border:2px solid #d6f0a3; margin-bottom:14px;">
+            <span style="font-size:28px;">🎉</span>
           </div>
-          <button type="button" class="btn btn-ghost btn-sm" onclick="cancelGoogleSignupStep()" style="font-size:11px; text-decoration:underline;">Switch Role</button>
+          <h2 class="auth-title" style="font-size:24px;" id="welcomeUserHeading">Welcome to Urgent.ng!</h2>
+          <p class="auth-sub">What do you want to use Urgent.ng for right now?</p>
         </div>
 
-        <form id="googleSignupForm" onsubmit="handleGoogleSignupSubmit(event)">
-          <!-- Primary Phone Number (Preferably WhatsApp) -->
-          <div class="auth-form-group">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-              <label class="auth-label" for="googlePrimaryPhone" style="margin-bottom:0;">
-                Phone Number (Preferably WhatsApp) <span class="req">*</span>
-              </label>
-              <span class="whatsapp-badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                WhatsApp Preferred
-              </span>
+        <div style="background:#f4fbe6; border:1.5px solid #d6f0a3; border-radius:12px; padding:12px 16px; margin-bottom:24px; font-size:12.5px; color:#365314; display:flex; align-items:center; gap:10px; line-height:1.45;">
+          <span style="font-size:20px; flex-shrink:0;">💡</span>
+          <div>
+            <strong>You have access to both roles!</strong> Your single account lets you post tasks or earn as a runner. You can switch profiles anytime with one tap.
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:24px;">
+          <!-- Option 1: Post an Errand (Requester) -->
+          <div class="intent-choice-card" onclick="completeOnboarding('requester')" style="background:#ffffff; border:2px solid #e2e8f0; border-radius:14px; padding:20px; cursor:pointer; display:flex; align-items:center; gap:16px; transition:all 0.15s ease;" onmouseover="this.style.borderColor='#93c700'; this.style.boxShadow='0 4px 14px rgba(147,199,0,0.18)'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'">
+            <div style="width:52px; height:52px; border-radius:12px; background:#eff6ff; color:#2563eb; display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0;">
+              📦
             </div>
-            <div class="phone-prefix-input-wrap">
-              <div class="country-flag-badge">
-                <span>🇳🇬</span>
-                <span>+234</span>
-              </div>
-              <input type="tel" id="googlePrimaryPhone" placeholder="803 123 4567" required pattern="[0-9\s]{9,12}" autofocus>
+            <div style="flex:1;">
+              <h3 style="font-size:16px; font-weight:800; color:#0f172a; margin:0 0 4px;">Post an Errand (Requester Mode)</h3>
+              <p style="font-size:12.5px; color:#64748b; margin:0; line-height:1.4;">I need packages picked up, market shopping done, or errands handled by verified nearby runners.</p>
             </div>
-            <div style="margin-top:6px; font-size:11px; color:var(--cn-blue-500); line-height:1.4;">
-              Requesters and dispatch runners connect directly on WhatsApp for live errand coordination and real-time pickup tracking.
-            </div>
+            <div style="font-size:18px; color:#93c700; font-weight:800;">➔</div>
           </div>
 
-          <div class="auth-form-group" style="margin-top:-6px; margin-bottom:18px;">
-            <label class="remember-label" style="font-size:12px;">
-              <input type="checkbox" id="googleWhatsAppConfirm" checked>
-              <span>This phone number is registered on WhatsApp (Recommended)</span>
-            </label>
-          </div>
-
-          <!-- Alternative Phone Number (Optional) -->
-          <div class="auth-form-group">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-              <label class="auth-label" for="googleAlternativePhone" style="margin-bottom:0;">
-                Alternative Phone Number <span style="font-size:11px; font-weight:normal; color:var(--cn-blue-400);">(Optional)</span>
-              </label>
-              <span style="font-size:11px; color:var(--cn-blue-400);">Backup Line</span>
+          <!-- Option 2: Run Errands & Earn (Runner) -->
+          <div class="intent-choice-card" onclick="completeOnboarding('runner')" style="background:#ffffff; border:2px solid #e2e8f0; border-radius:14px; padding:20px; cursor:pointer; display:flex; align-items:center; gap:16px; transition:all 0.15s ease;" onmouseover="this.style.borderColor='#93c700'; this.style.boxShadow='0 4px 14px rgba(147,199,0,0.18)'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'">
+            <div style="width:52px; height:52px; border-radius:12px; background:#f4fbe6; color:#526f00; display:flex; align-items:center; justify-content:center; font-size:26px; flex-shrink:0;">
+              🏍️
             </div>
-            <div class="phone-prefix-input-wrap">
-              <div class="country-flag-badge">
-                <span>🇳🇬</span>
-                <span>+234</span>
-              </div>
-              <input type="tel" id="googleAlternativePhone" placeholder="802 345 6789" pattern="[0-9\s]{9,12}">
+            <div style="flex:1;">
+              <h3 style="font-size:16px; font-weight:800; color:#0f172a; margin:0 0 4px;">Run Errands (Runner Mode)</h3>
+              <p style="font-size:12.5px; color:#64748b; margin:0; line-height:1.4;">I want to discover errands in my neighborhood, submit price bids, and earn money on my schedule.</p>
             </div>
-            <div style="margin-top:6px; font-size:11px; color:var(--cn-blue-400);">
-              You can provide an alternative number as a secondary contact in case your primary line is unreachable.
-            </div>
+            <div style="font-size:18px; color:#93c700; font-weight:800;">➔</div>
           </div>
+        </div>
 
-          <!-- Primary City / Hub -->
-          <div class="auth-form-group">
-            <label class="auth-label" for="googleSignupCity">Primary City / Hub <span class="req">*</span></label>
-            <select id="googleSignupCity" class="auth-select">
-              <option value="Lagos - Island">Lagos (Island - Lekki / VI / Ikoyi)</option>
-              <option value="Lagos - Mainland" selected>Lagos (Mainland - Ikeja / Yaba)</option>
-              <option value="Abuja">Abuja (Central / Wuse / Maitama)</option>
-              <option value="Port Harcourt">Port Harcourt</option>
-              <option value="Ibadan">Ibadan</option>
-            </select>
-          </div>
-
-          <!-- Runner Transport (conditional) -->
-          <div class="auth-form-group" id="googleRunnerTransportGroup" style="display:none;">
-            <label class="auth-label" for="googleSignupTransport">Primary Mode of Transportation <span class="req">*</span></label>
-            <select id="googleSignupTransport" class="auth-select">
-              <option value="Motorcycle (Okada / Dispatch Bike)">Motorcycle (Dispatch Bike - Fastest)</option>
-              <option value="Public Transit (Bus / Danfo / Keke)">Public Transit (BRT / Danfo / Keke)</option>
-              <option value="Bicycle">Bicycle / Electric Scooter</option>
-              <option value="Car / Minivan">Private Car / Minivan</option>
-              <option value="Walking / On Foot">Walking (Neighborhood Errand Runner)</option>
-            </select>
-          </div>
-
-          <div class="auth-form-group">
-            <label class="remember-label" style="font-size:12px; align-items:flex-start;">
-              <input type="checkbox" id="googleTermsCheck" checked required style="margin-top:3px;">
-              <span>I agree to the <a href="#" style="color:var(--cn-green-700); font-weight:600;">Terms of Service</a> and <a href="#" style="color:var(--cn-green-700); font-weight:600;">Community Marketplace Guidelines</a>.</span>
-            </label>
-          </div>
-
-          <div style="display:flex; gap:12px; margin-top:20px;">
-            <button type="button" class="btn btn-secondary btn-lg" onclick="cancelGoogleSignupStep()" style="flex:1;">
-              Back
-            </button>
-            <button type="submit" class="btn btn-primary btn-lg" id="googleSubmitBtn" style="flex:2;">
-              Complete Registration &rarr;
-            </button>
-          </div>
-        </form>
+        <div style="text-align:center; font-size:12px; color:#94a3b8;">
+          Switch between modes anytime from the top navigation menu.
+        </div>
       </div>
 
       <!-- Successful Registration Overlay -->
@@ -590,159 +510,114 @@
         <div class="success-icon-box">
           <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </div>
-        <h3 style="font-size:22px; font-weight:800; color:var(--cn-blue-700); margin-bottom:8px;" id="successTitle">Account Created Successfully!</h3>
+        <h3 style="font-size:22px; font-weight:800; color:var(--cn-blue-700); margin-bottom:8px;" id="successTitle">Account Ready!</h3>
         <p style="font-size:14px; color:var(--cn-blue-500); max-width:440px; margin-bottom:24px;" id="successDesc">
-          Welcome to Urgent.ng. Your account has been activated.
+          Setting up your workspace...
         </p>
-        <div style="display:flex; gap:12px; width:100%; max-width:380px;">
-          <a href="discovery.html" class="btn btn-primary btn-lg" style="flex:1; justify-content:center;">
-            Go to Discovery Feed &rarr;
-          </a>
-        </div>
       </div>
 
     </div>
   </main>
 
   <script>
-    let activeSignupRole = 'provider';
+    let registeredUser = null;
 
-    function setSignupRole(role) {
-      activeSignupRole = role;
-      const btnP = document.getElementById('btnSignupProvider');
-      const btnR = document.getElementById('btnSignupRunner');
-      const transportGroup = document.getElementById('runnerTransportGroup');
-      const submitBtn = document.getElementById('signupSubmitBtn');
-      const googleText = document.getElementById('googleSignupText');
-
-      if (role === 'provider') {
-        btnP.classList.add('active');
-        btnR.classList.remove('active');
-        transportGroup.style.display = 'none';
-        submitBtn.textContent = 'Create Service Provider Account →';
-        googleText.textContent = 'Sign Up with Google as Service Provider';
-      } else {
-        btnR.classList.add('active');
-        btnP.classList.remove('active');
-        transportGroup.style.display = 'block';
-        submitBtn.textContent = 'Create Errand Runner Account →';
-        googleText.textContent = 'Sign Up with Google as Errand Runner';
-      }
-    }
-
-    // Google Sign-up: Requires phone number (preferably WhatsApp) and allows alternative number
+    // Google Sign-up Simulation
     function startSignupGoogle() {
-      const standardView = document.getElementById('standardSignupView');
-      const googleView = document.getElementById('googleSignupPhoneView');
-      const emailDisplay = document.getElementById('googleAccountDisplayEmail');
-      const roleBadge = document.getElementById('googleRoleSummaryBadge');
-      const transportGroup = document.getElementById('googleRunnerTransportGroup');
-      const submitBtn = document.getElementById('googleSubmitBtn');
-
-      if (activeSignupRole === 'provider') {
-        emailDisplay.textContent = 'adeleke.business@gmail.com';
-        roleBadge.innerHTML = '💼 Service Provider';
-        if (transportGroup) transportGroup.style.display = 'none';
-        if (submitBtn) submitBtn.textContent = 'Complete Provider Registration →';
-      } else {
-        emailDisplay.textContent = 'tunde.okon.runner@gmail.com';
-        roleBadge.innerHTML = '🏃 Errand Runner';
-        if (transportGroup) transportGroup.style.display = 'block';
-        if (submitBtn) submitBtn.textContent = 'Complete Runner Registration →';
-      }
-
-      standardView.style.display = 'none';
-      googleView.classList.add('active');
-      document.getElementById('googlePrimaryPhone').focus();
-    }
-
-    function cancelGoogleSignupStep() {
-      document.getElementById('googleSignupPhoneView').classList.remove('active');
-      document.getElementById('standardSignupView').style.display = 'block';
-    }
-
-    function handleGoogleSignupSubmit(e) {
-      e.preventDefault();
-      const primaryPhone = document.getElementById('googlePrimaryPhone').value.trim();
-      const altPhone = document.getElementById('googleAlternativePhone').value.trim();
-      const isWhatsApp = document.getElementById('googleWhatsAppConfirm').checked;
-      const city = document.getElementById('googleSignupCity').value;
-      const transportEl = document.getElementById('googleSignupTransport');
-      const transport = (activeSignupRole === 'runner' && transportEl) ? transportEl.value : null;
-
-      const userName = activeSignupRole === 'provider' ? 'Adeleke Boutique' : 'Tunde Okon';
-      const userEmail = activeSignupRole === 'provider' ? 'adeleke.business@gmail.com' : 'tunde.okon.runner@gmail.com';
-
-      const userProfile = {
-        role: activeSignupRole,
-        name: userName,
-        email: userEmail,
-        phone: '+234 ' + primaryPhone,
-        isWhatsApp: isWhatsApp,
-        altPhone: altPhone ? '+234 ' + altPhone : null,
-        city: city,
-        transport: transport,
+      registeredUser = {
+        name: 'Emmanuella Adeleke',
+        email: 'emmanuella.adeleke@gmail.com',
+        phone: '+234 802 345 6789',
+        city: 'Lagos - Mainland',
+        roles: ['requester', 'runner'],
+        activeMode: 'requester',
+        isRunnerVerified: false,
         authMethod: 'google',
-        registeredAt: new Date().toISOString()
+        createdAt: new Date().toISOString()
       };
-
-      localStorage.setItem('urgent_user', JSON.stringify(userProfile));
-
-      const overlay = document.getElementById('signupSuccessOverlay');
-      const title = document.getElementById('successTitle');
-      const desc = document.getElementById('successDesc');
-
-      title.textContent = `Welcome, ${userName}!`;
-      let descText = `Your Google account is registered. Primary phone (+234 ${primaryPhone}) linked as your ${isWhatsApp ? 'WhatsApp' : 'contact'} number.`;
-      if (altPhone) {
-        descText += ` Alternative phone (+234 ${altPhone}) saved as backup.`;
-      }
-      descText += ' Routing to Discovery Feed...';
-      desc.textContent = descText;
-
-      document.getElementById('googleSignupPhoneView').classList.remove('active');
-      overlay.classList.add('active');
-      setTimeout(() => {
-        window.location.href = 'discovery.html';
-      }, 1300);
+      localStorage.setItem('urgent_user', JSON.stringify(registeredUser));
+      showIntentChoiceScreen();
     }
 
     function handleSignupSubmit(e) {
       e.preventDefault();
       const pwd = document.getElementById('signupPassword').value;
       const confirmPwd = document.getElementById('signupConfirmPassword').value;
-      const name = document.getElementById('signupFullName').value;
+      const name = document.getElementById('signupFullName').value.trim();
+      const email = document.getElementById('signupEmail').value.trim();
       const phone = document.getElementById('signupPhone').value.trim();
       const altPhoneEl = document.getElementById('signupAltPhone');
       const altPhone = altPhoneEl ? altPhoneEl.value.trim() : null;
+      const city = document.getElementById('signupCity').value;
 
       if (pwd !== confirmPwd) {
         alert('Passwords do not match. Please re-enter.');
         return;
       }
 
+      registeredUser = {
+        name: name,
+        email: email,
+        phone: '+234 ' + phone,
+        altPhone: altPhone ? '+234 ' + altPhone : null,
+        city: city,
+        roles: ['requester', 'runner'],
+        activeMode: 'requester',
+        isRunnerVerified: false,
+        createdAt: new Date().toISOString()
+      };
+      localStorage.setItem('urgent_user', JSON.stringify(registeredUser));
+      showIntentChoiceScreen();
+    }
+
+    function showIntentChoiceScreen() {
+      document.getElementById('standardSignupView').style.display = 'none';
+      const intentView = document.getElementById('onboardingIntentView');
+      intentView.style.display = 'block';
+
+      if (registeredUser && registeredUser.name) {
+        document.getElementById('welcomeUserHeading').textContent = `Welcome, ${registeredUser.name}! 🎉`;
+      }
+
+      // Check if user clicked "Become a Runner" on landing page (?mode=runner)
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('mode') === 'runner') {
+        const runnerCard = intentView.querySelectorAll('.intent-choice-card')[1];
+        if (runnerCard) {
+          runnerCard.style.borderColor = '#93c700';
+          runnerCard.style.background = '#f7fee7';
+        }
+      }
+    }
+
+    function completeOnboarding(chosenMode) {
+      if (!registeredUser) {
+        const stored = localStorage.getItem('urgent_user');
+        registeredUser = stored ? JSON.parse(stored) : {
+          name: 'Urgent User',
+          phone: '+234 802 345 6789',
+          roles: ['requester', 'runner']
+        };
+      }
+
+      registeredUser.activeMode = chosenMode;
+      localStorage.setItem('urgent_user', JSON.stringify(registeredUser));
+
       const overlay = document.getElementById('signupSuccessOverlay');
       const title = document.getElementById('successTitle');
       const desc = document.getElementById('successDesc');
 
-      title.textContent = 'Welcome, ' + name + '!';
-      let descText = activeSignupRole === 'provider'
-        ? 'Your Service Provider account is now active. You can immediately post errands and dispatch tasks.'
-        : 'Your Errand Runner account is ready! You can now browse live tasks in your neighborhood and start earning.';
-      
-      if (altPhone) {
-        descText += ` Backup number (+234 ${altPhone}) linked.`;
-      }
-      desc.textContent = descText;
+      title.textContent = chosenMode === 'runner' ? 'Starting Runner Mode!' : 'Starting Requester Mode!';
+      desc.textContent = chosenMode === 'runner'
+        ? 'Opening runner setup. You can complete your verification to start bidding on tasks. (You can switch to Requester mode anytime).'
+        : 'Opening your Requester Dashboard. Post your first errand in seconds! (You can switch to Runner mode anytime).';
 
+      document.getElementById('onboardingIntentView').style.display = 'none';
       overlay.classList.add('active');
-      localStorage.setItem('urgent_user', JSON.stringify({
-        role: activeSignupRole,
-        name: name,
-        phone: '+234 ' + phone,
-        altPhone: altPhone ? '+234 ' + altPhone : null
-      }));
-      setTimeout(() => { window.location.href = 'discovery.html'; }, 1200);
+
+      setTimeout(() => {
+        window.location.href = chosenMode === 'runner' ? 'runner-verification.html' : 'requester-dashboard.html';
+      }, 1000);
     }
   </script>
 </body>

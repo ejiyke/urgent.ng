@@ -765,10 +765,10 @@
                 <div style="font-size:13.5px; font-weight:800; color:#0f172a;" id="navDropdownName">Emmanuella Adeleke</div>
                 <div style="font-size:11px; color:#64748b;" id="navDropdownRole">Active Account</div>
               </div>
-              <a href="requester-dashboard.html" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#334155; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+              <a href="requester-dashboard.html" onclick="switchProfileMode('requester')" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#334155; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                 <span style="font-size:15px;">📋</span> Requester Dashboard
               </a>
-              <a href="runner-dashboard.html" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#334155; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+              <a href="runner-dashboard.html" onclick="switchProfileMode('runner')" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#334155; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
                 <span style="font-size:15px;">🏍️</span> Runner Dashboard
               </a>
               <a href="chat.html" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#334155; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
@@ -1726,7 +1726,8 @@
               navAvatar.title = user.name;
             }
             if (dropName) dropName.textContent = user.name;
-            if (dropRole) dropRole.textContent = user.role === 'runner' ? 'Errand Runner' : 'Requester';
+            const currentMode = user.activeMode || (user.role === 'runner' ? 'runner' : 'requester');
+            if (dropRole) dropRole.textContent = `Mode: ${currentMode === 'runner' ? 'Runner' : 'Requester'} · 1 Login`;
           }
         } catch (e) {
           console.error(e);
@@ -1737,6 +1738,15 @@
           navAvatar.title = 'Emmanuella Adeleke';
         }
       }
+    }
+
+    function switchProfileMode(mode) {
+      try {
+        let u = JSON.parse(localStorage.getItem('urgent_user') || '{}');
+        u.activeMode = mode;
+        if (!u.roles) u.roles = ['requester', 'runner'];
+        localStorage.setItem('urgent_user', JSON.stringify(u));
+      } catch(e) {}
     }
 
     function toggleNavDropdown(e) {
