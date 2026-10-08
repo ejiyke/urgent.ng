@@ -1737,6 +1737,10 @@
             if (dropName) dropName.textContent = user.name;
             const currentMode = user.activeMode || (user.role === 'runner' ? 'runner' : 'requester');
             if (dropRole) dropRole.textContent = `Mode: ${currentMode === 'runner' ? 'Runner' : 'Requester'} · 1 Login`;
+            const dashLink = document.getElementById('navDashLink');
+            if (dashLink) {
+              dashLink.href = currentMode === 'runner' ? 'runner-dashboard.html' : 'requester-dashboard.html';
+            }
           }
         } catch (e) {
           console.error(e);
@@ -1780,24 +1784,19 @@
 
       [tabLive, tabBids, tabPosted].forEach(t => {
         if (t) {
-          t.style.color = '#64748b';
-          t.style.fontWeight = '600';
-          t.style.borderBottomColor = 'transparent';
+          t.classList.remove('active');
+          t.style.color = '';
+          t.style.fontWeight = '';
+          t.style.borderBottomColor = '';
         }
       });
 
       if (activeTab === 'live' && tabLive) {
-        tabLive.style.color = '#93c700';
-        tabLive.style.fontWeight = '700';
-        tabLive.style.borderBottomColor = '#93c700';
+        tabLive.classList.add('active');
       } else if (activeTab === 'bids' && tabBids) {
-        tabBids.style.color = '#93c700';
-        tabBids.style.fontWeight = '700';
-        tabBids.style.borderBottomColor = '#93c700';
+        tabBids.classList.add('active');
       } else if (activeTab === 'posted' && tabPosted) {
-        tabPosted.style.color = '#93c700';
-        tabPosted.style.fontWeight = '700';
-        tabPosted.style.borderBottomColor = '#93c700';
+        tabPosted.classList.add('active');
       }
     }
 
@@ -1881,6 +1880,9 @@
 
     function showLiveErrands(e) {
       if (e) e.preventDefault();
+      if (window.location.hash) {
+        try { history.replaceState(null, '', window.location.pathname + window.location.search); } catch(_) { window.location.hash = ''; }
+      }
       currentViewTab = 'all';
       updateNavTabStyles('live');
       document.getElementById('feedHeroHeadline').textContent = 'Live Neighborhood Errand Feed';
@@ -1899,6 +1901,9 @@
 
     function showMyBids(e) {
       if (e) e.preventDefault();
+      if (window.location.hash !== '#my-bids') {
+        try { history.replaceState(null, '', '#my-bids'); } catch(_) { window.location.hash = 'my-bids'; }
+      }
       currentViewTab = 'offers';
       updateNavTabStyles('bids');
       document.getElementById('feedHeroHeadline').textContent = "My Bids (Price Offers You\'ve Submitted)";
@@ -1918,6 +1923,9 @@
 
     function showPostedErrands(e) {
       if (e) e.preventDefault();
+      if (window.location.hash !== '#posted-errands') {
+        try { history.replaceState(null, '', '#posted-errands'); } catch(_) { window.location.hash = 'posted-errands'; }
+      }
       currentViewTab = 'tasks';
       updateNavTabStyles('posted');
       document.getElementById('feedHeroHeadline').textContent = "Posted Errands (Tasks You\'ve Created & Received Bids)";
@@ -2544,6 +2552,16 @@
         showPostedErrands();
       } else {
         applyFilters();
+      }
+    });
+
+    window.addEventListener('hashchange', () => {
+      if (window.location.hash === '#my-bids') {
+        showMyBids();
+      } else if (window.location.hash === '#posted-errands') {
+        showPostedErrands();
+      } else {
+        showLiveErrands();
       }
     });
   </script>
