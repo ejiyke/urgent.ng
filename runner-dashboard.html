@@ -159,18 +159,25 @@
       background: #e2e8f0;
     }
     .user-avatar-circle {
-      width: 34px;
-      height: 34px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       background: #93c700;
       color: #ffffff;
       font-weight: 800;
-      font-size: 13px;
+      font-size: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       border: 2px solid #ffffff;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      user-select: none;
+    }
+    .user-avatar-circle:hover {
+      transform: scale(1.05);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.18);
     }
     .user-profile-name {
       font-size: 13px;
@@ -680,14 +687,7 @@
 
         <!-- User Profile Dropdown Button -->
         <div class="user-menu-wrapper">
-          <div class="user-profile-btn" onclick="toggleUserDropdown(event)">
-            <div class="user-avatar-circle" id="runnerAvatarText">TO</div>
-            <div class="hide-mobile" style="text-align:left;">
-              <div class="user-profile-name" id="runnerProfileName">Tunde Okon</div>
-              <span class="user-profile-badge" style="background:#ecfdf5; color:#065f46;">★ 4.9 Runner</span>
-            </div>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
-          </div>
+          <div class="user-avatar-circle" id="runnerAvatarText" title="Tunde Okon (Profile)" onclick="toggleUserDropdown(event)">TO</div>
 
           <!-- Dropdown Popup -->
           <div class="user-dropdown-menu" id="userDropdownMenu">
@@ -1192,10 +1192,16 @@
         try {
           const user = JSON.parse(stored);
           if (user.name) {
-            document.getElementById('runnerProfileName').textContent = user.name;
-            document.getElementById('menuRunnerName').textContent = user.name;
+            const profName = document.getElementById('runnerProfileName');
+            if (profName) profName.textContent = user.name;
+            const menuName = document.getElementById('menuRunnerName');
+            if (menuName) menuName.textContent = user.name;
             const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-            document.getElementById('runnerAvatarText').textContent = initials;
+            const avatar = document.getElementById('runnerAvatarText');
+            if (avatar) {
+              avatar.textContent = initials;
+              avatar.title = `${user.name} (Profile)`;
+            }
           }
           if (user.phone && document.getElementById('menuRunnerEmail')) {
             document.getElementById('menuRunnerEmail').textContent = `${user.phone} · Verified Runner`;
