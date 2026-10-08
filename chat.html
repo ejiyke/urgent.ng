@@ -351,29 +351,12 @@
     .chat-composer-wrap,
     .chat-feed-col .chat-input-bar {
       border-top: 1px solid #e2e8f0;
-      padding: 12px 20px;
+      padding: 14px 20px;
       background: #ffffff;
       flex-shrink: 0;
       z-index: 10;
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 10px !important;
-      width: 100% !important;
-      box-sizing: border-box !important;
-    }
-    .quick-actions-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 0;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      scrollbar-width: none;
       width: 100%;
-      flex-shrink: 0;
-    }
-    .quick-actions-bar::-webkit-scrollbar {
-      display: none;
+      box-sizing: border-box;
     }
 
     .quick-chip-btn {
@@ -818,23 +801,8 @@
 
       </div>
 
-      <!-- Input Bar & Quick Actions -->
+      <!-- Input Bar -->
       <div class="chat-input-bar chat-composer-wrap">
-        <div class="quick-actions-bar">
-          <button type="button" class="quick-chip-btn" onclick="openCounterOfferModal()">
-            <span>💰</span> Propose Counter-Offer
-          </button>
-          <button type="button" class="quick-chip-btn" onclick="sendQuickPhoto()">
-            <span>📸</span> Send Photo / Receipt
-          </button>
-          <button type="button" class="quick-chip-btn" onclick="sendQuickLocation()">
-            <span>📍</span> Share Landmark
-          </button>
-          <button type="button" class="quick-chip-btn" onclick="sendDirectPaymentTerms()">
-            <span>🤝</span> Confirm Handover Terms
-          </button>
-        </div>
-
         <form class="input-compose-row" onsubmit="handleSendMessage(event)">
           <button type="button" class="chat-attach-btn" onclick="sendQuickPhoto()" title="Attach image or document">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
@@ -887,6 +855,9 @@
         </ul>
 
         <div style="display:flex; flex-direction:column; gap:8px;">
+          <button type="button" class="btn btn-secondary btn-block" onclick="openCounterOfferModal()" style="background:#ffffff; border:1px solid #cbd5e1; color:#0f172a; padding:10px; border-radius:8px; font-weight:700; font-size:12.5px; cursor:pointer; text-align:center; display:flex; align-items:center; justify-content:center; gap:6px;">
+            <span>💰</span> Propose Counter-Offer
+          </button>
           <a href="track-errand.html?id=URG-8492-LG&title=Deliver%20Fashion%20Boutique%20Package" target="_blank" class="btn btn-secondary btn-block" style="background:#ffffff; border:1px solid #cbd5e1; color:#0f172a; padding:10px; border-radius:8px; font-weight:700; font-size:12.5px; text-decoration:none; text-align:center; display:flex; align-items:center; justify-content:center; gap:6px;">
             <span>📍</span> View Live GPS Route
           </a>
