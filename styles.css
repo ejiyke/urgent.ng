@@ -2377,14 +2377,14 @@ img {
   align-self: flex-end;
 }
 
-.chat-input-bar {
+.chat-popup-box .chat-input-bar {
   padding: 10px;
   border-top: 1px solid var(--cn-blue-100);
   display: flex;
   gap: 8px;
 }
 
-.chat-input-bar input {
+.chat-popup-box .chat-input-bar input {
   flex: 1;
   background: var(--cn-blue-50);
   border-radius: var(--radius-md);
