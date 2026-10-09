@@ -737,60 +737,25 @@
 </head>
 <body class="discovery-page-wrapper">
 
-  <!-- ================= TOP DISCOVERY NAVBAR (FIGMA NODE 62:3878) ================= -->
-  <header class="figma-auth-header">
-    <div class="figma-header-inner">
-      <!-- Left: Logo -->
-      <a href="index.html" class="figma-logo-link" title="Urgent.ng - Get it fast">
-        <img src="assets/logo.png" alt="Urgent.ng - Get it fast" class="figma-logo-img">
-      </a>
+  <div class="app-layout">
+    <!-- Mobile Backdrop -->
+    <div class="app-sidebar-backdrop" id="appSidebarBackdrop" onclick="closeAppSidebar()"></div>
 
-      <!-- Center: Nav Links -->
-      <nav class="figma-nav-center hide-mobile">
-        <a href="requester-dashboard.html" class="figma-nav-link" id="navDashLink">Dashboard</a>
-        <a href="discovery.html" id="navLiveErrands" onclick="showLiveErrands(event)" class="figma-nav-link active">Live Errand Feed</a>
-        <a href="#my-bids" id="navMyBids" onclick="showMyBids(event)" class="figma-nav-link">My Bids</a>
-        <a href="#posted-errands" id="navPostedErrands" onclick="showPostedErrands(event)" class="figma-nav-link">Posted Errands</a>
-      </nav>
-
-      <!-- Right Actions (Message, Profile Avatar, Post Errand) -->
-      <div class="figma-nav-right">
-        <!-- Ant Design Message Icon Button -->
-        <a href="chat.html" class="figma-nav-msg-btn" title="Errand Messages" aria-label="Messages">
-          <svg width="22" height="22" viewBox="0 0 1024 1024" fill="currentColor">
-            <path d="M464 512a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm200 0a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm-400 0a48 48 0 1 0 96 0 48 48 0 1 0-96 0zm661.2-173.6c-22.6-53.7-55-101.9-96.3-143.3a444.35 444.35 0 0 0-143.3-96.3C630.6 76 572.1 64 512 64h-2c-60.6.3-119.3 12.6-174.5 36.6-53.7 23.4-101.5 56.4-142 98.2-40.4 41.6-72.6 90.3-95.8 144.9-23.7 55.6-35.7 114.6-35.7 175.3 0 73.8 17.5 145.4 51 209.8l-65.4 193.2a24 24 0 0 0 29.8 30.4l201.1-61.1A444.2 444.2 0 0 0 510 928c60.2 0 118.7-12 173.6-35.8 53.7-23.3 101.8-55.7 143.2-97 41.4-41.4 73.8-89.5 97.1-143.2 23.8-54.9 36.1-113.4 36.1-173.6 0-60.1-12.3-118.6-34.8-172.4zM512 856c-63.5 0-124.6-14.8-179.3-43.2l-14.4-7.5-124.9 37.9 40.6-120-8.6-14.8C194.5 650.3 176 587.2 176 521c0-185.3 150.7-336 336-336s336 150.7 336 336-150.7 335-336 335z" />
-          </svg>
+    <!-- ================= APP SIDEBAR ================= -->
+    <aside class="app-sidebar" id="appSidebar">
+      <!-- Header with Logo -->
+      <div class="app-sidebar-header">
+        <a href="index.html" class="app-sidebar-logo" title="Urgent.ng - Get it fast">
+          <img src="assets/logo.png" alt="Urgent.ng">
         </a>
+        <button type="button" class="app-sidebar-close-btn" onclick="closeAppSidebar()" aria-label="Close menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
 
-        <!-- Profile Avatar Icon with Menu Dropdown -->
-        <div class="user-menu-wrapper" style="position:relative;">
-          <div class="figma-nav-avatar" id="navUserAvatar" title="Your Profile" onclick="toggleNavDropdown(event)">
-            EA
-          </div>
-          <div id="navUserDropdown" style="position:absolute; top:calc(100% + 8px); right:0; width:250px; background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.12); padding:8px; display:none; z-index:500;">
-            <div style="padding:8px 12px 10px; border-bottom:1px solid #f1f5f9; margin-bottom:4px;">
-              <div style="font-size:13.5px; font-weight:800; color:#0f172a;" id="navDropdownName">Emmanuella Adeleke</div>
-              <div style="font-size:11px; color:#64748b;" id="navDropdownRole">Active Account</div>
-            </div>
-            <a href="requester-dashboard.html" onclick="switchProfileMode('requester')" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#334155; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg> Requester Dashboard
-            </a>
-            <a href="runner-dashboard.html" onclick="switchProfileMode('runner')" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#334155; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg> Runner Dashboard
-            </a>
-            <a href="chat.html" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#334155; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg> Errand Chat & Offers
-            </a>
-            <div style="border-top:1px solid #f1f5f9; margin-top:4px; padding-top:4px;">
-              <a href="login.html" style="display:flex; align-items:center; gap:10px; padding:9px 12px; font-size:13px; font-weight:600; color:#ef4444; text-decoration:none; border-radius:6px; transition:background 0.15s;" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='transparent'">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> Sign Out
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- + Post Errand Button -->
-        <button class="figma-btn-post-errand" onclick="openPostModal()">
+      <!-- CTA Button -->
+      <div class="app-sidebar-cta">
+        <button type="button" class="app-sidebar-post-btn" onclick="openPostModal()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
             <line x1="12" y1="5" x2="12" y2="19"></line>
             <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -798,11 +763,84 @@
           <span>Post Errand</span>
         </button>
       </div>
-    </div>
-  </header>
 
-  <!-- ================= DISCOVERY HERO HEADER ================= -->
-  <section class="discovery-hero-bar">
+      <!-- Navigation Menu -->
+      <nav class="app-sidebar-nav">
+        <div class="app-sidebar-section-title">Navigation</div>
+        <a href="requester-dashboard.html" class="app-sidebar-link" id="sideDashLink">
+          <div class="app-sidebar-link-content">
+            <svg class="app-sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Dashboard</span>
+          </div>
+        </a>
+        <a href="discovery.html" id="sideLiveErrands" onclick="showLiveErrands(event)" class="app-sidebar-link active">
+          <div class="app-sidebar-link-content">
+            <svg class="app-sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+            <span>Live Errand Feed</span>
+          </div>
+          <span class="app-sidebar-badge badge-green">42</span>
+        </a>
+        <a href="#my-bids" id="sideMyBids" onclick="showMyBids(event)" class="app-sidebar-link">
+          <div class="app-sidebar-link-content">
+            <svg class="app-sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7.01" y2="7"></line></svg>
+            <span>My Bids</span>
+          </div>
+          <span class="app-sidebar-badge" id="sideBidsBadge">1</span>
+        </a>
+        <a href="#posted-errands" id="sidePostedErrands" onclick="showPostedErrands(event)" class="app-sidebar-link">
+          <div class="app-sidebar-link-content">
+            <svg class="app-sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+            <span>Posted Errands</span>
+          </div>
+          <span class="app-sidebar-badge" id="sidePostedBadge">8</span>
+        </a>
+        <a href="chat.html" class="app-sidebar-link" id="sideChatLink">
+          <div class="app-sidebar-link-content">
+            <svg class="app-sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            <span>Messages</span>
+          </div>
+          <span class="app-sidebar-badge badge-dot">1</span>
+        </a>
+      </nav>
+
+      <!-- Footer Profile & Switcher -->
+      <div class="app-sidebar-footer">
+        <div class="app-sidebar-user-card">
+          <div class="app-sidebar-user-avatar" id="sidebarAvatarText">EA</div>
+          <div class="app-sidebar-user-info">
+            <div class="app-sidebar-user-name" id="sidebarUserName">Emmanuella Adeleke</div>
+            <div class="app-sidebar-user-role" id="sidebarUserRole">Requester Mode</div>
+          </div>
+        </div>
+        <a href="#" id="sideSwitchModeBtn" onclick="toggleProfileModeFromSidebar(event)" class="app-sidebar-switch-mode-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
+          <span id="sideSwitchModeLabel">Switch to Runner Mode</span>
+        </a>
+        <a href="login.html" class="app-sidebar-signout-link">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          <span>Sign Out</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="app-main-content">
+      <!-- Mobile Topbar (<992px) -->
+      <header class="app-mobile-topbar">
+        <button type="button" class="app-mobile-hamburger" onclick="toggleAppSidebar()" aria-label="Open sidebar menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        </button>
+        <a href="index.html" style="display:inline-flex; align-items:center;">
+          <img src="assets/logo.png" alt="Urgent.ng" style="height:28px;">
+        </a>
+        <a href="chat.html" style="color:#334155; position:relative; padding:6px; display:inline-flex; align-items:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          <span style="position:absolute; top:3px; right:3px; width:7px; height:7px; background:#ef4444; border-radius:50%;"></span>
+        </a>
+      </header>
+
+      <!-- ================= DISCOVERY HERO HEADER ================= -->
+      <section class="discovery-hero-bar">
     <div class="container">
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
         <div>
@@ -973,6 +1011,8 @@
 
     </div>
   </main>
+    </div><!-- /.app-main-content -->
+  </div><!-- /.app-layout -->
 
   <!-- ================= SUBMIT BID MODAL (MAKE AN OFFER) ================= -->
   <div class="discovery-modal-backdrop" id="bidModalBackdrop" onclick="closeBidModal(event)">
@@ -1720,37 +1760,83 @@
     let currentPostedStatusFilter = 'all';
     let currentViewTab = 'all'; // 'all', 'offers', 'tasks'
 
+    // Sidebar Mobile Drawer Handlers
+    function toggleAppSidebar() {
+      const sidebar = document.getElementById('appSidebar');
+      const backdrop = document.getElementById('appSidebarBackdrop');
+      if (sidebar) sidebar.classList.toggle('open');
+      if (backdrop) backdrop.classList.toggle('open');
+    }
+
+    function closeAppSidebar() {
+      const sidebar = document.getElementById('appSidebar');
+      const backdrop = document.getElementById('appSidebarBackdrop');
+      if (sidebar) sidebar.classList.remove('open');
+      if (backdrop) backdrop.classList.remove('open');
+    }
+
     function initUserSession() {
       const stored = localStorage.getItem('urgent_user');
       const navAvatar = document.getElementById('navUserAvatar');
       const dropName = document.getElementById('navDropdownName');
       const dropRole = document.getElementById('navDropdownRole');
+      const sideName = document.getElementById('sidebarUserName');
+      const sideAvatar = document.getElementById('sidebarAvatarText');
+      const sideRole = document.getElementById('sidebarUserRole');
+      const sideDashLink = document.getElementById('sideDashLink');
+      const sideSwitchLabel = document.getElementById('sideSwitchModeLabel');
+
+      let userName = 'Emmanuella Adeleke';
+      let userRole = 'requester';
+      let initials = 'EA';
+
       if (stored) {
         try {
           const user = JSON.parse(stored);
-          if (user.name) {
-            const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-            if (navAvatar) {
-              navAvatar.textContent = initials;
-              navAvatar.title = user.name;
-            }
-            if (dropName) dropName.textContent = user.name;
-            const currentMode = user.activeMode || (user.role === 'runner' ? 'runner' : 'requester');
-            if (dropRole) dropRole.textContent = `Mode: ${currentMode === 'runner' ? 'Runner' : 'Requester'} · 1 Login`;
-            const dashLink = document.getElementById('navDashLink');
-            if (dashLink) {
-              dashLink.href = currentMode === 'runner' ? 'runner-dashboard.html' : 'requester-dashboard.html';
-            }
-          }
+          if (user.name) userName = user.name;
+          userRole = user.activeMode || (user.role === 'runner' ? 'runner' : 'requester');
+          initials = userName.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
         } catch (e) {
           console.error(e);
         }
-      } else {
-        if (navAvatar) {
-          navAvatar.textContent = 'EA';
-          navAvatar.title = 'Emmanuella Adeleke';
-        }
       }
+
+      if (navAvatar) {
+        navAvatar.textContent = initials;
+        navAvatar.title = userName;
+      }
+      if (dropName) dropName.textContent = userName;
+      if (dropRole) dropRole.textContent = `Mode: ${userRole === 'runner' ? 'Runner' : 'Requester'} · 1 Login`;
+
+      if (sideName) sideName.textContent = userName;
+      if (sideAvatar) sideAvatar.textContent = initials;
+      if (sideRole) {
+        sideRole.textContent = userRole === 'runner' ? 'Runner Mode' : 'Requester Mode';
+        sideRole.style.color = userRole === 'runner' ? '#0284c7' : '#15803d';
+      }
+      if (sideDashLink) {
+        sideDashLink.href = userRole === 'runner' ? 'runner-dashboard.html' : 'requester-dashboard.html';
+      }
+      const navDash = document.getElementById('navDashLink');
+      if (navDash) {
+        navDash.href = userRole === 'runner' ? 'runner-dashboard.html' : 'requester-dashboard.html';
+      }
+      if (sideSwitchLabel) {
+        sideSwitchLabel.textContent = userRole === 'runner' ? 'Switch to Requester Mode' : 'Switch to Runner Mode';
+      }
+    }
+
+    function toggleProfileModeFromSidebar(e) {
+      if (e) e.preventDefault();
+      try {
+        let u = JSON.parse(localStorage.getItem('urgent_user') || '{}');
+        const currentMode = u.activeMode || (u.role === 'runner' ? 'runner' : 'requester');
+        const nextMode = currentMode === 'runner' ? 'requester' : 'runner';
+        u.activeMode = nextMode;
+        if (!u.roles) u.roles = ['requester', 'runner'];
+        localStorage.setItem('urgent_user', JSON.stringify(u));
+        window.location.href = nextMode === 'runner' ? 'runner-dashboard.html' : 'requester-dashboard.html';
+      } catch(e) {}
     }
 
     function switchProfileMode(mode) {
@@ -1782,7 +1868,11 @@
       const tabBids = document.getElementById('navMyBids');
       const tabPosted = document.getElementById('navPostedErrands');
 
-      [tabLive, tabBids, tabPosted].forEach(t => {
+      const sideLive = document.getElementById('sideLiveErrands');
+      const sideBids = document.getElementById('sideMyBids');
+      const sidePosted = document.getElementById('sidePostedErrands');
+
+      [tabLive, tabBids, tabPosted, sideLive, sideBids, sidePosted].forEach(t => {
         if (t) {
           t.classList.remove('active');
           t.style.color = '';
@@ -1791,12 +1881,15 @@
         }
       });
 
-      if (activeTab === 'live' && tabLive) {
-        tabLive.classList.add('active');
-      } else if (activeTab === 'bids' && tabBids) {
-        tabBids.classList.add('active');
-      } else if (activeTab === 'posted' && tabPosted) {
-        tabPosted.classList.add('active');
+      if (activeTab === 'live') {
+        if (tabLive) tabLive.classList.add('active');
+        if (sideLive) sideLive.classList.add('active');
+      } else if (activeTab === 'bids') {
+        if (tabBids) tabBids.classList.add('active');
+        if (sideBids) sideBids.classList.add('active');
+      } else if (activeTab === 'posted') {
+        if (tabPosted) tabPosted.classList.add('active');
+        if (sidePosted) sidePosted.classList.add('active');
       }
     }
 
